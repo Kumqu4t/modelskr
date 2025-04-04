@@ -1,0 +1,51 @@
+/* 전체 header 스타일 */
+header {
+	background-color: #333;
+	padding: 10px 0;
+	position: sticky;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+}
+
+/* 네비게이션 바 스타일 */
+nav {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* 링크 스타일 */
+nav a {
+	color: white;
+	text-decoration: none;
+	font-size: 18px;
+	margin: 0 15px;
+	padding: 8px 15px;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+/* 링크 hover 스타일 */
+nav a:hover {
+	background-color: #555;
+	color: #fff;
+	border-radius: 5px;
+}
+
+/* 링크 클릭 시 활성화된 상태 (active 링크 스타일) */
+nav a.active {
+	background-color: #ff6f61;
+	color: white;
+	border-radius: 5px;
+}
+
+/* 모바일 대응: 작은 화면에서의 스타일링 */
+@media (max-width: 768px) {
+	nav {
+		flex-direction: column;
+	}
+
+	nav a {
+		margin: 10px 0;
+	}
+}
