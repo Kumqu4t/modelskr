@@ -1,0 +1,7 @@
+.filter-bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px 0;
+	flex-wrap: wrap; /* 버튼이 많아질 때 줄바꿈 */
+}

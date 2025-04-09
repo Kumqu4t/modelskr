@@ -1,58 +1,66 @@
 [
 	{
-		"image": "https://picsum.photos/id/64/300/400",
+		"image": "https://plus.unsplash.com/premium_photo-1668485967915-5b5ddd065a78?q=80&w=3087&auto=format&fit=crop",
 		"name": "Model 1",
 		"description": "모델 1 설명",
 		"isFavorite": true,
-		"gender": "female"
+		"gender": "female",
+		"tags": ["런웨이", "광고"]
 	},
 	{
-		"image": "https://picsum.photos/seed/2/300/400",
+		"image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2124&auto=format&fit=crop",
 		"name": "Model 2",
 		"description": "모델 2 설명",
 		"isFavorite": false,
-		"gender": "male"
+		"gender": "female",
+		"tags": ["광고", "CF"]
 	},
 	{
-		"image": "https://picsum.photos/seed/3/300/400",
+		"image": "https://images.unsplash.com/photo-1512068549487-5e79d74c7fc3?q=80&w=3087&auto=format&fit=crop",
 		"name": "Model 3",
 		"description": "모델 3 설명",
-		"isFavorite": true,
-		"gender": "female"
+		"isFavorite": false,
+		"gender": "female",
+		"tags": ["잡지"]
 	},
 	{
-		"image": "https://picsum.photos/seed/4/300/400",
+		"image": "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=3164&auto=format&fit=crop",
 		"name": "Model 4",
 		"description": "모델 4 설명",
-		"isFavorite": false,
-		"gender": "male"
+		"isFavorite": true,
+		"gender": "male",
+		"tags": ["광고", "스트리트"]
 	},
 	{
-		"image": "https://picsum.photos/seed/5/300/400",
+		"image": "https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?w=800&auto=format&fit=crop",
 		"name": "Model 5",
 		"description": "모델 5 설명",
-		"isFavorite": false,
-		"gender": "female"
+		"isFavorite": true,
+		"gender": "female",
+		"tags": ["패션쇼", "광고"]
 	},
 	{
-		"image": "https://picsum.photos/seed/6/300/400",
+		"image": "https://images.unsplash.com/photo-1622497170185-5d668f816a56?w=800&auto=format&fit=crop",
 		"name": "Model 6",
 		"description": "모델 6 설명",
-		"isFavorite": true,
-		"gender": "male"
+		"isFavorite": false,
+		"gender": "male",
+		"tags": ["패션쇼"]
 	},
 	{
-		"image": "https://picsum.photos/seed/7/300/400",
+		"image": "https://images.unsplash.com/photo-1614057289099-8061c7929c87?w=800&auto=format&fit=crop",
 		"name": "Model 7",
 		"description": "모델 7 설명",
 		"isFavorite": false,
-		"gender": "female"
+		"gender": "male",
+		"tags": ["스냅"]
 	},
 	{
-		"image": "https://picsum.photos/seed/8/300/400",
+		"image": "https://images.unsplash.com/photo-1630588217620-600e502793ed?w=800&auto=format&fit=crop",
 		"name": "Model 8",
 		"description": "모델 8 설명",
 		"isFavorite": true,
-		"gender": "male"
+		"gender": "female",
+		"tags": ["CF", "인플루언서"]
 	}
 ]
