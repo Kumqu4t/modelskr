@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../styles/ModelDetailPage.css";
 import "../styles/FilterButton.css";
 
-function ModelDetailPage() {
+function ModelDetailPage({ favorites, setFavorites }) {
 	const { id } = useParams(); // URL의 id 추출
 	const [model, setModel] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -22,8 +22,21 @@ function ModelDetailPage() {
 	if (loading) return <div>로딩 중...</div>;
 	if (!model) return <div>해당 모델을 찾을 수 없습니다.</div>;
 
+	// Favorite Button
+	const isFavorited = favorites.includes(model.id);
+	const toggleFavorite = () => {
+		setFavorites((prev) =>
+			prev.includes(model.id)
+				? prev.filter((fid) => fid !== model.id)
+				: [...prev, model.id]
+		);
+	};
+
 	return (
 		<div className="model-detail">
+			<button className="favorite-icon detail-icon" onClick={toggleFavorite}>
+				{isFavorited ? "★" : "☆"}
+			</button>
 			<img src={model.image} alt={model.name} />
 			<div className="model-detail-info">
 				<h2>{model.name}</h2>

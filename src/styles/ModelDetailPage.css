@@ -1,4 +1,5 @@
 .model-detail {
+	position: relative;
 	display: flex;
 	gap: 24px;
 	max-width: 900px;
@@ -14,6 +15,27 @@
 	height: auto;
 	border-radius: 12px;
 	object-fit: cover;
+}
+
+.favorite-icon {
+	position: absolute;
+	z-index: 2;
+	cursor: pointer;
+	user-select: none;
+	border-radius: 50%;
+}
+.detail-icon {
+	top: 20px;
+	right: 8px;
+	width: 32px;
+	height: 32px;
+	font-size: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border: none;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .model-detail-info {

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FilterBar from "../components/FilterBar";
 import ModelList from "../components/ModelList";
 
-function ModelListPage() {
+function ModelListPage({ favorites, setFavorites }) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -52,7 +52,11 @@ function ModelListPage() {
 				setSelectedTags={setSelectedTags}
 				tags={tags}
 			/>
-			<ModelList models={filteredModels} />
+			<ModelList
+				models={filteredModels}
+				favorites={favorites}
+				setFavorites={setFavorites}
+			/>
 		</div>
 	);
 }

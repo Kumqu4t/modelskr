@@ -1,7 +1,8 @@
 import React from "react";
 import ModelCard from "./ModelCard";
+import "../styles/ModelList.css";
 
-function ModelList({ models }) {
+function ModelList({ models, favorites, setFavorites }) {
 	return (
 		<div className="model-card-container">
 			{models.map((model) => (
@@ -11,6 +12,8 @@ function ModelList({ models }) {
 					image={model.image}
 					name={model.name}
 					description={model.description}
+					favorites={favorites}
+					setFavorites={setFavorites}
 				/>
 			))}
 		</div>
