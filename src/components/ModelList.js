@@ -4,9 +4,10 @@ import ModelCard from "./ModelCard";
 function ModelList({ models }) {
 	return (
 		<div className="model-card-container">
-			{models.map((model, index) => (
+			{models.map((model) => (
 				<ModelCard
-					key={index}
+					key={model.id}
+					id={model.id}
 					image={model.image}
 					name={model.name}
 					description={model.description}

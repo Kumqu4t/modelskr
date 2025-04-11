@@ -1,66 +1,120 @@
 [
 	{
+		"id": 1,
 		"image": "https://plus.unsplash.com/premium_photo-1668485967915-5b5ddd065a78?q=80&w=3087&auto=format&fit=crop",
 		"name": "Model 1",
 		"description": "모델 1 설명",
 		"isFavorite": true,
-		"gender": "female",
-		"tags": ["런웨이", "광고"]
+		"tags": ["런웨이", "광고", "female"],
+		"recentWork": [
+			{
+				"title": "Vogue Korea 2024",
+				"type": "매거진",
+				"link": "https://example.com/vogue-korea"
+			},
+			{
+				"title": "Chanel Runway SS24",
+				"type": "런웨이",
+				"link": "https://example.com/chanel-ss24"
+			}
+		]
 	},
 	{
+		"id": 2,
 		"image": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2124&auto=format&fit=crop",
 		"name": "Model 2",
 		"description": "모델 2 설명",
 		"isFavorite": false,
-		"gender": "female",
-		"tags": ["광고", "CF"]
+		"tags": ["광고", "CF", "female"],
+		"recentWork": [
+			{
+				"title": "CF for Dior",
+				"type": "광고",
+				"link": "https://example.com/dior-cf"
+			}
+		]
 	},
 	{
+		"id": 3,
 		"image": "https://images.unsplash.com/photo-1512068549487-5e79d74c7fc3?q=80&w=3087&auto=format&fit=crop",
 		"name": "Model 3",
 		"description": "모델 3 설명",
 		"isFavorite": false,
-		"gender": "female",
-		"tags": ["잡지"]
+		"tags": ["잡지", "female"],
+		"recentWork": []
 	},
 	{
+		"id": 4,
 		"image": "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=3164&auto=format&fit=crop",
 		"name": "Model 4",
 		"description": "모델 4 설명",
 		"isFavorite": true,
-		"gender": "male",
-		"tags": ["광고", "스트리트"]
+		"tags": ["광고", "스트리트", "male"],
+		"recentWork": [
+			{
+				"title": "Seoul Street Campaign",
+				"type": "스트리트",
+				"link": "https://example.com/seoul-street"
+			}
+		]
 	},
 	{
+		"id": 5,
 		"image": "https://plus.unsplash.com/premium_photo-1682095664848-014a0a2bfd8a?w=800&auto=format&fit=crop",
 		"name": "Model 5",
 		"description": "모델 5 설명",
 		"isFavorite": true,
-		"gender": "female",
-		"tags": ["패션쇼", "광고"]
+		"tags": ["패션쇼", "광고", "female"],
+		"recentWork": [
+			{
+				"title": "Seoul Fashion Week",
+				"type": "패션쇼",
+				"link": "https://example.com/sfw"
+			}
+		]
 	},
 	{
+		"id": 6,
 		"image": "https://images.unsplash.com/photo-1622497170185-5d668f816a56?w=800&auto=format&fit=crop",
 		"name": "Model 6",
 		"description": "모델 6 설명",
 		"isFavorite": false,
-		"gender": "male",
-		"tags": ["패션쇼"]
+		"tags": ["패션쇼", "male"],
+		"recentWork": []
 	},
 	{
+		"id": 7,
 		"image": "https://images.unsplash.com/photo-1614057289099-8061c7929c87?w=800&auto=format&fit=crop",
 		"name": "Model 7",
 		"description": "모델 7 설명",
 		"isFavorite": false,
-		"gender": "male",
-		"tags": ["스냅"]
+		"tags": ["스냅", "male"],
+		"recentWork": [
+			{
+				"title": "Tokyo Street Snap",
+				"type": "스냅",
+				"link": "https://example.com/tokyo-snap"
+			}
+		]
 	},
 	{
+		"id": 8,
 		"image": "https://images.unsplash.com/photo-1630588217620-600e502793ed?w=800&auto=format&fit=crop",
 		"name": "Model 8",
 		"description": "모델 8 설명",
 		"isFavorite": true,
-		"gender": "female",
-		"tags": ["CF", "인플루언서"]
+		"tags": ["CF", "인플루언서", "female"],
+		"recentWork": [
+			{
+				"title": "YouTube Ad Campaign",
+				"type": "CF",
+				"link": "https://example.com/youtube-cf"
+			},
+			{
+				"title": "Instagram Collab",
+				"type": "인플루언서",
+				"link": "https://example.com/insta-collab"
+			}
+		]
 	}
 ]

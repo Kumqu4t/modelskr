@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/Header.css"; // 스타일 파일 임포트
+import "../styles/Header.css";
+import SearchBar from "./SearchBar";
 
 function Header() {
+	const [keyword, setKeyword] = useState("");
+
 	return (
 		<header>
 			<nav>
@@ -11,6 +14,10 @@ function Header() {
 				<Link to="/favorites">즐겨찾기</Link>
 				<Link to="/login">로그인(임시)</Link>
 				<Link to="/admin">관리자(임시)</Link>
+				<SearchBar
+					value={keyword}
+					onChange={(e) => setKeyword(e.target.value)}
+				/>
 			</nav>
 		</header>
 	);
