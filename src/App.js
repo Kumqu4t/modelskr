@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import ModelListPage from "./pages/ModelListPage";
@@ -23,37 +24,44 @@ function App() {
 	}, [favorites]);
 
 	return (
-		<Router>
-			<Header />
-			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route
-					path="/favorites"
-					element={
-						<FavoritePage favorites={favorites} setFavorites={setFavorites} />
-					}
-				/>
-				<Route
-					path="/models"
-					element={
-						<ModelListPage favorites={favorites} setFavorites={setFavorites} />
-					}
-				/>
-				<Route
-					path="/model/:id"
-					element={
-						<ModelDetailPage
-							favorites={favorites}
-							setFavorites={setFavorites}
-						/>
-					}
-				/>
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/admin" element={<AdminPage />} />
-				<Route path="*" element={<NotFoundPage />} />
-			</Routes>
-			<Footer />
-		</Router>
+		<GoogleOAuthProvider clientId="492176985275-d927cld9q853m3no1jl4n16kjkucu4n2.apps.googleusercontent.com">
+			{" "}
+			{/* 여기에 자신의 클라이언트 ID를 넣어야 합니다 */}
+			<Router>
+				<Header />
+				<Routes>
+					<Route path="/" element={<HomePage />} />
+					<Route
+						path="/favorites"
+						element={
+							<FavoritePage favorites={favorites} setFavorites={setFavorites} />
+						}
+					/>
+					<Route
+						path="/models"
+						element={
+							<ModelListPage
+								favorites={favorites}
+								setFavorites={setFavorites}
+							/>
+						}
+					/>
+					<Route
+						path="/model/:id"
+						element={
+							<ModelDetailPage
+								favorites={favorites}
+								setFavorites={setFavorites}
+							/>
+						}
+					/>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/admin" element={<AdminPage />} />
+					<Route path="*" element={<NotFoundPage />} />
+				</Routes>
+				<Footer />
+			</Router>
+		</GoogleOAuthProvider>
 	);
 }
 

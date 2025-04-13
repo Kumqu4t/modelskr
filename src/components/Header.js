@@ -23,12 +23,11 @@ function Header() {
 				<Link to="/favorites">즐겨찾기</Link>
 				<Link to="/login">로그인(임시)</Link>
 				<Link to="/admin">관리자(임시)</Link>
-				<form onSubmit={handleSubmit}>
-					<SearchBar
-						value={keyword}
-						onChange={(e) => setKeyword(e.target.value)}
-					/>
-				</form>
+				<SearchBar
+					value={keyword}
+					onChange={(e) => setKeyword(e.target.value)}
+					onSubmit={handleSubmit}
+				/>
 			</nav>
 		</header>
 	);
