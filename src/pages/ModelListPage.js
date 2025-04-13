@@ -11,7 +11,10 @@ function ModelListPage({ favorites, setFavorites }) {
 	const [models, setModels] = useState([]);
 	const [filteredModels, setFilteredModels] = useState([]);
 
-	// URL → selectedTags로 동기화
+	const params = new URLSearchParams(location.search);
+	const keyword = params.get("keyword") || "";
+
+	// URL => selectedTags로 동기화
 	useEffect(() => {
 		const tagsFromURL = new URLSearchParams(location.search).getAll("tag");
 		setSelectedTags(tagsFromURL);
@@ -24,23 +27,34 @@ function ModelListPage({ favorites, setFavorites }) {
 			.then((data) => setModels(data));
 	}, []);
 
-	// 태그 필터링 함수
-	const filterModelsByTags = (allModels, tags) => {
-		if (tags.length === 0) return allModels;
-		return allModels.filter((model) =>
-			model.tags.some((tag) => tags.includes(tag))
-		);
-	};
-
-	// 모델 필터링 및 URL 동기화
+	// tag, keyword 기반으로 필터링
 	useEffect(() => {
-		const filtered = filterModelsByTags(models, selectedTags);
-		setFilteredModels(filtered);
+		let filtered = models;
 
+		if (selectedTags.length > 0) {
+			filtered = filtered.filter((model) =>
+				model.tags.some((tag) => selectedTags.includes(tag))
+			);
+		}
+
+		if (keyword) {
+			filtered = filtered.filter((model) =>
+				model.name.toLowerCase().includes(keyword.toLowerCase())
+			);
+		}
+
+		setFilteredModels(filtered);
+	}, [models, selectedTags, keyword]);
+
+	// keyword, tag => URL 동기화
+	useEffect(() => {
 		const params = new URLSearchParams();
+
 		selectedTags.forEach((tag) => params.append("tag", tag));
+		if (keyword) params.set("keyword", keyword); // 검색어가 있으면 같이 추가
+
 		navigate(`/models?${params.toString()}`, { replace: true });
-	}, [models, selectedTags, navigate]);
+	}, [selectedTags, keyword, navigate]);
 
 	// 태그 목록 추출
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
