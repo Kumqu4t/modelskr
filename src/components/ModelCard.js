@@ -1,22 +1,26 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/ModelCard.css";
-function ModelCard({ id, name, image, description, favorites, setFavorites }) {
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../redux/favorites/favoritesSlice";
+
+function ModelCard({ id, name, image, description }) {
+	const favorites = useSelector((state) => state.favorites.items);
+	const dispatch = useDispatch();
+
 	const navigate = useNavigate();
 	const isFavorited = favorites?.includes(id);
 
-	const toggleFavorite = (e) => {
+	const handleToggle = (e) => {
 		e.stopPropagation(); // 카드 클릭 막기
-		setFavorites((prev) =>
-			prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
-		);
+		dispatch(toggleFavorite(id));
 	};
 
 	return (
 		<div className="model-card" onClick={() => navigate(`/model/${id}`)}>
 			<div className="image-wrapper">
 				<img src={image} alt={name} />
-				<div className="favorite-icon card-icon" onClick={toggleFavorite}>
+				<div className="favorite-icon card-icon" onClick={handleToggle}>
 					{isFavorited ? "★" : "☆"}
 				</div>
 			</div>

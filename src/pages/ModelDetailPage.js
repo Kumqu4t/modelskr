@@ -1,13 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../redux/favorites/favoritesSlice";
 import "../styles/ModelDetailPage.css";
 import "../styles/FilterButton.css";
 
-function ModelDetailPage({ favorites, setFavorites }) {
+function ModelDetailPage() {
 	const { id } = useParams(); // URL의 id 추출
 	const [model, setModel] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
+
+	const favorites = useSelector((state) => state.favorites.items);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		fetch("/mock/models.json")
@@ -24,17 +29,15 @@ function ModelDetailPage({ favorites, setFavorites }) {
 
 	// Favorite Button
 	const isFavorited = favorites.includes(model.id);
-	const toggleFavorite = () => {
-		setFavorites((prev) =>
-			prev.includes(model.id)
-				? prev.filter((fid) => fid !== model.id)
-				: [...prev, model.id]
-		);
+
+	const handleToggle = () => {
+		console.log("즐겨찾기 토글 눌림!", model.id);
+		dispatch(toggleFavorite(model.id));
 	};
 
 	return (
 		<div className="model-detail">
-			<button className="favorite-icon detail-icon" onClick={toggleFavorite}>
+			<button className="favorite-icon detail-icon" onClick={handleToggle}>
 				{isFavorited ? "★" : "☆"}
 			</button>
 			<img src={model.image} alt={model.name} />

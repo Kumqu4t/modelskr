@@ -1,27 +1,38 @@
 import React from "react";
-import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/user/userSlice";
 
 function LoginPage() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
-	const onSuccess = (response) => {
-		console.log("로그인 성공: ", response);
-		// 로그인 성공 후 받은 정보 처리 (access token 등)
-		navigate("/"); // 로그인 후 홈으로 리디렉션
+	const onSuccess = (credentialResponse) => {
+		try {
+			const decoded = jwtDecode(credentialResponse.credential);
+			const userInfo = {
+				name: decoded.name,
+				email: decoded.email,
+				picture: decoded.picture,
+			};
+
+			dispatch(login(userInfo)); // Redux에 로그인 정보 저장
+			navigate("/");
+		} catch (error) {
+			console.error("디코딩 실패:", error);
+		}
 	};
 
 	const onFailure = (error) => {
-		console.error("로그인 실패: ", error);
+		console.error("로그인 실패:", error);
 	};
 
 	return (
-		<div>
+		<div style={{ textAlign: "center", marginTop: "100px" }}>
 			<h1>구글 로그인</h1>
-			<GoogleLogin
-				onSuccess={onSuccess} // 성공 시 처리할 함수
-				onError={onFailure} // 실패 시 처리할 함수
-			/>
+			<GoogleLogin onSuccess={onSuccess} onError={onFailure} />
 		</div>
 	);
 }
