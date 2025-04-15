@@ -1,31 +1,25 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import FilterBar from "../components/FilterBar";
 import ModelList from "../components/ModelList";
 
-function ModelListPage({ favorites, setFavorites }) {
+function ModelListPage() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
 	const [selectedTags, setSelectedTags] = useState([]);
-	const [models, setModels] = useState([]);
 	const [filteredModels, setFilteredModels] = useState([]);
 
 	const params = new URLSearchParams(location.search);
 	const keyword = params.get("keyword") || "";
+	const models = useSelector((state) => state.models.models);
 
 	// URL => selectedTags로 동기화
 	useEffect(() => {
 		const tagsFromURL = new URLSearchParams(location.search).getAll("tag");
 		setSelectedTags(tagsFromURL);
 	}, [location.search]);
-
-	// 데이터 fetch
-	useEffect(() => {
-		fetch("/mock/models.json")
-			.then((res) => res.json())
-			.then((data) => setModels(data));
-	}, []);
 
 	// tag, keyword 기반으로 필터링
 	useEffect(() => {
@@ -66,11 +60,7 @@ function ModelListPage({ favorites, setFavorites }) {
 				setSelectedTags={setSelectedTags}
 				tags={tags}
 			/>
-			<ModelList
-				models={filteredModels}
-				favorites={favorites}
-				setFavorites={setFavorites}
-			/>
+			<ModelList models={filteredModels} />
 		</div>
 	);
 }

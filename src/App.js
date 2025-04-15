@@ -10,6 +10,7 @@ import ModelListPage from "./pages/ModelListPage";
 import ModelDetailPage from "./pages/ModelDetailPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
+import ModelFormPage from "./pages/ModelFormPage";
 import FavoritePage from "./pages/FavoritePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Footer from "./components/Footer";
@@ -27,6 +28,8 @@ function App() {
 						<Route path="/model/:id" element={<ModelDetailPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/admin" element={<AdminPage />} />
+						<Route path="/admin/edit/:id" element={<ModelFormPage />} />
+						<Route path="/admin/create" element={<ModelFormPage />} />
 						<Route path="*" element={<NotFoundPage />} />
 					</Routes>
 					<Footer />
