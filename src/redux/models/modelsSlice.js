@@ -9,7 +9,8 @@ const modelsSlice = createSlice({
 	reducers: {
 		// 모델 추가
 		addModel(state, action) {
-			state.models.push(action.payload);
+			const newModel = { ...action.payload, id: Date.now() };
+			state.models.push(newModel);
 		},
 		// 모델 수정
 		updateModel(state, action) {
