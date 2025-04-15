@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/user/userSlice";
 import "../styles/Header.css";
@@ -10,11 +10,9 @@ function Header() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	// Redux 상태 가져오기
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const user = useSelector((state) => state.user.user);
 
-	// 검색어 입력 시 검색 결과 페이지로 이동
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (keyword.trim()) {
@@ -29,17 +27,33 @@ function Header() {
 
 	return (
 		<header>
-			<nav>
-				<Link to="/">홈</Link>
-				<Link to="/models">모델 목록</Link>
-				<Link to="/favorites">즐겨찾기</Link>
-				<Link to="/admin">관리자(임시)</Link>
-				<SearchBar
-					value={keyword}
-					onChange={(e) => setKeyword(e.target.value)}
-					onSubmit={handleSubmit}
-				/>
-				{/* 로그인 상태에 따라 다른 UI */}
+			<div className="header-inner">
+				<Link to="/" className="logo">
+					Models.kr
+				</Link>
+
+				<nav className="nav-links">
+					<NavLink to="/models" className="nav-item">
+						모델 목록
+					</NavLink>
+					<NavLink to="/favorites" className="nav-item">
+						즐겨찾기
+					</NavLink>
+					{isLoggedIn && (
+						<NavLink to="/admin" className="nav-item">
+							관리자
+						</NavLink>
+					)}
+				</nav>
+
+				<div className="searchbar-container">
+					<SearchBar
+						value={keyword}
+						onChange={(e) => setKeyword(e.target.value)}
+						onSubmit={handleSubmit}
+					/>
+				</div>
+
 				<div className="login-wrapper">
 					{isLoggedIn ? (
 						<div className="user-info">
@@ -48,12 +62,12 @@ function Header() {
 							<button onClick={handleLogout}>로그아웃</button>
 						</div>
 					) : (
-						<Link to="/login" style={{ color: "white" }}>
+						<NavLink to="/login" className="nav-item">
 							로그인
-						</Link>
+						</NavLink>
 					)}
 				</div>
-			</nav>
+			</div>
 		</header>
 	);
 }

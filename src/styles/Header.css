@@ -1,68 +1,84 @@
-/* 전체 header 스타일 */
+/* 전체 헤더 */
 header {
-	background-color: #000000;
-	padding: 10px 0;
+	background-color: #000;
 	position: sticky;
 	top: 0;
 	width: 100%;
+	height: 64px;
+	display: flex;
+	align-items: center;
 	z-index: 100;
 }
 
-/* 네비게이션 바 스타일 */
-nav {
-	position: relative;
+/* 내부 wrapper */
+.header-inner {
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 24px;
+	gap: 24px;
 }
 
-/* 링크 스타일 */
-nav a {
+/* 로고 */
+.logo {
+	font-size: 24px;
+	font-weight: bold;
 	color: white;
 	text-decoration: none;
-	font-size: 18px;
-	margin: 0 15px;
-	padding: 8px 15px;
-	transition: background-color 0.3s, color 0.3s;
+	white-space: nowrap;
 }
 
-/* 링크 hover 스타일 */
-nav a:hover {
-	background-color: #555;
-	color: #fff;
-	border-radius: 5px;
+/* 네비게이션 */
+.nav-links {
+	display: flex;
+	gap: 16px;
 }
 
-/* 링크 클릭 시 활성화된 상태 (active 링크 스타일) */
-nav a.active {
-	background-color: #ff6f61;
+.nav-item {
 	color: white;
-	border-radius: 5px;
+	text-decoration: none;
+	position: relative;
+	font-size: 20px;
+	padding: 8px 24px;
+	transition: color 0.3s ease;
 }
 
-/* 모바일 대응: 작은 화면에서의 스타일링 */
-@media (max-width: 768px) {
-	nav {
-		flex-direction: column;
-	}
-
-	nav a {
-		margin: 10px 0;
-	}
-}
-
-/* 로그인 버튼 스타일 */
-.login-wrapper {
+/* 밑줄 효과 */
+.nav-item::after {
+	content: "";
 	position: absolute;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
+	left: 0;
+	bottom: -4px;
+	width: 0%;
+	height: 2px;
+	background-color: white;
+	transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+	width: 100%;
+}
+
+.nav-item.active::after {
+	width: 100%;
+}
+
+/* 검색바 */
+.searchbar-container {
+	flex: 1;
+	max-width: 300px;
+}
+
+/* 로그인 영역 */
+.login-wrapper {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 }
 
-/* 유저 정보 스타일 */
 .user-info {
 	display: flex;
 	align-items: center;
@@ -73,23 +89,24 @@ nav a.active {
 	width: 32px;
 	height: 32px;
 	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-info p {
 	color: white;
-	margin: 0;
 	font-size: 14px;
+	margin: 0;
 }
 
-/* 로그아웃 버튼 스타일 */
 .user-info button {
 	background-color: transparent;
 	color: white;
 	border: 1px solid white;
 	border-radius: 4px;
 	padding: 4px 8px;
-	font-size: 14px;
 	cursor: pointer;
+	transition: all 0.3s ease;
+	font-size: 14px;
 }
 
 .user-info button:hover {

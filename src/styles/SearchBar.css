@@ -6,10 +6,15 @@
 
 .search-bar {
 	width: 100%;
-	padding: 8px 12px;
+	padding: 10px 100px 10px 20px;
 	font-size: 14px;
 	border: 1px solid #ccc;
 	border-radius: 999px;
+	text-align: left;
+}
+
+.search-bar:focus {
+	border-color: #555; /* 포커스 시 강조 */
 }
 
 .clear-button {

@@ -1,0 +1,24 @@
+.home-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.more-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.more-button {
+	padding: 8px 16px;
+	color: rgb(25, 25, 25);
+	font-size: 16px;
+	border-radius: 8px;
+	text-decoration: none;
+	text-align: center;
+}
+
+.more-button:hover {
+	font-weight: bold;
+}
