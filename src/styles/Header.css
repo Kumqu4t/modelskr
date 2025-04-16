@@ -97,19 +97,3 @@ header {
 	font-size: 14px;
 	margin: 0;
 }
-
-.user-info button {
-	background-color: transparent;
-	color: white;
-	border: 1px solid white;
-	border-radius: 4px;
-	padding: 4px 8px;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	font-size: 14px;
-}
-
-.user-info button:hover {
-	background-color: white;
-	color: black;
-}

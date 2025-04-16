@@ -88,3 +88,12 @@
 .recent-work-item a:hover {
 	text-decoration: underline;
 }
+
+.admin-controls-detail {
+	margin-right: 20px;
+	margin-top: -5px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+	gap: 8px;
+}

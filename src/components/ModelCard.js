@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favorites/favoritesSlice";
 import { deleteModel } from "../redux/models/modelsSlice";
+import Button from "./Button";
 import "../styles/ModelCard.css";
 
 function ModelCard({ id, name, image, description }) {
@@ -46,8 +47,12 @@ function ModelCard({ id, name, image, description }) {
 
 			{isAdmin && (
 				<div className="admin-controls">
-					<button onClick={handleEdit}>수정</button>
-					<button onClick={handleDelete}>삭제</button>
+					<Button type="default" onClick={handleEdit}>
+						수정
+					</Button>
+					<Button type="danger" onClick={handleDelete}>
+						삭제
+					</Button>
 				</div>
 			)}
 		</div>

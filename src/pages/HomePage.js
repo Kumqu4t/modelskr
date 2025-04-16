@@ -22,15 +22,15 @@ function HomePage() {
 	return (
 		<div className="home-section">
 			<h2 className="section-title">🔥 오늘의 모델</h2>
-			<div>
-				<div className="model-list-section">
-					<ModelList models={randomModels} />
-					<div className="more-wrapper">
-						<Link to="/models" className="more-button">
-							더 보러가기 {">>"}
-						</Link>
-					</div>
-				</div>
+			{/* 모델 리스트 섹션 */}
+			<div className="model-list-section">
+				<ModelList models={randomModels} />
+			</div>
+			{/* 더 보러가기 버튼 */}
+			<div className="more-wrapper">
+				<Link to="/models" className="more-button">
+					더 보러가기
+				</Link>
 			</div>
 		</div>
 	);

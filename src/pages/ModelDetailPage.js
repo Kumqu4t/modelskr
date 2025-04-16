@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../redux/favorites/favoritesSlice";
 import { deleteModel } from "../redux/models/modelsSlice";
+import Button from "../components/Button";
 import "../styles/ModelDetailPage.css";
 import "../styles/FilterButton.css";
 
@@ -75,9 +76,13 @@ function ModelDetailPage() {
 				</div>
 			</div>
 			{isAdmin && (
-				<div className="admin-controls">
-					<button onClick={handleEdit}>수정</button>
-					<button onClick={handleDelete}>삭제</button>
+				<div className="admin-controls-detail">
+					<Button type="default" onClick={handleEdit}>
+						수정
+					</Button>
+					<Button type="danger" onClick={handleDelete}>
+						삭제
+					</Button>
 				</div>
 			)}
 		</div>

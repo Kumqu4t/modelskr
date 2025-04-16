@@ -1,7 +1,27 @@
 .home-section {
+	padding: 24px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	width: 100%;
+	max-width: 1200px; /* 최대 너비 설정 */
+	margin: 0 auto; /* 중앙 정렬 */
+}
+
+/* 모델 리스트 섹션 */
+.model-list-section {
+	width: 100%;
+	max-width: 1200px; /* 너비 제한 */
+	display: flex;
+	flex-direction: column;
+}
+
+/* 버튼 스타일 */
+.more-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	margin-top: 16px;
 }
 
 .more-wrapper {

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Button from "../components/Button";
 import FilterBar from "../components/FilterBar";
 import ModelList from "../components/ModelList";
+import "../styles/AdminPage.css";
 
 function AdminPage() {
 	const location = useLocation();
@@ -54,14 +56,26 @@ function AdminPage() {
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
 
 	return (
-		<div>
-			<FilterBar
-				selectedTags={selectedTags}
-				setSelectedTags={setSelectedTags}
-				tags={tags}
-			/>{" "}
-			<button onClick={() => navigate("/admin/create")}>+ 모델 추가</button>
-			<ModelList models={filteredModels} />
+		<div className="admin-page">
+			<h1 className="admin-title">관리자 페이지</h1>
+
+			<div className="admin-section">
+				<FilterBar
+					selectedTags={selectedTags}
+					setSelectedTags={setSelectedTags}
+					tags={tags}
+				/>
+
+				<div className="model-list-section">
+					<div className="add-button-wrapper">
+						<Button type="default" onClick={() => navigate("/admin/create")}>
+							+ 모델 추가
+						</Button>
+					</div>
+
+					<ModelList models={filteredModels} />
+				</div>
+			</div>
 		</div>
 	);
 }

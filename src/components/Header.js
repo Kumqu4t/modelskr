@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/user/userSlice";
-import "../styles/Header.css";
 import SearchBar from "./SearchBar";
+import Button from "./Button";
+import "../styles/Header.css";
 
 function Header() {
 	const [keyword, setKeyword] = useState("");
@@ -59,12 +60,14 @@ function Header() {
 						<div className="user-info">
 							<img src={user.picture} alt="프로필" />
 							<p>{user.name}</p>
-							<button onClick={handleLogout}>로그아웃</button>
+							<Button type="login" onClick={handleLogout}>
+								로그아웃
+							</Button>
 						</div>
 					) : (
-						<NavLink to="/login" className="nav-item">
+						<Button type="login" onClick={() => navigate("/login")}>
 							로그인
-						</NavLink>
+						</Button>
 					)}
 				</div>
 			</div>

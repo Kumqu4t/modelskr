@@ -37,3 +37,11 @@
 .favorite-icon:hover {
 	transform: scale(1.1);
 }
+
+.admin-controls {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-bottom: 8px;
+}

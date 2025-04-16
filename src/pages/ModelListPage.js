@@ -54,7 +54,7 @@ function ModelListPage() {
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
 
 	return (
-		<div>
+		<div style={{ padding: "24px" }}>
 			<FilterBar
 				selectedTags={selectedTags}
 				setSelectedTags={setSelectedTags}
