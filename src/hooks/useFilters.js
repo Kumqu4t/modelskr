@@ -16,7 +16,7 @@ export function useFilters(models, selectedTags, keyword, gender, agency) {
 
 		if (selectedTags.length > 0) {
 			filtered = filtered.filter((model) =>
-				model.tags.some((tag) => selectedTags.includes(tag))
+				selectedTags.every((tag) => model.tags.includes(tag))
 			);
 		}
 

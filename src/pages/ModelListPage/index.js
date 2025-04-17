@@ -16,7 +16,6 @@ function ModelListPage() {
 	} = useQueryFilters("/models");
 	const models = useSelector((state) => state.models.models);
 
-	// tag, keyword, gender, agency 기반으로 필터링
 	const filteredModels = useFilters(
 		models,
 		selectedTags,
@@ -30,6 +29,7 @@ function ModelListPage() {
 
 	return (
 		<div style={{ padding: "24px" }}>
+			<h1 className="admin-title">Models</h1>
 			<FilterBar
 				selectedTags={selectedTags}
 				setSelectedTags={setSelectedTags}

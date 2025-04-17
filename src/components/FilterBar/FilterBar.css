@@ -1,8 +1,59 @@
 .filter-bar {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
-	margin: 20px 0;
+	margin: 0 0 20px 0;
+	gap: 20px;
+}
+
+.filter-group {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	min-width: 150px;
 	gap: 10px;
-	flex-wrap: wrap; /* 버튼이 많아질 때 줄바꿈 */
+}
+
+.filter-label {
+	font-weight: bold;
+	font-size: 16px;
+	white-space: nowrap;
+	line-height: 2;
+}
+
+.filter-group select {
+	width: 100%;
+	padding: 8px;
+	font-size: 14px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	margin-left: 10px;
+}
+
+.tag-filter {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	width: 100%;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.tag-filter .filter-button {
+	background-color: #f0f0f0;
+	padding: 8px 16px;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	font-size: 14px;
+}
+
+.tag-filter .filter-button:hover {
+	background-color: #ddd;
+}
+
+.tag-filter .filter-button.active {
+	background-color: black;
+	color: white;
 }

@@ -12,7 +12,7 @@ function FavoritePage() {
 	return (
 		<RequireLogin>
 			<div className="favorite-page">
-				<h1>즐겨찾기</h1>
+				<h1 className="admin-title">Favorites</h1>
 				<ModelList models={filteredModels} />
 			</div>
 		</RequireLogin>

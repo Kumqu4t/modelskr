@@ -17,13 +17,13 @@ function FilterBar({
 		);
 	};
 
-	const handleGenderChange = (value) => setGender(value); // 단일 선택
-	const handleAgencyChange = (value) => setAgency(value); // 단일 선택
+	const handleGenderChange = (value) => setGender(value);
+	const handleAgencyChange = (value) => setAgency(value);
 
 	return (
 		<div className="filter-bar">
-			<p>성별</p>
-			<div className="gender-filter">
+			<div className="filter-group">
+				<label className="filter-label">성별</label>
 				<select
 					value={gender}
 					onChange={(e) => handleGenderChange(e.target.value)}
@@ -34,9 +34,8 @@ function FilterBar({
 				</select>
 			</div>
 
-			{/* 에이전시 필터 */}
-			<p>에이전시</p>
-			<div className="agency-filter">
+			<div className="filter-group">
+				<label className="filter-label">에이전시</label>
 				<select
 					value={agency}
 					onChange={(e) => handleAgencyChange(e.target.value)}
@@ -47,18 +46,19 @@ function FilterBar({
 				</select>
 			</div>
 
-			{/* 태그 필터 */}
-			<p>tags</p>
-			<div className="tag-filter">
-				{tags.map((tag) => (
-					<FilterButton
-						key={tag}
-						active={selectedTags.includes(tag)}
-						onClick={() => toggleTag(tag)}
-					>
-						{tag}
-					</FilterButton>
-				))}
+			<div className="filter-group">
+				<label className="filter-label">태그</label>
+				<div className="tag-filter">
+					{tags.map((tag) => (
+						<FilterButton
+							key={tag}
+							active={selectedTags.includes(tag)}
+							onClick={() => toggleTag(tag)}
+						>
+							{tag}
+						</FilterButton>
+					))}
+				</div>
 			</div>
 		</div>
 	);
