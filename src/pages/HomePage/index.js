@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import ModelList from "../components/ModelList";
-import "../styles/HomePage.css";
+import ModelList from "../../components/ModelList";
+import "./HomePage.css";
 
 function HomePage() {
 	// Redux에서 모델 데이터 가져오기

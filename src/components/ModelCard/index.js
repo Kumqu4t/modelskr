@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteModel } from "../redux/models/modelsSlice";
-import Button from "./Button";
-import FavoriteButton from "./FavoriteButton";
-import "../styles/ModelCard.css";
+import { deleteModel } from "../../redux/models/modelsSlice";
+import Button from "../Button";
+import FavoriteButton from "../FavoriteButton";
+import "./ModelCard.css";
 
 function ModelCard({ id, name, image, description }) {
 	const navigate = useNavigate();

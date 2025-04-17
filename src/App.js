@@ -12,7 +12,7 @@ import AdminPage from "./pages/AdminPage";
 import ModelFormPage from "./pages/ModelFormPage";
 import FavoritePage from "./pages/FavoritePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PageLayout from "./components/PageLayout";
+import PageLayout from "./components/PageLayout/PageLayout";
 import RequireAdmin from "./components/RequireAdmin";
 
 function App() {

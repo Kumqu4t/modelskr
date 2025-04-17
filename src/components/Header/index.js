@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/user/userSlice";
-import SearchBar from "./SearchBar";
-import Button from "./Button";
-import "../styles/Header.css";
+import { logout } from "../../redux/user/userSlice";
+import SearchBar from "../SearchBar";
+import Button from "../Button";
+import "./Header.css";
 
 function Header() {
 	const [keyword, setKeyword] = useState("");

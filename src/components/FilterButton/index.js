@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/FilterButton.css";
+import "./FilterButton.css";
 
 function FilterButton({ active, onClick, children }) {
 	return (

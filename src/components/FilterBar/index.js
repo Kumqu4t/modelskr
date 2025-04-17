@@ -1,6 +1,6 @@
 import React from "react";
-import FilterButton from "./FilterButton";
-import "../styles/FilterBar.css";
+import FilterButton from "../FilterButton";
+import "./FilterBar.css";
 
 function FilterBar({ selectedTags, setSelectedTags, tags }) {
 	const toggleTag = (tag) => {

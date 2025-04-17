@@ -1,6 +1,6 @@
 import React from "react";
-import ModelCard from "./ModelCard";
-import "../styles/ModelList.css";
+import ModelCard from "../ModelCard";
+import "./ModelList.css";
 
 function ModelList({ models }) {
 	if (models.length === 0) {

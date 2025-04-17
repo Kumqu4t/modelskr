@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Button from "../components/Button";
-import FilterBar from "../components/FilterBar";
-import ModelList from "../components/ModelList";
-import "../styles/AdminPage.css";
+import FilterBar from "../../components/FilterBar";
+import ModelList from "../../components/ModelList";
 
-function AdminPage() {
+function ModelListPage() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -49,35 +47,22 @@ function AdminPage() {
 		selectedTags.forEach((tag) => params.append("tag", tag));
 		if (keyword) params.set("keyword", keyword); // 검색어가 있으면 같이 추가
 
-		navigate(`/admin?${params.toString()}`, { replace: true });
+		navigate(`/models?${params.toString()}`, { replace: true });
 	}, [selectedTags, keyword, navigate]);
 
 	// 태그 목록 추출
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
 
 	return (
-		<div className="admin-page">
-			<h1 className="admin-title">관리자 페이지</h1>
-
-			<div className="admin-section">
-				<FilterBar
-					selectedTags={selectedTags}
-					setSelectedTags={setSelectedTags}
-					tags={tags}
-				/>
-
-				<div className="model-list-section">
-					<div className="add-button-wrapper">
-						<Button type="default" onClick={() => navigate("/admin/create")}>
-							+ 모델 추가
-						</Button>
-					</div>
-
-					<ModelList models={filteredModels} />
-				</div>
-			</div>
+		<div style={{ padding: "24px" }}>
+			<FilterBar
+				selectedTags={selectedTags}
+				setSelectedTags={setSelectedTags}
+				tags={tags}
+			/>
+			<ModelList models={filteredModels} />
 		</div>
 	);
 }
 
-export default AdminPage;
+export default ModelListPage;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ModelForm from "../components/ModelForm";
+import ModelForm from "../../components/ModelForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addModel, updateModel } from "../redux/models/modelsSlice";
+import { addModel, updateModel } from "../../redux/models/modelsSlice";
 
 function ModelFormPage() {
 	const dispatch = useDispatch();

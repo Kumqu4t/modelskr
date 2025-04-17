@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteModel } from "../redux/models/modelsSlice";
-import Button from "../components/Button";
-import FavoriteButton from "../components/FavoriteButton";
-import "../styles/ModelDetailPage.css";
-import "../styles/FilterButton.css";
+import { deleteModel } from "../../redux/models/modelsSlice";
+import Button from "../../components/Button";
+import FavoriteButton from "../../components/FavoriteButton";
+import "./ModelDetailPage.css";
+import "../../components/FilterButton/FilterButton.css";
 
 function ModelDetailPage() {
 	const { id } = useParams();

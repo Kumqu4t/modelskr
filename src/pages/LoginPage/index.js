@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { login } from "../redux/user/userSlice";
-import "../styles/LoginPage.css";
+import { login } from "../../redux/user/userSlice";
+import "./LoginPage.css";
 
 function LoginPage() {
 	const navigate = useNavigate();

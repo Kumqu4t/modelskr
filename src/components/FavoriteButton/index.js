@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/favorites/favoritesSlice";
+import { toggleFavorite } from "../../redux/favorites/favoritesSlice";
 
 function FavoriteButton({ modelId, className, onClick }) {
 	const dispatch = useDispatch();

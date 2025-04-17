@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import ModelList from "../components/ModelList";
-import RequireLogin from "../components/RequireLogin";
-import "../styles/FavoritePage.css";
+import ModelList from "../../components/ModelList";
+import RequireLogin from "../../components/RequireLogin";
+import "./FavoritePage.css";
 
 function FavoritePage() {
 	const models = useSelector((state) => state.models.models);
