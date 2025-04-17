@@ -1,6 +1,7 @@
 .model-detail {
 	position: relative;
 	display: flex;
+	flex-wrap: wrap;
 	gap: 24px;
 	max-width: 900px;
 	margin: 40px auto;
@@ -10,39 +11,25 @@
 	background-color: white;
 }
 
+.image-wrapper {
+	position: relative;
+	max-width: 300px;
+	width: 100%;
+}
+
 .model-detail img {
-	width: 300px;
+	width: 100%;
+	max-width: 300px;
 	height: auto;
 	border-radius: 12px;
 	object-fit: cover;
-}
-
-.favorite-icon {
-	position: absolute;
-	z-index: 2;
-	cursor: pointer;
-	user-select: none;
-	border-radius: 50%;
-}
-.detail-icon {
-	top: 20px;
-	right: 8px;
-	width: 32px;
-	height: 32px;
-	font-size: 24px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: white;
-	border: none;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .model-detail-info {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	/* justify-content: center; */
+	align-items: flex-start;
 }
 
 .model-detail-info h2 {
@@ -60,15 +47,7 @@
 	margin-top: 12px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
-}
-
-.tag-badge {
-	padding: 4px 10px;
-	border-radius: 12px;
-	background-color: #f0f0f0;
-	font-size: 13px;
-	color: #333;
+	gap: 12px;
 }
 
 .recent-work-list {
@@ -89,6 +68,22 @@
 	text-decoration: underline;
 }
 
+.detail-icon {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 40px;
+	height: 40px;
+	font-size: 28px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
+
 .admin-controls-detail {
 	margin-right: 20px;
 	margin-top: -5px;
@@ -96,4 +91,24 @@
 	justify-content: flex-end;
 	align-items: flex-start;
 	gap: 8px;
+}
+
+/* 반응형 디자인 추가 */
+@media (max-width: 768px) {
+	.model-detail {
+		padding: 16px;
+		flex-direction: column;
+	}
+
+	.model-detail img {
+		max-width: 100%;
+	}
+
+	.model-detail-info h2 {
+		font-size: 24px;
+	}
+
+	.model-detail-info p {
+		font-size: 14px;
+	}
 }

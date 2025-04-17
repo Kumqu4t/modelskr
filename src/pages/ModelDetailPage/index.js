@@ -11,18 +11,15 @@ function ModelDetailPage() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	// Redux에서 데이터를 가져옴
 	const models = useSelector((state) => state.models.models);
 	const model = models.find((item) => item.id === Number(id));
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	// 상태 처리
 	if (!models.length) return <div>로딩 중...</div>;
 	if (!model) return <div>해당 모델을 찾을 수 없습니다.</div>;
 
-	// 핸들러
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/${id}`);
@@ -36,14 +33,36 @@ function ModelDetailPage() {
 
 	return (
 		<div className="model-detail">
-			<FavoriteButton
-				modelId={Number(id)}
-				className={"favorite-icon detail-icon"}
-			/>
-			<img src={model.image} alt={model.name} />
+			<div className="image-wrapper">
+				<img src={model.image} alt={model.name} />
+				<FavoriteButton
+					modelId={Number(id)}
+					className={"favorite-icon detail-icon"}
+				/>
+			</div>
 			<div className="model-detail-info">
 				<h2>{model.name}</h2>
 				<p>{model.description}</p>
+				<p>
+					<strong>성별:</strong>{" "}
+					<span
+						className="filter-button"
+						onClick={() => navigate(`/models?gender=${model.gender}`)}
+					>
+						{model.gender}
+					</span>
+				</p>
+				<p>
+					<strong>에이전시:</strong>{" "}
+					<span
+						className="filter-button"
+						onClick={() =>
+							navigate(`/models?agency=${encodeURIComponent(model.agency)}`)
+						}
+					>
+						{model.agency}
+					</span>
+				</p>
 
 				<div className="tag-list">
 					{model.tags.map((tag, index) => (
