@@ -1,56 +1,33 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useQueryFilters } from "../../hooks/useQueryFilters";
+import { useFilters } from "../../hooks/useFilters";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import "./AdminPage.css";
 
 function AdminPage() {
-	const location = useLocation();
 	const navigate = useNavigate();
+	const {
+		selectedTags,
+		setSelectedTags,
+		gender,
+		setGender,
+		agency,
+		setAgency,
+		keyword,
+	} = useQueryFilters("/admin");
 
-	const [selectedTags, setSelectedTags] = useState([]);
-	const [filteredModels, setFilteredModels] = useState([]);
-
-	const params = new URLSearchParams(location.search);
-	const keyword = params.get("keyword") || "";
 	const models = useSelector((state) => state.models.models);
 
-	// URL => selectedTags로 동기화
-	useEffect(() => {
-		const tagsFromURL = new URLSearchParams(location.search).getAll("tag");
-		setSelectedTags(tagsFromURL);
-	}, [location.search]);
-
-	// tag, keyword 기반으로 필터링
-	useEffect(() => {
-		let filtered = models;
-
-		if (selectedTags.length > 0) {
-			filtered = filtered.filter((model) =>
-				model.tags.some((tag) => selectedTags.includes(tag))
-			);
-		}
-
-		if (keyword) {
-			filtered = filtered.filter((model) =>
-				model.name.toLowerCase().includes(keyword.toLowerCase())
-			);
-		}
-
-		setFilteredModels(filtered);
-	}, [models, selectedTags, keyword]);
-
-	// keyword, tag => URL 동기화
-	useEffect(() => {
-		const params = new URLSearchParams();
-
-		selectedTags.forEach((tag) => params.append("tag", tag));
-		if (keyword) params.set("keyword", keyword); // 검색어가 있으면 같이 추가
-
-		navigate(`/admin?${params.toString()}`, { replace: true });
-	}, [selectedTags, keyword, navigate]);
+	const filteredModels = useFilters(
+		models,
+		selectedTags,
+		keyword,
+		gender,
+		agency
+	);
 
 	// 태그 목록 추출
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
@@ -64,6 +41,10 @@ function AdminPage() {
 					selectedTags={selectedTags}
 					setSelectedTags={setSelectedTags}
 					tags={tags}
+					gender={gender}
+					setGender={setGender}
+					agency={agency}
+					setAgency={setAgency}
 				/>
 
 				<div className="model-list-section">

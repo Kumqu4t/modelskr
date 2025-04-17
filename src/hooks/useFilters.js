@@ -1,0 +1,33 @@
+import { useEffect, useState } from "react";
+
+export function useFilters(models, selectedTags, keyword, gender, agency) {
+	const [filteredModels, setFilteredModels] = useState([]);
+
+	useEffect(() => {
+		let filtered = models;
+
+		if (gender !== "all") {
+			filtered = filtered.filter((model) => model.gender === gender);
+		}
+
+		if (agency !== "all") {
+			filtered = filtered.filter((model) => model.agency === agency);
+		}
+
+		if (selectedTags.length > 0) {
+			filtered = filtered.filter((model) =>
+				model.tags.some((tag) => selectedTags.includes(tag))
+			);
+		}
+
+		if (keyword) {
+			filtered = filtered.filter((model) =>
+				model.name.toLowerCase().includes(keyword.toLowerCase())
+			);
+		}
+
+		setFilteredModels(filtered);
+	}, [models, selectedTags, keyword, gender, agency]);
+
+	return filteredModels;
+}

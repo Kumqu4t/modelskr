@@ -20,7 +20,7 @@ function LoginPage() {
 			};
 
 			dispatch(login(userInfo));
-			navigate("/");
+			navigate("/", { replace: true });
 		} catch (error) {
 			console.error("디코딩 실패:", error);
 		}

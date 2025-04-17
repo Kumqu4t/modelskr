@@ -5,7 +5,7 @@
 		"name": "Model 1",
 		"description": "모델 1 설명",
 		"isFavorite": true,
-		"tags": ["런웨이", "광고", "female"],
+		"tags": ["런웨이", "광고"],
 		"recentWork": [
 			{
 				"title": "Vogue Korea 2024",
@@ -17,7 +17,9 @@
 				"type": "런웨이",
 				"link": "https://example.com/chanel-ss24"
 			}
-		]
+		],
+		"gender": "female",
+		"agency": "Agency A"
 	},
 	{
 		"id": 2,
@@ -25,14 +27,16 @@
 		"name": "Model 2",
 		"description": "모델 2 설명",
 		"isFavorite": false,
-		"tags": ["광고", "CF", "female"],
+		"tags": ["광고", "CF"],
 		"recentWork": [
 			{
 				"title": "CF for Dior",
 				"type": "광고",
 				"link": "https://example.com/dior-cf"
 			}
-		]
+		],
+		"gender": "female",
+		"agency": "Agency B"
 	},
 	{
 		"id": 3,
@@ -40,8 +44,10 @@
 		"name": "Model 3",
 		"description": "모델 3 설명",
 		"isFavorite": false,
-		"tags": ["잡지", "female"],
-		"recentWork": []
+		"tags": ["잡지"],
+		"recentWork": [],
+		"gender": "female",
+		"agency": "Agency A"
 	},
 	{
 		"id": 4,
@@ -49,14 +55,16 @@
 		"name": "Model 4",
 		"description": "모델 4 설명",
 		"isFavorite": true,
-		"tags": ["광고", "스트리트", "male"],
+		"tags": ["광고", "스트리트"],
 		"recentWork": [
 			{
 				"title": "Seoul Street Campaign",
 				"type": "스트리트",
 				"link": "https://example.com/seoul-street"
 			}
-		]
+		],
+		"gender": "male",
+		"agency": "Agency B"
 	},
 	{
 		"id": 5,
@@ -64,14 +72,16 @@
 		"name": "Model 5",
 		"description": "모델 5 설명",
 		"isFavorite": true,
-		"tags": ["패션쇼", "광고", "female"],
+		"tags": ["패션쇼", "광고"],
 		"recentWork": [
 			{
 				"title": "Seoul Fashion Week",
 				"type": "패션쇼",
 				"link": "https://example.com/sfw"
 			}
-		]
+		],
+		"gender": "female",
+		"agency": "Agency A"
 	},
 	{
 		"id": 6,
@@ -79,8 +89,10 @@
 		"name": "Model 6",
 		"description": "모델 6 설명",
 		"isFavorite": false,
-		"tags": ["패션쇼", "male"],
-		"recentWork": []
+		"tags": ["패션쇼"],
+		"recentWork": [],
+		"gender": "male",
+		"agency": "Agency B"
 	},
 	{
 		"id": 7,
@@ -88,14 +100,16 @@
 		"name": "Model 7",
 		"description": "모델 7 설명",
 		"isFavorite": false,
-		"tags": ["스냅", "male"],
+		"tags": ["스냅"],
 		"recentWork": [
 			{
 				"title": "Tokyo Street Snap",
 				"type": "스냅",
 				"link": "https://example.com/tokyo-snap"
 			}
-		]
+		],
+		"gender": "male",
+		"agency": "Agency A"
 	},
 	{
 		"id": 8,
@@ -103,7 +117,7 @@
 		"name": "Model 8",
 		"description": "모델 8 설명",
 		"isFavorite": true,
-		"tags": ["CF", "인플루언서", "female"],
+		"tags": ["CF", "인플루언서"],
 		"recentWork": [
 			{
 				"title": "YouTube Ad Campaign",
@@ -115,6 +129,8 @@
 				"type": "인플루언서",
 				"link": "https://example.com/insta-collab"
 			}
-		]
+		],
+		"gender": "female",
+		"agency": "Agency B"
 	}
 ]
