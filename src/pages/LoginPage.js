@@ -4,6 +4,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/user/userSlice";
+import "../styles/LoginPage.css";
 
 function LoginPage() {
 	const navigate = useNavigate();
@@ -18,7 +19,7 @@ function LoginPage() {
 				picture: decoded.picture,
 			};
 
-			dispatch(login(userInfo)); // Redux에 로그인 정보 저장
+			dispatch(login(userInfo));
 			navigate("/");
 		} catch (error) {
 			console.error("디코딩 실패:", error);
@@ -30,9 +31,12 @@ function LoginPage() {
 	};
 
 	return (
-		<div style={{ textAlign: "center", marginTop: "100px" }}>
-			<h1>구글 로그인</h1>
-			<GoogleLogin onSuccess={onSuccess} onError={onFailure} />
+		<div className="login-page">
+			<div className="login-card">
+				<h1>Welcome!</h1>
+				<p>Google 계정으로 로그인해주세요</p>
+				<GoogleLogin onSuccess={onSuccess} onError={onFailure} />
+			</div>
 		</div>
 	);
 }

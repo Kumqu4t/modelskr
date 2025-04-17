@@ -23,7 +23,8 @@ function Header() {
 	};
 
 	const handleLogout = () => {
-		dispatch(logout());
+		const confirmLogout = window.confirm("정말 로그아웃하시겠습니까?");
+		if (confirmLogout) dispatch(logout());
 	};
 
 	return (
