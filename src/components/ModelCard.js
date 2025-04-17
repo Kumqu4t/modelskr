@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/favorites/favoritesSlice";
 import { deleteModel } from "../redux/models/modelsSlice";
 import Button from "./Button";
+import FavoriteButton from "./FavoriteButton";
 import "../styles/ModelCard.css";
 
 function ModelCard({ id, name, image, description }) {
@@ -11,18 +11,12 @@ function ModelCard({ id, name, image, description }) {
 	const dispatch = useDispatch();
 
 	// Redux 상태
-	const favorites = useSelector((state) => state.favorites.items);
-	const isFavorited = favorites.includes(id);
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
 	// 핸들러
 	const handleCardClick = () => navigate(`/model/${id}`);
-	const handleToggleFavorite = (e) => {
-		e.stopPropagation();
-		dispatch(toggleFavorite(Number(id)));
-	};
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/${id}`);
@@ -38,9 +32,10 @@ function ModelCard({ id, name, image, description }) {
 		<div className="model-card" onClick={handleCardClick}>
 			<div className="image-wrapper">
 				<img src={image} alt={name} />
-				<div className="favorite-icon card-icon" onClick={handleToggleFavorite}>
-					{isFavorited ? "★" : "☆"}
-				</div>
+				<FavoriteButton
+					modelId={Number(id)}
+					className="favorite-icon card-icon"
+				/>
 			</div>
 			<h3 className="model-name">{name}</h3>
 			<p className="model-description">{description}</p>

@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../redux/favorites/favoritesSlice";
 import { deleteModel } from "../redux/models/modelsSlice";
 import Button from "../components/Button";
+import FavoriteButton from "../components/FavoriteButton";
 import "../styles/ModelDetailPage.css";
 import "../styles/FilterButton.css";
 
@@ -12,7 +12,6 @@ function ModelDetailPage() {
 	const dispatch = useDispatch();
 
 	// Redux에서 데이터를 가져옴
-	const favorites = useSelector((state) => state.favorites.items);
 	const models = useSelector((state) => state.models.models);
 	const model = models.find((item) => item.id === Number(id));
 	const isAdmin = useSelector(
@@ -23,13 +22,7 @@ function ModelDetailPage() {
 	if (!models.length) return <div>로딩 중...</div>;
 	if (!model) return <div>해당 모델을 찾을 수 없습니다.</div>;
 
-	// 즐겨찾기 상태
-	const isFavorited = favorites.includes(model.id);
-
 	// 핸들러
-	const handleToggle = () => {
-		dispatch(toggleFavorite(Number(model.id)));
-	};
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/${id}`);
@@ -43,9 +36,10 @@ function ModelDetailPage() {
 
 	return (
 		<div className="model-detail">
-			<button className="favorite-icon detail-icon" onClick={handleToggle}>
-				{isFavorited ? "★" : "☆"}
-			</button>
+			<FavoriteButton
+				modelId={Number(id)}
+				className={"favorite-icon detail-icon"}
+			/>
 			<img src={model.image} alt={model.name} />
 			<div className="model-detail-info">
 				<h2>{model.name}</h2>

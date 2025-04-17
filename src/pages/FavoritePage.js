@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import ModelList from "../components/ModelList";
+import RequireLogin from "../components/RequireLogin";
 import "../styles/FavoritePage.css";
 
 function FavoritePage() {
@@ -9,10 +10,12 @@ function FavoritePage() {
 	const filteredModels = models.filter((model) => favorites.includes(model.id));
 
 	return (
-		<div className="favorite-page">
-			<h1>즐겨찾기</h1>
-			<ModelList models={filteredModels} />
-		</div>
+		<RequireLogin>
+			<div className="favorite-page">
+				<h1>즐겨찾기</h1>
+				<ModelList models={filteredModels} />
+			</div>
+		</RequireLogin>
 	);
 }
 
