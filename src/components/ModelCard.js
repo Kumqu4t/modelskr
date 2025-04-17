@@ -21,7 +21,7 @@ function ModelCard({ id, name, image, description }) {
 	const handleCardClick = () => navigate(`/model/${id}`);
 	const handleToggleFavorite = (e) => {
 		e.stopPropagation();
-		dispatch(toggleFavorite(id));
+		dispatch(toggleFavorite(Number(id)));
 	};
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -30,7 +30,7 @@ function ModelCard({ id, name, image, description }) {
 	const handleDelete = (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			dispatch(deleteModel(id));
+			dispatch(deleteModel(Number(id)));
 		}
 	};
 

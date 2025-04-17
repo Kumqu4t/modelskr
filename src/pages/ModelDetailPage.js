@@ -28,7 +28,7 @@ function ModelDetailPage() {
 
 	// 핸들러
 	const handleToggle = () => {
-		dispatch(toggleFavorite(model.id));
+		dispatch(toggleFavorite(Number(model.id)));
 	};
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -37,7 +37,7 @@ function ModelDetailPage() {
 	const handleDelete = (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			dispatch(deleteModel(id));
+			dispatch(deleteModel(Number(id)));
 		}
 	};
 
