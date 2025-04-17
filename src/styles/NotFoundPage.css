@@ -1,0 +1,34 @@
+.notfound-page {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 60vh;
+	text-align: center;
+	gap: 16px;
+}
+
+.notfound-page h1 {
+	font-size: 72px;
+	color: #444;
+	margin: 0;
+}
+
+.notfound-page p {
+	font-size: 18px;
+	color: #777;
+}
+
+.go-home-button {
+	background-color: black;
+	color: white;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.go-home-button:hover {
+	background-color: #222;
+}
