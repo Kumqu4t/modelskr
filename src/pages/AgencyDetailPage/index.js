@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import agencies from "../../mock/agencies.json";
 import ModelList from "../../components/ModelList";
+import Button from "../../components/Button";
+import "./AgencyDetailPage.css";
 
 function AgencyDetailPage() {
 	const { id } = useParams();
@@ -17,12 +19,26 @@ function AgencyDetailPage() {
 	if (!agency) return <p>존재하지 않는 에이전시입니다.</p>;
 
 	return (
-		<div style={{ padding: "24px" }}>
-			<h1>{agency.name}</h1>
-			<img src={agency.logo} alt="logo" />
-			<p>{agency.description}</p>
-			<h2>소속 모델</h2>
-			<ModelList models={filteredModels} />
+		<div className="agency-detail-page">
+			<div className="agency-info-section">
+				<img src={agency.logo} alt="logo" className="agency-logo" />
+				<div className="agency-text">
+					<h1>{agency.name}</h1>
+					<p className="agency-description">{agency.description}</p>
+				</div>
+				<div className="homepage-button-wrapper">
+					<Button
+						type="default"
+						onClick={() => window.open(agency.homepage, "_blank")}
+					>
+						홈페이지
+					</Button>
+				</div>
+			</div>
+			<div className="agency-models-section">
+				<h2 className="agency-title">소속 모델</h2>
+				<ModelList models={filteredModels} />
+			</div>
 		</div>
 	);
 }

@@ -33,6 +33,14 @@ function ModelDetailPage() {
 
 	return (
 		<div className="model-detail">
+			<div className="contact-button-wrapper">
+				<Button
+					type="default"
+					onClick={() => window.open(model.contact, "_blank")}
+				>
+					Contact
+				</Button>
+			</div>
 			<div className="image-wrapper">
 				<img src={model.image} alt={model.name} />
 				<FavoriteButton
