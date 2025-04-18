@@ -10,6 +10,8 @@ import ModelDetailPage from "./pages/ModelDetailPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import ModelFormPage from "./pages/ModelFormPage";
+import AgencyListPage from "./pages/AgencyListPage";
+import AgencyDetailPage from "./pages/AgencyDetailPage";
 import FavoritePage from "./pages/FavoritePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./components/PageLayout/PageLayout";
@@ -25,6 +27,8 @@ function App() {
 							<Route path="/" element={<HomePage />} />
 							<Route path="/models" element={<ModelListPage />} />
 							<Route path="/model/:id" element={<ModelDetailPage />} />
+							<Route path="/agencies" element={<AgencyListPage />} />
+							<Route path="/agencies/:id" element={<AgencyDetailPage />} />
 							<Route path="/login" element={<LoginPage />} />
 							<Route path="/favorites" element={<FavoritePage />} />
 							<Route element={<RequireAdmin />}>

@@ -6,7 +6,6 @@ export function useQueryFilters(basePath = "models") {
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(location.search);
 
-	// ⬇️ location.search가 바뀌면 다시 읽어오게끔 처리
 	const [selectedTags, setSelectedTags] = useState(() =>
 		searchParams.getAll("tag")
 	);
@@ -20,7 +19,6 @@ export function useQueryFilters(basePath = "models") {
 		() => searchParams.get("agency") || "all"
 	);
 
-	// 💡 location.search가 바뀌었을 때도 상태를 업데이트
 	useEffect(() => {
 		const updatedParams = new URLSearchParams(location.search);
 		setSelectedTags(updatedParams.getAll("tag"));
@@ -29,7 +27,7 @@ export function useQueryFilters(basePath = "models") {
 		setAgency(updatedParams.get("agency") || "all");
 	}, [location.search]);
 
-	// URL 동기화
+	// 태그 등 필터링 시 URL 동기화
 	useEffect(() => {
 		const params = new URLSearchParams();
 		selectedTags.forEach((tag) => params.append("tag", tag));

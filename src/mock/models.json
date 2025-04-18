@@ -19,7 +19,7 @@
 			}
 		],
 		"gender": "female",
-		"agency": "Agency A"
+		"agency": "ESteem"
 	},
 	{
 		"id": 2,
@@ -36,7 +36,7 @@
 			}
 		],
 		"gender": "female",
-		"agency": "Agency B"
+		"agency": "ESteem"
 	},
 	{
 		"id": 3,
@@ -47,7 +47,7 @@
 		"tags": ["잡지"],
 		"recentWork": [],
 		"gender": "female",
-		"agency": "Agency A"
+		"agency": "YG KPLUS"
 	},
 	{
 		"id": 4,
@@ -64,7 +64,7 @@
 			}
 		],
 		"gender": "male",
-		"agency": "Agency B"
+		"agency": "ESteem"
 	},
 	{
 		"id": 5,
@@ -81,7 +81,7 @@
 			}
 		],
 		"gender": "female",
-		"agency": "Agency A"
+		"agency": "ESteem"
 	},
 	{
 		"id": 6,
@@ -92,7 +92,7 @@
 		"tags": ["패션쇼"],
 		"recentWork": [],
 		"gender": "male",
-		"agency": "Agency B"
+		"agency": "YG KPLUS"
 	},
 	{
 		"id": 7,
@@ -109,7 +109,7 @@
 			}
 		],
 		"gender": "male",
-		"agency": "Agency A"
+		"agency": "ESteem"
 	},
 	{
 		"id": 8,
@@ -131,6 +131,6 @@
 			}
 		],
 		"gender": "female",
-		"agency": "Agency B"
+		"agency": "YG KPLUS"
 	}
 ]

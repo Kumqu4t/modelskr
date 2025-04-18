@@ -8,16 +8,20 @@ import "./Header.css";
 
 function Header() {
 	const [keyword, setKeyword] = useState("");
+	const [searchTarget, setSearchTarget] = useState("models");
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const user = useSelector((state) => state.user.user);
+	const isAdmin = user?.email === "qufgkswkfl3@gmail.com";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (keyword.trim()) {
-			navigate(`/models?keyword=${encodeURIComponent(keyword.trim())}`);
+			navigate(
+				`/${searchTarget}?keyword=${encodeURIComponent(keyword.trim())}`
+			);
 			setKeyword("");
 		}
 	};
@@ -38,10 +42,13 @@ function Header() {
 					<NavLink to="/models" className="nav-item">
 						모델 목록
 					</NavLink>
+					<NavLink to="/agencies" className="nav-item">
+						에이전시 목록
+					</NavLink>
 					<NavLink to="/favorites" className="nav-item">
 						즐겨찾기
 					</NavLink>
-					{isLoggedIn && (
+					{isAdmin && (
 						<NavLink to="/admin" className="nav-item">
 							관리자
 						</NavLink>
@@ -49,6 +56,14 @@ function Header() {
 				</nav>
 
 				<div className="searchbar-container">
+					<select
+						value={searchTarget}
+						onChange={(e) => setSearchTarget(e.target.value)}
+						className="search-select"
+					>
+						<option value="models">모델</option>
+						<option value="agencies">에이전시</option>
+					</select>
 					<SearchBar
 						value={keyword}
 						onChange={(e) => setKeyword(e.target.value)}
