@@ -65,7 +65,7 @@ function ModelDetailPage() {
 					<span
 						className="filter-button"
 						onClick={() =>
-							navigate(`/models?agency=${encodeURIComponent(model.agency)}`)
+							navigate(`/agencies?keyword=${encodeURIComponent(model.agency)}`)
 						}
 					>
 						{model.agency}

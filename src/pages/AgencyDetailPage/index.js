@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import agencies from "../../mock/agencies.json";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
 import "./AgencyDetailPage.css";
@@ -9,9 +8,10 @@ import "./AgencyDetailPage.css";
 function AgencyDetailPage() {
 	const { id } = useParams();
 	const decodedName = decodeURIComponent(id);
-	const agency = agencies.find((a) => a.name === decodedName);
 
 	const models = useSelector((state) => state.models.models);
+	const agencies = useSelector((state) => state.agencies.agencies);
+	const agency = agencies.find((a) => a.name === decodedName);
 	const filteredModels = models.filter(
 		(model) => model.agency === agency?.name
 	);

@@ -1,5 +1,5 @@
 import React from "react";
-import agencies from "../../mock/agencies.json";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import "./AgencyListPage.css";
@@ -12,6 +12,7 @@ function AgencyListPage() {
 		navigate(`/agencies/${encodeURIComponent(name)}`);
 	};
 
+	const agencies = useSelector((state) => state.agencies.agencies);
 	const filteredAgencies = agencies.filter((agency) =>
 		agency.name.toLowerCase().includes(keyword.toLowerCase())
 	);
