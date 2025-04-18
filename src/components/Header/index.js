@@ -56,18 +56,12 @@ function Header() {
 				</nav>
 
 				<div className="searchbar-container">
-					<select
-						value={searchTarget}
-						onChange={(e) => setSearchTarget(e.target.value)}
-						className="search-select"
-					>
-						<option value="models">모델</option>
-						<option value="agencies">에이전시</option>
-					</select>
 					<SearchBar
 						value={keyword}
 						onChange={(e) => setKeyword(e.target.value)}
 						onSubmit={handleSubmit}
+						searchTarget={searchTarget}
+						setSearchTarget={setSearchTarget}
 					/>
 				</div>
 

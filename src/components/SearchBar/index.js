@@ -1,16 +1,43 @@
 import React from "react";
 import "./SearchBar.css";
 
-function SearchBar({ value, onChange, onSubmit }) {
+function SearchBar({
+	value,
+	onChange,
+	onSubmit,
+	searchTarget,
+	setSearchTarget,
+}) {
+	const [isFocused, setIsFocused] = React.useState(false);
+
+	const handleBlur = (e) => {
+		if (e.relatedTarget && e.relatedTarget.tagName === "SELECT") {
+			return;
+		}
+		setIsFocused(false);
+	};
+
 	return (
 		<form onSubmit={onSubmit} className="search-form">
 			<div className="search-wrapper">
+				{(value || isFocused) && (
+					<select
+						className="search-select"
+						value={searchTarget}
+						onChange={(e) => setSearchTarget(e.target.value)}
+					>
+						<option value="models">모델</option>
+						<option value="agencies">에이전시</option>
+					</select>
+				)}
 				<input
 					className="search-bar"
 					type="text"
-					placeholder="모델 이름 검색"
+					placeholder="모델/에이전시 이름 검색"
 					value={value}
 					onChange={onChange}
+					onFocus={() => setIsFocused(true)}
+					onBlur={handleBlur}
 				/>
 				{value && (
 					<button
