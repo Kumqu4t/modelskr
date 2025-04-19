@@ -36,7 +36,7 @@ function AgencyListPage() {
 								className="agency-card-logo"
 							/>
 							<h3>{agency.name}</h3>
-							<p>{agency.description}</p>
+							<p className="agency-description">{agency.description}</p>
 						</li>
 					))}
 				</ul>

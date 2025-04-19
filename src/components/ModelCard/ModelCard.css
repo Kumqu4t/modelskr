@@ -44,3 +44,11 @@
 	gap: 8px;
 	margin-bottom: 8px;
 }
+
+.model-description {
+	display: -webkit-box;
+	-webkit-line-clamp: 1; /* 원하는 줄 수 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	padding: 0 8px;
+}
