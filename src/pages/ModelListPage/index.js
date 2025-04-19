@@ -1,8 +1,10 @@
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
+import Pagination from "../../components/Pagination";
 
 function ModelListPage() {
 	const {
@@ -24,6 +26,15 @@ function ModelListPage() {
 		agency
 	);
 
+	// 페이지네이션
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemLimit = 8;
+	const startIndex = (currentPage - 1) * itemLimit;
+	const currentModels = filteredModels.slice(
+		startIndex,
+		startIndex + itemLimit
+	);
+
 	// 태그 목록 추출
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
 
@@ -39,7 +50,13 @@ function ModelListPage() {
 				agency={agency}
 				setAgency={setAgency}
 			/>
-			<ModelList models={filteredModels} />
+			<ModelList models={currentModels} />
+			<Pagination
+				totalItems={filteredModels.length}
+				itemLimit={itemLimit}
+				currentPage={currentPage}
+				onPageChange={setCurrentPage}
+			/>
 		</div>
 	);
 }
