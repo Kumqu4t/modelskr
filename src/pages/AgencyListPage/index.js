@@ -1,21 +1,39 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import "./AgencyListPage.css";
 
 function AgencyListPage() {
-	const navigate = useNavigate();
+	const [agencies, setAgencies] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const { keyword } = useQueryFilters("/agencies");
+	const navigate = useNavigate();
 
-	const handleClick = (name) => {
-		navigate(`/agencies/${encodeURIComponent(name)}`);
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const res = await axios.get("/api/agencies");
+				setAgencies(res.data);
+			} catch (err) {
+				console.error("에이전시 목록 가져오기 실패", err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	const filteredAgencies = agencies.filter((agency) =>
+		agency.name?.toLowerCase().includes(keyword.toLowerCase())
+	);
+
+	const handleClick = (id) => {
+		navigate(`/agencies/${id}`);
 	};
 
-	const agencies = useSelector((state) => state.agencies.agencies);
-	const filteredAgencies = agencies.filter((agency) =>
-		agency.name.toLowerCase().includes(keyword.toLowerCase())
-	);
+	if (loading) return <p>로딩 중...</p>;
 
 	return (
 		<div className="agency-page">
@@ -26,9 +44,9 @@ function AgencyListPage() {
 				<ul className="agency-list">
 					{filteredAgencies.map((agency) => (
 						<li
-							key={agency.name}
+							key={agency._id}
 							className="agency-card"
-							onClick={() => handleClick(agency.name)}
+							onClick={() => handleClick(agency._id)}
 						>
 							<img
 								src={agency.logo}

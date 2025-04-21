@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import axios from "axios";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
 import "./AgencyDetailPage.css";
@@ -9,12 +9,29 @@ function AgencyDetailPage() {
 	const { id } = useParams();
 	const decodedName = decodeURIComponent(id);
 
-	const models = useSelector((state) => state.models.models);
-	const agencies = useSelector((state) => state.agencies.agencies);
-	const agency = agencies.find((a) => a.name === decodedName);
-	const filteredModels = models.filter(
-		(model) => model.agency === agency?.name
-	);
+	const [agency, setAgency] = useState(null);
+	const [models, setModels] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchAgencyDetails = async () => {
+			try {
+				const res = await axios.get(`/api/agencies/${decodedName}`);
+				setAgency(res.data);
+				setModels(res.data.models);
+				console.log("에이전시 정보 가져오기 성공", res.data);
+				console.log("에이전시 모델 정보 가져오기 성공", res.data.models);
+			} catch (error) {
+				console.error("에이전시 정보 가져오기 실패", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchAgencyDetails();
+	}, [decodedName]);
+
+	if (loading) return <p>로딩 중...</p>;
 
 	if (!agency) return <p>존재하지 않는 에이전시입니다.</p>;
 
@@ -37,7 +54,7 @@ function AgencyDetailPage() {
 			</div>
 			<div className="agency-models-section">
 				<h2 className="agency-title">소속 모델</h2>
-				<ModelList models={filteredModels} />
+				<ModelList models={models} />
 			</div>
 		</div>
 	);
