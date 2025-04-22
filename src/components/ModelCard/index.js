@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteModel } from "../../redux/models/modelsSlice";
+import { useSelector } from "react-redux";
 import Button from "../Button";
 import FavoriteButton from "../FavoriteButton";
 import "./ModelCard.css";
@@ -9,13 +8,13 @@ import "./ModelCard.css";
 function ModelCard({ model, isFavorited, onToggleFavorite }) {
 	const { _id: id, name, image, description } = model;
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
 	const handleCardClick = () => navigate(`/model/${id}`);
+
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/${id}`);
@@ -23,7 +22,7 @@ function ModelCard({ model, isFavorited, onToggleFavorite }) {
 	const handleDelete = (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			dispatch(deleteModel(Number(id)));
+			// dispatch(deleteModel(Number(id)));
 		}
 	};
 

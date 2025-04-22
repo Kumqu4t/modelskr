@@ -11,7 +11,7 @@ export function useFilters(models, selectedTags, keyword, gender, agency) {
 		}
 
 		if (agency !== "all") {
-			filtered = filtered.filter((model) => model.agency === agency);
+			filtered = filtered.filter((model) => model.agency?.name === agency);
 		}
 
 		if (selectedTags.length > 0) {

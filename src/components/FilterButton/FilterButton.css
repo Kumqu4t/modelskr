@@ -18,3 +18,8 @@
 	background-color: #adb1b4;
 	cursor: pointer;
 }
+
+.filter-button.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}

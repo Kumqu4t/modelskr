@@ -92,8 +92,11 @@ function ModelListPage() {
 		startIndex + itemLimit
 	);
 
-	// 태그 목록 추출
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
+	const availableTags = new Set(filteredModels.flatMap((model) => model.tags));
+	const agencies = [
+		...new Set(models.map((model) => model.agency?.name).filter(Boolean)),
+	];
 
 	return (
 		<div style={{ padding: "24px" }}>
@@ -102,10 +105,12 @@ function ModelListPage() {
 				selectedTags={selectedTags}
 				setSelectedTags={setSelectedTags}
 				tags={tags}
+				availableTags={availableTags}
 				gender={gender}
 				setGender={setGender}
 				agency={agency}
 				setAgency={setAgency}
+				agencies={agencies}
 			/>
 			<ModelList
 				models={currentModels}

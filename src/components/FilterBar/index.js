@@ -6,10 +6,12 @@ function FilterBar({
 	selectedTags,
 	setSelectedTags,
 	tags,
+	availableTags,
 	gender,
 	setGender,
 	agency,
 	setAgency,
+	agencies,
 }) {
 	const [showAllTags, setShowAllTags] = useState(false);
 
@@ -34,8 +36,11 @@ function FilterBar({
 				<label className="filter-label">에이전시</label>
 				<select value={agency} onChange={(e) => setAgency(e.target.value)}>
 					<option value="all">전체</option>
-					<option value="Agency A">Agency A</option>
-					<option value="Agency B">Agency B</option>
+					{agencies.map((agencyName) => (
+						<option key={agencyName} value={agencyName}>
+							{agencyName}
+						</option>
+					))}
 				</select>
 			</div>
 
@@ -47,6 +52,7 @@ function FilterBar({
 							key={tag}
 							active={selectedTags.includes(tag)}
 							onClick={() => toggleTag(tag)}
+							disabled={!availableTags.has(tag)}
 						>
 							{tag}
 						</FilterButton>
