@@ -18,7 +18,6 @@ function ModelListPage() {
 		keyword,
 	} = useQueryFilters("/models");
 	const [models, setModels] = useState([]);
-	// Remove local favorites state and useFavorites hook instead
 
 	useEffect(() => {
 		const fetchModels = async () => {

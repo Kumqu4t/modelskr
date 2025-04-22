@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteModel } from "../../redux/models/modelsSlice";
+import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
@@ -10,7 +9,6 @@ import "./ModelDetailPage.css";
 function ModelDetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
@@ -19,7 +17,6 @@ function ModelDetailPage() {
 	const [model, setModel] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-	// const [favorites, setFavorites] = useState([]);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 	useEffect(() => {
@@ -46,10 +43,23 @@ function ModelDetailPage() {
 		navigate(`/admin/edit/${id}`);
 	};
 
-	const handleDelete = (e) => {
+	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			dispatch(deleteModel(id));
+			try {
+				const res = await fetch(`/api/models/${id}`, {
+					method: "DELETE",
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				});
+				if (!res.ok) throw new Error("삭제 실패");
+				alert("삭제되었습니다.");
+				navigate("/admin");
+			} catch (error) {
+				console.error("삭제 중 오류:", error);
+				alert("삭제에 실패했습니다.");
+			}
 		}
 	};
 

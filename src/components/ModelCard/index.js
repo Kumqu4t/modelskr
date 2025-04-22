@@ -19,10 +19,23 @@ function ModelCard({ model, isFavorited, onToggleFavorite }) {
 		e.stopPropagation();
 		navigate(`/admin/edit/${id}`);
 	};
-	const handleDelete = (e) => {
+	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			// dispatch(deleteModel(Number(id)));
+			try {
+				const res = await fetch(`/api/models/${id}`, {
+					method: "DELETE",
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				});
+				if (!res.ok) throw new Error("삭제 실패");
+				alert("삭제되었습니다.");
+				window.location.reload();
+			} catch (error) {
+				console.error("삭제 중 오류:", error);
+				alert("삭제에 실패했습니다.");
+			}
 		}
 	};
 

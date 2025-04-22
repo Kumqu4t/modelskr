@@ -1,40 +1,79 @@
 import React, { useEffect, useState } from "react";
 import ModelForm from "../../components/ModelForm";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addModel, updateModel } from "../../redux/models/modelsSlice";
 
 function ModelFormPage() {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { id } = useParams(); // edit 모드일 경우 모델 ID 받기
-	const model = useSelector((state) =>
-		state.models.models.find((model) => model.id === parseInt(id))
-	); // 수정 모드일 때 모델 데이터 가져오기
 
 	const [mode, setMode] = useState("create");
+	const [model, setModel] = useState(null);
+	const [agencies, setAgencies] = useState([]);
 
 	useEffect(() => {
 		if (id) {
-			setMode("edit"); // id가 있으면 수정 모드
+			setMode("edit");
+			const fetchModel = async () => {
+				try {
+					const res = await fetch(`/api/models/${id}`);
+					const data = await res.json();
+					setModel(data);
+				} catch (err) {
+					console.error("모델 불러오기 실패:", err);
+				}
+			};
+			fetchModel();
 		}
 	}, [id]);
 
-	const handleSubmit = (formData) => {
-		if (mode === "edit") {
-			// 수정일 경우
-			dispatch(updateModel(formData));
-		} else {
-			// 추가일 경우
-			dispatch(addModel(formData));
+	useEffect(() => {
+		const fetchAgencies = async () => {
+			try {
+				const res = await fetch("/api/agencies");
+				const data = await res.json();
+				setAgencies(data);
+			} catch (err) {
+				console.error("에이전시 목록 불러오기 실패:", err);
+			}
+		};
+
+		fetchAgencies();
+	}, []);
+
+	const handleSubmit = async (formData) => {
+		try {
+			const token = localStorage.getItem("token");
+
+			const res = await fetch(
+				mode === "edit" ? `/api/models/${id}` : "/api/models",
+				{
+					method: mode === "edit" ? "PATCH" : "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(formData),
+				}
+			);
+
+			if (!res.ok) throw new Error("모델 저장 실패");
+
+			const result = await res.json();
+			navigate(`/model/${result._id}`);
+		} catch (err) {
+			console.error("모델 저장 중 오류:", err);
 		}
-		navigate("/admin"); // 작업 후 모델 목록 페이지로 이동
 	};
 
 	return (
 		<div>
 			<h1>{mode === "edit" ? "모델 수정" : "모델 추가"}</h1>
-			<ModelForm mode={mode} model={model} onSubmit={handleSubmit} />
+			<ModelForm
+				mode={mode}
+				model={model}
+				onSubmit={handleSubmit}
+				agencies={agencies}
+			/>
 		</div>
 	);
 }

@@ -1,22 +1,39 @@
 import React, { useState, useEffect } from "react";
 
-function ModelForm({ mode, model, onSubmit }) {
+function ModelForm({ mode, model, onSubmit, agencies }) {
 	const [formData, setFormData] = useState({
 		name: "",
 		image: "",
 		description: "",
-		tags: [],
-		recentWork: [],
+		gender: "",
+		agency: "",
+		tags: "",
+		recentWork: "",
+		contact: "",
 	});
 
-	// edit 모드일 경우 초기값 설정
+	const [errors, setErrors] = useState({
+		name: "",
+		gender: "",
+		agency: "",
+	});
+
 	useEffect(() => {
 		if (mode === "edit" && model) {
-			setFormData(model);
+			setFormData({
+				...model,
+				gender: model.gender || "",
+				agency: model.agency?._id || "",
+				tags: model.tags?.join(", ") || "",
+				recentWork:
+					model.recentWork
+						?.map((work) => `${work.type}:${work.title}:${work.link}`)
+						.join(", ") || "",
+				contact: model.contact || "",
+			});
 		}
 	}, [mode, model]);
 
-	// 공통 입력 핸들러
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({
@@ -24,11 +41,44 @@ function ModelForm({ mode, model, onSubmit }) {
 			[name]: value,
 		}));
 	};
-
-	// 폼 제출 처리
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		onSubmit(formData);
+
+		let formErrors = {};
+		if (!formData.name) formErrors.name = "이름을 입력해주세요.";
+		if (!formData.gender) formErrors.gender = "성별을 선택해주세요.";
+		if (!formData.agency) formErrors.agency = "에이전시를 선택해주세요.";
+
+		if (Object.keys(formErrors).length > 0) {
+			setErrors(formErrors);
+			return;
+		}
+
+		const tagsArray = formData.tags
+			.split(",")
+			.map((t) => t.trim())
+			.filter((t) => t);
+
+		const recentWorkArray = formData.recentWork
+			.split(",")
+			.map((item) => {
+				const [type, title, ...linkParts] = item
+					.split(":")
+					.map((s) => s.trim());
+				const link = linkParts.join(":");
+				if (type && title && link) {
+					return { type, title, link };
+				}
+				return null;
+			})
+			.filter(Boolean);
+
+		const processedData = {
+			...formData,
+			tags: tagsArray,
+			recentWork: recentWorkArray,
+		};
+		onSubmit(processedData);
 	};
 
 	return (
@@ -43,7 +93,11 @@ function ModelForm({ mode, model, onSubmit }) {
 					value={formData.name}
 					onChange={handleChange}
 					required
+					aria-describedby="nameError"
 				/>
+				<div id="nameError" style={{ color: "red" }}>
+					{errors.name}
+				</div>
 			</label>
 
 			<label>
@@ -65,7 +119,75 @@ function ModelForm({ mode, model, onSubmit }) {
 				/>
 			</label>
 
-			{/* TODO: tags, recentWork는 나중에 따로 구성 */}
+			<label>
+				성별
+				<select
+					name="gender"
+					value={formData.gender}
+					onChange={handleChange}
+					required
+					aria-describedby="genderError"
+				>
+					<option value="">선택하세요</option>
+					<option value="male">남성</option>
+					<option value="female">여성</option>
+				</select>
+				<div id="genderError" style={{ color: "red" }}>
+					{errors.gender}
+				</div>
+			</label>
+
+			<label>
+				에이전시
+				<select
+					name="agency"
+					value={formData.agency}
+					onChange={handleChange}
+					required
+					aria-describedby="agencyError"
+				>
+					<option value="">선택하세요</option>
+					{agencies.map((agency) => (
+						<option key={agency._id} value={agency._id}>
+							{agency.name}
+						</option>
+					))}
+				</select>
+				<div id="agencyError" style={{ color: "red" }}>
+					{errors.agency}
+				</div>
+			</label>
+
+			<label>
+				태그 (쉼표로 구분)
+				<input
+					type="text"
+					name="tags"
+					value={formData.tags}
+					onChange={handleChange}
+				/>
+			</label>
+
+			<label>
+				최근 작업 (형식: type:title:link, 쉼표로 구분)
+				<input
+					type="text"
+					name="recentWork"
+					value={formData.recentWork}
+					onChange={handleChange}
+				/>
+			</label>
+
+			<label>
+				contact
+				<input
+					type="text"
+					name="contact"
+					value={formData.contact}
+					onChange={handleChange}
+				/>
+			</label>
+
 			<button type="submit">{mode === "edit" ? "수정" : "저장"}</button>
 		</form>
 	);
