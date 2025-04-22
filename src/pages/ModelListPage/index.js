@@ -1,7 +1,7 @@
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
@@ -16,7 +16,64 @@ function ModelListPage() {
 		setAgency,
 		keyword,
 	} = useQueryFilters("/models");
-	const models = useSelector((state) => state.models.models);
+	const [models, setModels] = useState([]);
+	const [favorites, setFavorites] = useState([]);
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+	useEffect(() => {
+		const fetchModels = async () => {
+			try {
+				const res = await fetch("/api/models");
+				const data = await res.json();
+				setModels(data);
+			} catch (err) {
+				console.error("모델 데이터를 불러오기 실패:", err);
+			}
+		};
+
+		fetchModels();
+	}, []);
+
+	useEffect(() => {
+		const fetchFavorites = async () => {
+			try {
+				const res = await fetch("/api/favorites", {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				});
+				const data = await res.json();
+				const ids = data.map((model) => model._id);
+				setFavorites(ids);
+			} catch (err) {
+				console.error("즐겨찾기 데이터를 불러오기 실패:", err);
+			}
+		};
+
+		if (isLoggedIn) {
+			fetchFavorites();
+		}
+	}, [isLoggedIn]);
+
+	const handleToggleFavorite = async (modelId) => {
+		const isFav = favorites.includes(modelId);
+		const method = isFav ? "DELETE" : "POST";
+
+		try {
+			await fetch(`/api/favorites/${modelId}`, {
+				method,
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
+
+			setFavorites((prev) =>
+				isFav ? prev.filter((id) => id !== modelId) : [...prev, modelId]
+			);
+		} catch (err) {
+			console.error("즐겨찾기 변경 실패:", err);
+		}
+	};
 
 	const filteredModels = useFilters(
 		models,
@@ -50,7 +107,11 @@ function ModelListPage() {
 				agency={agency}
 				setAgency={setAgency}
 			/>
-			<ModelList models={currentModels} />
+			<ModelList
+				models={currentModels}
+				favorites={favorites}
+				onToggleFavorite={handleToggleFavorite}
+			/>
 			<Pagination
 				totalItems={filteredModels.length}
 				itemLimit={itemLimit}

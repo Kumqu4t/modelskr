@@ -6,16 +6,15 @@ import Button from "../Button";
 import FavoriteButton from "../FavoriteButton";
 import "./ModelCard.css";
 
-function ModelCard({ id, name, image, description }) {
+function ModelCard({ model, isFavorited, onToggleFavorite }) {
+	const { _id: id, name, image, description } = model;
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	// Redux 상태
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	// 핸들러
 	const handleCardClick = () => navigate(`/model/${id}`);
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -33,7 +32,9 @@ function ModelCard({ id, name, image, description }) {
 			<div className="image-wrapper">
 				<img src={image} alt={name} />
 				<FavoriteButton
-					modelId={Number(id)}
+					modelId={id}
+					isFavorited={isFavorited}
+					onToggle={onToggleFavorite}
 					className="favorite-icon card-icon"
 				/>
 			</div>

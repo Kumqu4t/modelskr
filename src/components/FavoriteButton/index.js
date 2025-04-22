@@ -1,17 +1,11 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../../redux/favorites/favoritesSlice";
+import { useSelector } from "react-redux";
 
-function FavoriteButton({ modelId, className, onClick }) {
-	const dispatch = useDispatch();
+function FavoriteButton({ modelId, isFavorited, className, onToggle }) {
 	const navigate = useNavigate();
-
-	const favorites = useSelector((state) => state.favorites.items);
-	const isFavorited = favorites.includes(modelId);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-	const handleClick = (e) => {
+	const handleClick = async (e) => {
 		e.stopPropagation();
 		if (!isLoggedIn) {
 			const confirmLogin = window.confirm(
@@ -23,8 +17,20 @@ function FavoriteButton({ modelId, className, onClick }) {
 			return;
 		}
 
-		dispatch(toggleFavorite(modelId));
-		// if (onClick) onClick();
+		const method = isFavorited ? "DELETE" : "POST";
+
+		try {
+			await fetch(`/api/favorites/${modelId}`, {
+				method,
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+				},
+			});
+
+			if (onToggle) onToggle(modelId);
+		} catch (err) {
+			console.error("즐겨찾기 요청 실패:", err);
+		}
 	};
 
 	return (
