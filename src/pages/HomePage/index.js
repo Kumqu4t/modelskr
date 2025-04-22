@@ -1,28 +1,30 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ModelList from "../../components/ModelList";
 import "./HomePage.css";
 
 function HomePage() {
-	const models = useSelector((state) => state.models.models);
+	const [models, setModels] = useState([]);
 
-	// 배열 섞는 함수 (Fisher-Yates Shuffle)
-	const shuffleArray = (array) => {
-		const newArray = [...array];
-		for (let i = newArray.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-		}
-		return newArray;
-	};
-	const randomModels = shuffleArray(models).slice(0, 4);
+	useEffect(() => {
+		const fetchRandomModels = async () => {
+			try {
+				const res = await fetch("/api/models/random?limit=4");
+				const data = await res.json();
+				setModels(data);
+			} catch (err) {
+				console.error("랜덤 모델 불러오기 실패:", err);
+			}
+		};
+
+		fetchRandomModels();
+	}, []);
 
 	return (
 		<div className="home-section">
 			<h2 className="section-title"> Models of the day </h2>
 			<div className="model-list-section">
-				<ModelList models={randomModels} />
+				<ModelList models={models} />
 			</div>
 			<div className="more-wrapper">
 				<Link to="/models" className="more-button">
