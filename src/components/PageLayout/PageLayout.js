@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../../redux/user/userSlice";
+import { login, logout } from "../../redux/user/userSlice";
 import Header from "../Header";
 import Footer from "../Footer";
 
@@ -10,8 +10,16 @@ function PageLayout() {
 
 	useEffect(() => {
 		const token = localStorage.getItem("token");
-		if (!token) {
-			dispatch(logout());
+
+		if (token) {
+			fetch("/api/auth/me", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+				.then((res) => res.json())
+				.then((user) => dispatch(login(user)))
+				.catch(() => dispatch(logout()));
 		}
 	}, [dispatch]);
 
