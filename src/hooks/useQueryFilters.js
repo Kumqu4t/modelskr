@@ -35,7 +35,7 @@ export function useQueryFilters(basePath = "models") {
 		if (gender !== "all") params.set("gender", gender);
 		if (agency !== "all") params.set("agency", agency);
 
-		navigate(`${basePath}?${params.toString()}`);
+		navigate(`${basePath}?${params.toString()}`, { replace: true });
 	}, [selectedTags, keyword, gender, agency, navigate, basePath]);
 
 	return {
