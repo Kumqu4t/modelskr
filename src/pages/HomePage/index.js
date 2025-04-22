@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useFavorites } from "../../hooks/useFavorites";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ModelList from "../../components/ModelList";
 import "./HomePage.css";
 
 function HomePage() {
 	const [models, setModels] = useState([]);
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
 	useEffect(() => {
 		const fetchRandomModels = async () => {
@@ -24,7 +28,11 @@ function HomePage() {
 		<div className="home-section">
 			<h2 className="section-title"> Models of the day </h2>
 			<div className="model-list-section">
-				<ModelList models={models} />
+				<ModelList
+					models={models}
+					favorites={favorites}
+					onToggleFavorite={toggleFavorite}
+				/>{" "}
 			</div>
 			<div className="more-wrapper">
 				<Link to="/models" className="more-button">

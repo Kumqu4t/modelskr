@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
+import { useFavorites } from "../../hooks/useFavorites";
 
 function ModelListPage() {
 	const {
@@ -17,8 +18,7 @@ function ModelListPage() {
 		keyword,
 	} = useQueryFilters("/models");
 	const [models, setModels] = useState([]);
-	const [favorites, setFavorites] = useState([]);
-	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	// Remove local favorites state and useFavorites hook instead
 
 	useEffect(() => {
 		const fetchModels = async () => {
@@ -34,46 +34,8 @@ function ModelListPage() {
 		fetchModels();
 	}, []);
 
-	useEffect(() => {
-		const fetchFavorites = async () => {
-			try {
-				const res = await fetch("/api/favorites", {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
-				});
-				const data = await res.json();
-				const ids = data.map((model) => model._id);
-				setFavorites(ids);
-			} catch (err) {
-				console.error("즐겨찾기 데이터를 불러오기 실패:", err);
-			}
-		};
-
-		if (isLoggedIn) {
-			fetchFavorites();
-		}
-	}, [isLoggedIn]);
-
-	const handleToggleFavorite = async (modelId) => {
-		const isFav = favorites.includes(modelId);
-		const method = isFav ? "DELETE" : "POST";
-
-		try {
-			await fetch(`/api/favorites/${modelId}`, {
-				method,
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-
-			setFavorites((prev) =>
-				isFav ? prev.filter((id) => id !== modelId) : [...prev, modelId]
-			);
-		} catch (err) {
-			console.error("즐겨찾기 변경 실패:", err);
-		}
-	};
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
 	const filteredModels = useFilters(
 		models,
@@ -115,7 +77,7 @@ function ModelListPage() {
 			<ModelList
 				models={currentModels}
 				favorites={favorites}
-				onToggleFavorite={handleToggleFavorite}
+				onToggleFavorite={toggleFavorite}
 			/>
 			<Pagination
 				totalItems={filteredModels.length}

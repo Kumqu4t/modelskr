@@ -4,6 +4,7 @@ import { deleteModel } from "../../redux/models/modelsSlice";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
+import { useFavorites } from "../../hooks/useFavorites";
 import "./ModelDetailPage.css";
 
 function ModelDetailPage() {
@@ -18,7 +19,7 @@ function ModelDetailPage() {
 	const [model, setModel] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const [favorites, setFavorites] = useState([]);
+	// const [favorites, setFavorites] = useState([]);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 	useEffect(() => {
@@ -38,25 +39,7 @@ function ModelDetailPage() {
 		fetchModelDetails();
 	}, [id]);
 
-	useEffect(() => {
-		const fetchFavorites = async () => {
-			if (isLoggedIn) {
-				try {
-					const res = await fetch("/api/favorites", {
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("token")}`,
-						},
-					});
-					const data = await res.json();
-					setFavorites(data.map((item) => item._id));
-				} catch (err) {
-					console.error("즐겨찾기 불러오기 실패:", err);
-				}
-			}
-		};
-
-		fetchFavorites();
-	}, [isLoggedIn]);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -70,24 +53,7 @@ function ModelDetailPage() {
 		}
 	};
 
-	const handleToggleFavorite = async (modelId) => {
-		const isFav = favorites.includes(modelId);
-		const method = isFav ? "DELETE" : "POST";
-
-		try {
-			await fetch(`/api/favorites/${modelId}`, {
-				method,
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-			setFavorites((prev) =>
-				isFav ? prev.filter((id) => id !== modelId) : [...prev, modelId]
-			);
-		} catch (err) {
-			console.error("즐겨찾기 변경 실패:", err);
-		}
-	};
+	const handleToggleFavorite = toggleFavorite;
 
 	if (isLoading) return <div>로딩 중...</div>;
 	if (error) return <div>{error}</div>;
