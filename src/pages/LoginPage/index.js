@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/user/userSlice";
 import "./LoginPage.css";
@@ -10,19 +9,21 @@ function LoginPage() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const onSuccess = (credentialResponse) => {
+	const onSuccess = async (credentialResponse) => {
 		try {
-			const decoded = jwtDecode(credentialResponse.credential);
-			const userInfo = {
-				name: decoded.name,
-				email: decoded.email,
-				picture: decoded.picture,
-			};
+			const res = await fetch("/api/auth/google", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ token: credentialResponse.credential }),
+			});
 
-			dispatch(login(userInfo));
+			const { token, user } = await res.json();
+
+			localStorage.setItem("token", token); // API 사용 시 Authorization 헤더에 사용
+			dispatch(login(user));
 			navigate("/", { replace: true });
 		} catch (error) {
-			console.error("디코딩 실패:", error);
+			console.error("로그인 실패:", error);
 		}
 	};
 
