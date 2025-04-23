@@ -67,7 +67,7 @@ function ModelFormPage() {
 
 	return (
 		<div>
-			<h1>{mode === "edit" ? "모델 수정" : "모델 추가"}</h1>
+			<h1> </h1>
 			<ModelForm
 				mode={mode}
 				model={model}

@@ -11,10 +11,17 @@
 	background-color: white;
 }
 
-.contact-button-wrapper {
+.buttons-wrapper {
+	display: flex;
 	position: absolute;
 	top: 24px;
 	right: 12px;
+	gap: 8px;
+}
+
+.admin-controls-detail {
+	display: flex;
+	gap: 8px;
 }
 
 .image-wrapper {
@@ -88,15 +95,6 @@
 	border-radius: 50%;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
-}
-
-.admin-controls-detail {
-	margin-right: 20px;
-	margin-top: -5px;
-	display: flex;
-	justify-content: flex-end;
-	align-items: flex-start;
-	gap: 8px;
 }
 
 /* 반응형 디자인 추가 */

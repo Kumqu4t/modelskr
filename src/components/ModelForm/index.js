@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./ModelForm.css";
 
 function ModelForm({ mode, model, onSubmit, agencies }) {
 	const [formData, setFormData] = useState({
@@ -82,12 +83,17 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h2>{mode === "edit" ? "모델 수정" : "모델 추가"}</h2>
+		<form onSubmit={handleSubmit} className="model-form">
+			<h2 className="model-form__title">
+				{mode === "edit" ? "모델 수정" : "모델 추가"}
+			</h2>
 
-			<label>
-				이름
+			<label className="model-form__field">
+				<span className="model-form__label">
+					이름 <span className="model-form__required">*</span>
+				</span>
 				<input
+					className="model-form__input"
 					type="text"
 					name="name"
 					value={formData.name}
@@ -95,33 +101,17 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 					required
 					aria-describedby="nameError"
 				/>
-				<div id="nameError" style={{ color: "red" }}>
+				<div id="nameError" className="model-form__error">
 					{errors.name}
 				</div>
 			</label>
 
-			<label>
-				이미지 URL
-				<input
-					type="text"
-					name="image"
-					value={formData.image}
-					onChange={handleChange}
-				/>
-			</label>
-
-			<label>
-				설명
-				<textarea
-					name="description"
-					value={formData.description}
-					onChange={handleChange}
-				/>
-			</label>
-
-			<label>
-				성별
+			<label className="model-form__field">
+				<span className="model-form__label">
+					성별 <span className="model-form__required">*</span>
+				</span>
 				<select
+					className="model-form__input"
 					name="gender"
 					value={formData.gender}
 					onChange={handleChange}
@@ -132,14 +122,17 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 					<option value="male">남성</option>
 					<option value="female">여성</option>
 				</select>
-				<div id="genderError" style={{ color: "red" }}>
+				<div id="genderError" className="model-form__error">
 					{errors.gender}
 				</div>
 			</label>
 
-			<label>
-				에이전시
+			<label className="model-form__field">
+				<span className="model-form__label">
+					에이전시 <span className="model-form__required">*</span>
+				</span>
 				<select
+					className="model-form__input"
 					name="agency"
 					value={formData.agency}
 					onChange={handleChange}
@@ -153,14 +146,36 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 						</option>
 					))}
 				</select>
-				<div id="agencyError" style={{ color: "red" }}>
+				<div id="agencyError" className="model-form__error">
 					{errors.agency}
 				</div>
 			</label>
 
-			<label>
+			<label className="model-form__field">
+				설명
+				<textarea
+					className="model-form__input"
+					name="description"
+					value={formData.description}
+					onChange={handleChange}
+				/>
+			</label>
+
+			<label className="model-form__field">
+				이미지 URL
+				<input
+					className="model-form__input"
+					type="text"
+					name="image"
+					value={formData.image}
+					onChange={handleChange}
+				/>
+			</label>
+
+			<label className="model-form__field">
 				태그 (쉼표로 구분)
 				<input
+					className="model-form__input"
 					type="text"
 					name="tags"
 					value={formData.tags}
@@ -168,9 +183,10 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 				/>
 			</label>
 
-			<label>
+			<label className="model-form__field">
 				최근 작업 (형식: type:title:link, 쉼표로 구분)
 				<input
+					className="model-form__input"
 					type="text"
 					name="recentWork"
 					value={formData.recentWork}
@@ -178,9 +194,10 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 				/>
 			</label>
 
-			<label>
-				contact
+			<label className="model-form__field">
+				contact (instagram 주소, email 등)
 				<input
+					className="model-form__input"
 					type="text"
 					name="contact"
 					value={formData.contact}
@@ -188,7 +205,9 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 				/>
 			</label>
 
-			<button type="submit">{mode === "edit" ? "수정" : "저장"}</button>
+			<button type="submit" className="model-form__submit">
+				{mode === "edit" ? "수정" : "저장"}
+			</button>
 		</form>
 	);
 }

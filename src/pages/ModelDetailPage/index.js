@@ -71,7 +71,17 @@ function ModelDetailPage() {
 
 	return (
 		<div className="model-detail">
-			<div className="contact-button-wrapper">
+			<div className="buttons-wrapper">
+				{isAdmin && (
+					<div className="admin-controls-detail">
+						<Button type="default" onClick={handleEdit}>
+							수정
+						</Button>
+						<Button type="danger" onClick={handleDelete}>
+							삭제
+						</Button>
+					</div>
+				)}
 				<Button
 					type="default"
 					onClick={() => window.open(model.contact, "_blank")}
@@ -138,17 +148,6 @@ function ModelDetailPage() {
 					))}
 				</div>
 			</div>
-
-			{isAdmin && (
-				<div className="admin-controls-detail">
-					<Button type="default" onClick={handleEdit}>
-						수정
-					</Button>
-					<Button type="danger" onClick={handleDelete}>
-						삭제
-					</Button>
-				</div>
-			)}
 		</div>
 	);
 }
