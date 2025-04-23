@@ -1,4 +1,3 @@
-/* 전체 헤더 */
 header {
 	background-color: #000;
 	position: sticky;
@@ -10,7 +9,6 @@ header {
 	z-index: 100;
 }
 
-/* 내부 wrapper */
 .header-inner {
 	display: flex;
 	align-items: center;
@@ -22,16 +20,13 @@ header {
 	gap: 24px;
 }
 
-/* 로고 */
 .logo {
 	font-size: 24px;
 	font-weight: bold;
 	color: white;
 	text-decoration: none;
-	white-space: nowrap;
 }
 
-/* 네비게이션 */
 .nav-links {
 	display: flex;
 	gap: 16px;
@@ -46,8 +41,8 @@ header {
 	transition: color 0.3s ease;
 }
 
-/* 밑줄 효과 */
-.nav-item::after {
+.nav-item::after,
+.dropdown-button::after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -58,21 +53,17 @@ header {
 	transition: width 0.3s ease;
 }
 
-.nav-item:hover::after {
+.nav-item:hover::after,
+.dropdown-button:hover::after,
+.dropdown.active .dropdown-button::after {
 	width: 100%;
 }
 
-.nav-item.active::after {
-	width: 100%;
-}
-
-/* 검색바 */
 .searchbar-container {
 	flex: 1;
 	max-width: 300px;
 }
 
-/* 로그인 영역 */
 .login-wrapper {
 	display: flex;
 	align-items: center;
@@ -96,4 +87,70 @@ header {
 	color: white;
 	font-size: 14px;
 	margin: 0;
+}
+
+/* Dropdown */
+.dropdown {
+	position: relative;
+}
+
+.dropdown-button {
+	font-size: 20px;
+	color: white;
+	padding: 8px 24px;
+	text-decoration: none;
+	position: relative;
+	transition: color 0.3s ease;
+	display: inline-block;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	width: 150px;
+	text-align: left;
+	font-family: inherit;
+	line-height: 1.4;
+	vertical-align: middle;
+}
+
+.dropdown:hover .dropdown-button::after,
+.dropdown.active .dropdown-button::after {
+	width: 100%;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: black;
+	width: 160px;
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	padding: 8px 0;
+	z-index: 1;
+	top: 100%;
+	left: 0;
+}
+
+.dropdown-content .nav-item {
+	color: white;
+	text-decoration: none;
+	position: relative;
+	font-size: 20px;
+	padding: 8px 24px;
+	transition: color 0.3s ease;
+	display: block;
+}
+
+.dropdown-content .nav-item:hover::after {
+	width: 100%;
+}
+
+.dropdown-content .nav-item.active::after {
+	width: 100%;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.nav-item.active::after {
+	width: 100%;
 }
