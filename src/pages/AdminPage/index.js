@@ -11,8 +11,11 @@ function AdminPage() {
 			<div
 				style={{ display: "flex", justifyContent: "center", marginTop: "24px" }}
 			>
-				<Button type="default" onClick={() => navigate("/admin/create")}>
+				<Button type="default" onClick={() => navigate("/admin/create/models")}>
 					+ 모델 추가
+				</Button>
+				<Button type="default" onClick={() => navigate("/admin/create/photos")}>
+					+ 사진 추가
 				</Button>
 			</div>
 		</div>

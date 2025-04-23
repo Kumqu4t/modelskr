@@ -13,11 +13,11 @@ function ModelCard({ model, isFavorited, onToggleFavorite }) {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const handleCardClick = () => navigate(`/model/${id}`);
+	const handleCardClick = () => navigate(`/models/${id}`);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
-		navigate(`/admin/edit/${id}`);
+		navigate(`/admin/edit/models/${id}`);
 	};
 	const handleDelete = async (e) => {
 		e.stopPropagation();

@@ -40,7 +40,7 @@ function ModelDetailPage() {
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
-		navigate(`/admin/edit/${id}`);
+		navigate(`/admin/edit/models/${id}`);
 	};
 
 	const handleDelete = async (e) => {

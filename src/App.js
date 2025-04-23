@@ -9,7 +9,7 @@ import ModelListPage from "./pages/ModelListPage";
 import ModelDetailPage from "./pages/ModelDetailPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
-import ModelFormPage from "./pages/ModelFormPage";
+import FormPage from "./pages/FormPage";
 import AgencyListPage from "./pages/AgencyListPage";
 import AgencyDetailPage from "./pages/AgencyDetailPage";
 import PhotoListPage from "./pages/PhotoListPage";
@@ -28,7 +28,7 @@ function App() {
 						<Route element={<PageLayout />}>
 							<Route path="/" element={<HomePage />} />
 							<Route path="/models" element={<ModelListPage />} />
-							<Route path="/model/:id" element={<ModelDetailPage />} />
+							<Route path="/models/:id" element={<ModelDetailPage />} />
 							<Route path="/agencies" element={<AgencyListPage />} />
 							<Route path="/agencies/:id" element={<AgencyDetailPage />} />
 							<Route path="/photos" element={<PhotoListPage />} />
@@ -37,8 +37,11 @@ function App() {
 							<Route path="/favorites" element={<FavoritePage />} />
 							<Route element={<RequireAdmin />}>
 								<Route path="/admin" element={<AdminPage />} />
-								<Route path="/admin/edit/:id" element={<ModelFormPage />} />
-								<Route path="/admin/create" element={<ModelFormPage />} />
+								<Route path="/admin/create/:formType" element={<FormPage />} />
+								<Route
+									path="/admin/edit/:formType/:id"
+									element={<FormPage />}
+								/>
 							</Route>
 							<Route path="*" element={<NotFoundPage />} />
 						</Route>

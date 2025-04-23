@@ -15,6 +15,7 @@ const PhotoDetailPage = () => {
 	const [error, setError] = useState(null);
 	const [currentIndex, setCurrentIndex] = useState(0);
 
+	const token = localStorage.getItem("token");
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
@@ -35,11 +36,19 @@ const PhotoDetailPage = () => {
 		fetchPhoto();
 	}, [id]);
 
+	const handleEdit = (e) => {
+		e.stopPropagation();
+		navigate(`/admin/edit/photos/${id}`);
+	};
+
 	const handleDelete = async () => {
 		if (window.confirm("정말 삭제하시겠습니까?")) {
 			try {
 				const res = await fetch(`/api/photos/${id}`, {
 					method: "DELETE",
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
 				});
 				if (!res.ok) throw new Error("사진 삭제 실패");
 				alert("사진이 삭제되었습니다.");
@@ -95,6 +104,9 @@ const PhotoDetailPage = () => {
 					</span>
 				))}
 			</div>
+			<Button type="default" onClick={handleEdit}>
+				수정
+			</Button>
 			<Button type="danger" onClick={handleDelete}>
 				삭제
 			</Button>

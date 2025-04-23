@@ -1,0 +1,75 @@
+.photo-form {
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 32px;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.photo-form__title {
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 24px;
+	text-align: center;
+	color: #111;
+}
+
+.photo-form__field {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+
+.photo-form__label {
+	font-size: 16px;
+	font-weight: 500;
+	margin-bottom: 6px;
+	color: #333;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.photo-form__required {
+	color: red;
+	font-weight: bold;
+}
+
+.photo-form__input {
+	padding: 10px 12px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background-color: #f9f9f9;
+	font-size: 15px;
+	transition: border-color 0.2s;
+}
+
+.photo-form__input:focus {
+	border-color: #000;
+	outline: none;
+	background-color: #fff;
+}
+
+.photo-form__error {
+	font-size: 13px;
+	color: #d60000;
+	margin-top: 4px;
+}
+
+.photo-form__submit {
+	padding: 12px 16px;
+	font-size: 16px;
+	background-color: #000;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
+}
+
+.photo-form__submit:hover {
+	background-color: #222;
+}
