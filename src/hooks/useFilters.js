@@ -11,7 +11,11 @@ export function useFilters(models, selectedTags, keyword, gender, agency) {
 		}
 
 		if (agency !== "all") {
-			filtered = filtered.filter((model) => model.agency?.name === agency);
+			if (agency === "무소속") {
+				filtered = filtered.filter((model) => model.agency === null);
+			} else {
+				filtered = filtered.filter((model) => model.agency?.name === agency);
+			}
 		}
 
 		if (selectedTags.length > 0) {

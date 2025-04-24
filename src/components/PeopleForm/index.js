@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./ModelForm.css";
+import "./PeopleForm.css";
 
-function ModelForm({ mode, model, onSubmit, agencies }) {
+function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 	const [formData, setFormData] = useState({
 		name: "",
 		image: "",
@@ -16,24 +16,23 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 	const [errors, setErrors] = useState({
 		name: "",
 		gender: "",
-		agency: "",
 	});
 
 	useEffect(() => {
-		if (mode === "edit" && model) {
+		if (mode === "edit" && item) {
 			setFormData({
-				...model,
-				gender: model.gender || "",
-				agency: model.agency?._id || "",
-				tags: model.tags?.join(", ") || "",
+				...item,
+				gender: item.gender || "",
+				agency: item.agency?._id || "",
+				tags: item.tags?.join(", ") || "",
 				recentWork:
-					model.recentWork
+					item.recentWork
 						?.map((work) => `${work.type}:${work.title}:${work.link}`)
 						.join(", ") || "",
-				contact: model.contact || "",
+				contact: item.contact || "",
 			});
 		}
-	}, [mode, model]);
+	}, [mode, item, roll]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -48,7 +47,6 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 		let formErrors = {};
 		if (!formData.name) formErrors.name = "이름을 입력해주세요.";
 		if (!formData.gender) formErrors.gender = "성별을 선택해주세요.";
-		if (!formData.agency) formErrors.agency = "에이전시를 선택해주세요.";
 
 		if (Object.keys(formErrors).length > 0) {
 			setErrors(formErrors);
@@ -76,6 +74,7 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 
 		const processedData = {
 			...formData,
+			agency: formData.agency || null,
 			tags: tagsArray,
 			recentWork: recentWorkArray,
 		};
@@ -85,7 +84,9 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 	return (
 		<form onSubmit={handleSubmit} className="model-form">
 			<h2 className="model-form__title">
-				{mode === "edit" ? "모델 수정" : "모델 추가"}
+				{mode === "edit"
+					? `${roll === "model" ? "모델 수정" : "포토그래퍼 수정"}`
+					: `${roll === "model" ? "모델 추가" : "포토그래퍼 추가"}`}
 			</h2>
 
 			<label className="model-form__field">
@@ -128,15 +129,12 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 			</label>
 
 			<label className="model-form__field">
-				<span className="model-form__label">
-					에이전시 <span className="model-form__required">*</span>
-				</span>
+				<span className="model-form__label">에이전시</span>
 				<select
 					className="model-form__input"
 					name="agency"
 					value={formData.agency}
 					onChange={handleChange}
-					required
 					aria-describedby="agencyError"
 				>
 					<option value="">선택하세요</option>
@@ -146,9 +144,6 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 						</option>
 					))}
 				</select>
-				<div id="agencyError" className="model-form__error">
-					{errors.agency}
-				</div>
 			</label>
 
 			<label className="model-form__field">
@@ -212,4 +207,4 @@ function ModelForm({ mode, model, onSubmit, agencies }) {
 	);
 }
 
-export default ModelForm;
+export default PeopleForm;

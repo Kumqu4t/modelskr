@@ -2,7 +2,7 @@ import React from "react";
 import ModelCard from "../ModelCard";
 import "./ModelList.css";
 
-function ModelList({ models, favorites = [], onToggleFavorite }) {
+function ModelList({ type, models, favorites = [], onToggleFavorite }) {
 	if (models.length === 0) {
 		return (
 			<div
@@ -22,6 +22,7 @@ function ModelList({ models, favorites = [], onToggleFavorite }) {
 			{models.map((model) => (
 				<ModelCard
 					key={model._id}
+					type={type}
 					model={model}
 					isFavorited={favorites.includes(model._id)}
 					onToggleFavorite={onToggleFavorite}

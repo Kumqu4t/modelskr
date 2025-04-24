@@ -14,6 +14,12 @@ function AdminPage() {
 				<Button type="default" onClick={() => navigate("/admin/create/models")}>
 					+ 모델 추가
 				</Button>
+				<Button
+					type="default"
+					onClick={() => navigate("/admin/create/photographers")}
+				>
+					+ 포토그래퍼 추가
+				</Button>
 				<Button type="default" onClick={() => navigate("/admin/create/photos")}>
 					+ 사진 추가
 				</Button>

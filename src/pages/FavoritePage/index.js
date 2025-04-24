@@ -79,6 +79,7 @@ function FavoritePage() {
 			<div className="favorite-page">
 				<h1 className="admin-title">Favorites</h1>
 				<ModelList
+					type="models"
 					models={currentModels}
 					favorites={favorites}
 					onToggleFavorite={handleToggleFavorite}

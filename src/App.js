@@ -7,6 +7,8 @@ import store from "./redux/store";
 import HomePage from "./pages/HomePage";
 import ModelListPage from "./pages/ModelListPage";
 import ModelDetailPage from "./pages/ModelDetailPage";
+import PhotographerListPage from "./pages/PhotographerListPage";
+import PhotographerDetailPage from "./pages/PhotographerDetailPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import FormPage from "./pages/FormPage";
@@ -29,6 +31,11 @@ function App() {
 							<Route path="/" element={<HomePage />} />
 							<Route path="/models" element={<ModelListPage />} />
 							<Route path="/models/:id" element={<ModelDetailPage />} />
+							<Route path="/photographers" element={<PhotographerListPage />} />
+							<Route
+								path="/photographers/:id"
+								element={<PhotographerDetailPage />}
+							/>
 							<Route path="/agencies" element={<AgencyListPage />} />
 							<Route path="/agencies/:id" element={<AgencyDetailPage />} />
 							<Route path="/photos" element={<PhotoListPage />} />

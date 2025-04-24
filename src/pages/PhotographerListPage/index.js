@@ -7,7 +7,7 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
 
-function ModelListPage() {
+function PhotographerListPage() {
 	const {
 		selectedTags,
 		setSelectedTags,
@@ -16,28 +16,28 @@ function ModelListPage() {
 		agency,
 		setAgency,
 		keyword,
-	} = useQueryFilters("/models");
-	const [models, setModels] = useState([]);
+	} = useQueryFilters("/photographers");
+	const [photographers, setPhotographers] = useState([]);
 
 	useEffect(() => {
-		const fetchModels = async () => {
+		const fetchPhotographers = async () => {
 			try {
-				const res = await fetch("/api/models");
+				const res = await fetch("/api/photographers");
 				const data = await res.json();
-				setModels(data);
+				setPhotographers(data);
 			} catch (err) {
-				console.error("모델 데이터를 불러오기 실패:", err);
+				console.error("작가 데이터를 불러오기 실패:", err);
 			}
 		};
 
-		fetchModels();
+		fetchPhotographers();
 	}, []);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
-	const filteredModels = useFilters(
-		models,
+	const filteredPhotographers = useFilters(
+		photographers,
 		selectedTags,
 		keyword,
 		gender,
@@ -48,23 +48,28 @@ function ModelListPage() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemLimit = 8;
 	const startIndex = (currentPage - 1) * itemLimit;
-	const currentModels = filteredModels.slice(
+	const currentPhotographers = filteredPhotographers.slice(
 		startIndex,
 		startIndex + itemLimit
 	);
 
-	const tags = [...new Set(models.flatMap((model) => model.tags))];
-	const availableTags = new Set(filteredModels.flatMap((model) => model.tags));
-	const agencies = [
-		...new Set(models.map((model) => model.agency?.name).filter(Boolean)),
+	const tags = [
+		...new Set(photographers.flatMap((photographers) => photographers.tags)),
 	];
-	if (models.some((model) => model.agency === null)) {
-		agencies.push("무소속");
-	}
+	const availableTags = new Set(
+		filteredPhotographers.flatMap((photographers) => photographers.tags)
+	);
+	const agencies = [
+		...new Set(
+			photographers
+				.map((photographers) => photographers.agency?.name)
+				.filter(Boolean)
+		),
+	];
 
 	return (
 		<div style={{ padding: "24px" }}>
-			<h1 className="admin-title">Models</h1>
+			<h1 className="admin-title">Photographers</h1>
 			<FilterBar
 				selectedTags={selectedTags}
 				setSelectedTags={setSelectedTags}
@@ -77,13 +82,13 @@ function ModelListPage() {
 				agencies={agencies}
 			/>
 			<ModelList
-				type="models"
-				models={currentModels}
+				type="photographers"
+				models={currentPhotographers}
 				favorites={favorites}
 				onToggleFavorite={toggleFavorite}
 			/>
 			<Pagination
-				totalItems={filteredModels.length}
+				totalItems={filteredPhotographers.length}
 				itemLimit={itemLimit}
 				currentPage={currentPage}
 				onPageChange={setCurrentPage}
@@ -92,4 +97,4 @@ function ModelListPage() {
 	);
 }
 
-export default ModelListPage;
+export default PhotographerListPage;

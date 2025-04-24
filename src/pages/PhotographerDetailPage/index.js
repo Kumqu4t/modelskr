@@ -4,9 +4,9 @@ import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
-import "./ModelDetailPage.css";
+// import "./ModelDetailPage.css";
 
-function ModelDetailPage() {
+function PhotographerDetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -14,18 +14,18 @@ function ModelDetailPage() {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const [model, setModel] = useState(null);
+	const [photographer, setPhotographer] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 	useEffect(() => {
-		const fetchModelDetails = async () => {
+		const fetchPhotographerDetails = async () => {
 			try {
-				const res = await fetch(`/api/models/${id}`);
-				if (!res.ok) throw new Error("모델을 불러오는 데 실패했습니다.");
+				const res = await fetch(`/api/photographers/${id}`);
+				if (!res.ok) throw new Error("작가 불러오기 실패.");
 				const data = await res.json();
-				setModel(data);
+				setPhotographer(data);
 			} catch (err) {
 				setError(err.message);
 			} finally {
@@ -33,21 +33,21 @@ function ModelDetailPage() {
 			}
 		};
 
-		fetchModelDetails();
+		fetchPhotographerDetails();
 	}, [id]);
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
-		navigate(`/admin/edit/models/${id}`);
+		navigate(`/admin/edit/photographers/${id}`);
 	};
 
 	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
 			try {
-				const res = await fetch(`/api/models/${id}`, {
+				const res = await fetch(`/api/photographers/${id}`, {
 					method: "DELETE",
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -67,7 +67,7 @@ function ModelDetailPage() {
 
 	if (isLoading) return <div>로딩 중...</div>;
 	if (error) return <div>{error}</div>;
-	if (!model) return <div>해당 모델을 찾을 수 없습니다.</div>;
+	if (!photographer) return <div>해당 작가를 찾을 수 없습니다.</div>;
 
 	return (
 		<div className="model-detail">
@@ -84,32 +84,34 @@ function ModelDetailPage() {
 				)}
 				<Button
 					type="default"
-					onClick={() => window.open(model.contact, "_blank")}
+					onClick={() => window.open(photographer.contact, "_blank")}
 				>
 					Contact
 				</Button>
 			</div>
 
 			<div className="image-wrapper">
-				<img src={model.image} alt={model.name} />
+				<img src={photographer.image} alt={photographer.name} />
 				<FavoriteButton
-					modelId={model._id}
-					isFavorited={favorites.includes(model._id)}
+					modelId={photographer._id}
+					isFavorited={favorites.includes(photographer._id)}
 					onToggle={handleToggleFavorite}
 					className={"favorite-icon detail-icon"}
 				/>
 			</div>
 
 			<div className="model-detail-info">
-				<h2>{model.name}</h2>
-				<p>{model.description}</p>
+				<h2>{photographer.name}</h2>
+				<p>{photographer.description}</p>
 				<p>
 					<strong>성별:</strong>{" "}
 					<span
 						className="filter-button"
-						onClick={() => navigate(`/models?gender=${model.gender}`)}
+						onClick={() =>
+							navigate(`/photographers?gender=${photographer.gender}`)
+						}
 					>
-						{model.gender}
+						{photographer.gender}
 					</span>
 				</p>
 				<p>
@@ -119,20 +121,22 @@ function ModelDetailPage() {
 						onClick={() =>
 							navigate(
 								`/agencies?keyword=${encodeURIComponent(
-									model.agency?.name ?? "none"
+									photographer.agency?.name
 								)}`
 							)
 						}
 					>
-						{model.agency?.name || "무소속"}
+						{photographer.agency?.name}
 					</span>
 				</p>
 				<div className="tag-list">
-					{model.tags.map((tag, index) => (
+					{photographer.tags.map((tag, index) => (
 						<span
 							key={index}
 							className="filter-button"
-							onClick={() => navigate(`/models?tag=${encodeURIComponent(tag)}`)}
+							onClick={() =>
+								navigate(`/photographer?tag=${encodeURIComponent(tag)}`)
+							}
 						>
 							{tag}
 						</span>
@@ -140,7 +144,7 @@ function ModelDetailPage() {
 				</div>
 				<div className="recent-work-list">
 					<h3>최근 활동</h3>
-					{model.recentWork.map((item, index) => (
+					{photographer.recentWork.map((item, index) => (
 						<div key={index} className="recent-work-item">
 							<strong>[{item.type}]</strong>{" "}
 							<a href={item.link} target="_blank" rel="noopener noreferrer">
@@ -154,4 +158,4 @@ function ModelDetailPage() {
 	);
 }
 
-export default ModelDetailPage;
+export default PhotographerDetailPage;

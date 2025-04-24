@@ -5,7 +5,7 @@ import Button from "../Button";
 import FavoriteButton from "../FavoriteButton";
 import "./ModelCard.css";
 
-function ModelCard({ model, isFavorited, onToggleFavorite }) {
+function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 	const { _id: id, name, image, description } = model;
 	const navigate = useNavigate();
 
@@ -13,17 +13,17 @@ function ModelCard({ model, isFavorited, onToggleFavorite }) {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const handleCardClick = () => navigate(`/models/${id}`);
+	const handleCardClick = () => navigate(`/${type}/${id}`);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
-		navigate(`/admin/edit/models/${id}`);
+		navigate(`/admin/edit/${type}/${id}`);
 	};
 	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
 			try {
-				const res = await fetch(`/api/models/${id}`, {
+				const res = await fetch(`/api/${type}/${id}`, {
 					method: "DELETE",
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

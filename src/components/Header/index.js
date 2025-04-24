@@ -20,6 +20,7 @@ function Header() {
 
 	const isProfilesActive =
 		location.pathname.startsWith("/models") ||
+		location.pathname.startsWith("/photographers") ||
 		location.pathname.startsWith("/agencies");
 
 	const handleSubmit = (e) => {
@@ -78,6 +79,9 @@ function Header() {
 							<div className="dropdown-content">
 								<NavLink to="/models" className="nav-item">
 									Models
+								</NavLink>
+								<NavLink to="/photographers" className="nav-item">
+									Photographers
 								</NavLink>
 								<NavLink to="/agencies" className="nav-item">
 									Agencies

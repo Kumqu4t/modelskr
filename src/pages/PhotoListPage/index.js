@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQueryFilters } from "../../hooks/useQueryFilters";
 import "./PhotoListPage.css";
 
 const PhotoListPage = () => {
 	const [photos, setPhotos] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const { keyword } = useQueryFilters("/photos");
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -25,6 +27,10 @@ const PhotoListPage = () => {
 		fetchPhotos();
 	}, []);
 
+	const filteredPhotos = photos.filter((photo) =>
+		photo.title?.toLowerCase().includes(keyword.toLowerCase())
+	);
+
 	if (isLoading) return <div>로딩 중...</div>;
 	if (!photos) return <div>사진이 없습니다.</div>;
 	if (error) return <div>{error}</div>;
@@ -33,7 +39,7 @@ const PhotoListPage = () => {
 		<div className="photos-page" style={{ padding: "24px" }}>
 			<h1 className="admin-title">Photos</h1>
 			<div className="photos-grid">
-				{photos.map((photo) => (
+				{filteredPhotos.map((photo) => (
 					<div
 						className="photo-card"
 						key={photo._id}
@@ -41,7 +47,7 @@ const PhotoListPage = () => {
 					>
 						<img key={photo._id} src={photo.images[0]} alt={photo.title} />
 						<h3>{photo.title}</h3>
-						<p>{photo.description}</p>
+						{/* <p>{photo.description}</p> */}
 					</div>
 				))}
 			</div>

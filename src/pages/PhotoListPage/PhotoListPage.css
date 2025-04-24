@@ -1,33 +1,19 @@
 .photo-card {
-	background-color: #f9f9f9;
-	border-radius: 8px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-	padding: 15px;
-	max-width: 300px;
-	flex-shrink: 0; /* 사진들이 늘어나지 않도록 고정 */
+	text-align: center;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	transition: transform 0.2s;
+	max-width: 500px;
+	flex-shrink: 0;
 }
 
 .photos-grid {
 	display: flex;
 	gap: 20px;
-	overflow-x: auto; /* 수평 스크롤 */
 	padding-bottom: 20px;
-	scroll-snap-type: x mandatory;
 }
-
-.photos-grid::-webkit-scrollbar {
-	height: 8px; /* 스크롤 바 크기 */
-}
-
-.photos-grid::-webkit-scrollbar-thumb {
-	background: #888;
-	border-radius: 5px;
-}
-
 .photo-card img {
 	width: 100%;
 	max-width: 100%;
-	border-radius: 8px;
-	object-fit: cover;
-	scroll-snap-align: start; /* 스크롤 시 정렬 */
+	/* object-fit: cover; */
 }

@@ -27,13 +27,15 @@ function SearchBar({
 						onChange={(e) => setSearchTarget(e.target.value)}
 					>
 						<option value="models">모델</option>
+						<option value="photographers">포토그래퍼</option>
 						<option value="agencies">에이전시</option>
+						<option value="photos">사진</option>
 					</select>
 				)}
 				<input
 					className="search-bar"
 					type="text"
-					placeholder="모델/에이전시 이름 검색"
+					placeholder="종류 선택 및 이름 검색"
 					value={value}
 					onChange={onChange}
 					onFocus={() => setIsFocused(true)}

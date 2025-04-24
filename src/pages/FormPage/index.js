@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ModelForm from "../../components/ModelForm";
+import PeopleForm from "../../components/PeopleForm";
 import PhotoForm from "../../components/PhotoForm";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -9,6 +9,7 @@ function FormPage() {
 	const [mode, setMode] = useState("create");
 	const [item, setItem] = useState(null);
 	const [agencies, setAgencies] = useState([]);
+	const roll = formType.slice(0, -1);
 
 	useEffect(() => {
 		if (id) {
@@ -19,6 +20,7 @@ function FormPage() {
 					const res = await fetch(`/api/${formType}/${id}`);
 					const data = await res.json();
 					setItem(data);
+					console.log(data);
 				} catch (err) {
 					console.error(`${formType} 불러오기 실패:`, err);
 				}
@@ -63,15 +65,16 @@ function FormPage() {
 	return (
 		<div>
 			<h1> </h1>
-			{formType === "models" ? (
-				<ModelForm
+			{formType === "photos" ? (
+				<PhotoForm mode={mode} photo={item} onSubmit={handleSubmit} />
+			) : (
+				<PeopleForm
 					mode={mode}
-					model={item}
+					item={item}
 					onSubmit={handleSubmit}
 					agencies={agencies}
+					roll={roll}
 				/>
-			) : (
-				<PhotoForm mode={mode} photo={item} onSubmit={handleSubmit} />
 			)}
 		</div>
 	);

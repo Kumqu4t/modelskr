@@ -112,7 +112,15 @@ const PhotoDetailPage = () => {
 			</Button>
 			<h2>참여 모델</h2>
 			<ModelList
+				type="models"
 				models={photo.models}
+				favorites={favorites}
+				onToggleFavorite={toggleFavorite}
+			/>
+			<h2>참여 작가</h2>
+			<ModelList
+				type="photographers"
+				models={photo.photographers}
 				favorites={favorites}
 				onToggleFavorite={toggleFavorite}
 			/>
