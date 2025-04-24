@@ -17,17 +17,8 @@ function FavoriteButton({ modelId, isFavorited, className, onToggle }) {
 			return;
 		}
 
-		const method = isFavorited ? "DELETE" : "POST";
-
 		try {
-			await fetch(`/api/favorites/${modelId}`, {
-				method,
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
-			});
-
-			if (onToggle) onToggle(modelId);
+			await onToggle(modelId);
 		} catch (err) {
 			console.error("즐겨찾기 요청 실패:", err);
 		}

@@ -9,6 +9,7 @@ import { useFavorites } from "../../hooks/useFavorites";
 function PhotographerDetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const kind = "Photographer";
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
@@ -36,7 +37,7 @@ function PhotographerDetailPage() {
 		fetchPhotographerDetails();
 	}, [id]);
 
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -94,7 +95,10 @@ function PhotographerDetailPage() {
 				<img src={photographer.image} alt={photographer.name} />
 				<FavoriteButton
 					modelId={photographer._id}
-					isFavorited={favorites.includes(photographer._id)}
+					kind={kind}
+					isFavorited={favorites.some(
+						(fav) => fav.item?._id === photographer._id
+					)}
 					onToggle={handleToggleFavorite}
 					className={"favorite-icon detail-icon"}
 				/>

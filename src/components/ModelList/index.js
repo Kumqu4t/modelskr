@@ -24,7 +24,7 @@ function ModelList({ type, models, favorites = [], onToggleFavorite }) {
 					key={model._id}
 					type={type}
 					model={model}
-					isFavorited={favorites.includes(model._id)}
+					isFavorited={favorites.some((fav) => fav.item?._id === model._id)}
 					onToggleFavorite={onToggleFavorite}
 				/>
 			))}

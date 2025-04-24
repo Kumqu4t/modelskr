@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
+import FavoriteButton from "../../components/FavoriteButton";
 import ModelList from "../../components/ModelList";
 import { useFavorites } from "../../hooks/useFavorites";
 import "./PhotoDetailPage.css";
@@ -17,7 +18,14 @@ const PhotoDetailPage = () => {
 
 	const token = localStorage.getItem("token");
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
+	const { favorites: modelFavorites, toggleFavorite: toggleModelFavorite } =
+		useFavorites(isLoggedIn, "Model");
+	const {
+		favorites: photographerFavorites,
+		toggleFavorite: togglePhotographerFavorite,
+	} = useFavorites(isLoggedIn, "Photographer");
+	const { favorites: photoFavorites, toggleFavorite: togglePhotoFavorite } =
+		useFavorites(isLoggedIn, "Photo");
 
 	useEffect(() => {
 		const fetchPhoto = async () => {
@@ -110,19 +118,26 @@ const PhotoDetailPage = () => {
 			<Button type="danger" onClick={handleDelete}>
 				삭제
 			</Button>
+			<FavoriteButton
+				modelId={photo._id}
+				kind={"Photo"}
+				isFavorited={photoFavorites.some((fav) => fav.item?._id === photo._id)}
+				onToggle={togglePhotoFavorite}
+				className={"favorite-icon detail-icon"}
+			/>
 			<h2>참여 모델</h2>
 			<ModelList
 				type="models"
 				models={photo.models}
-				favorites={favorites}
-				onToggleFavorite={toggleFavorite}
+				favorites={modelFavorites}
+				onToggleFavorite={toggleModelFavorite}
 			/>
 			<h2>참여 작가</h2>
 			<ModelList
 				type="photographers"
 				models={photo.photographers}
-				favorites={favorites}
-				onToggleFavorite={toggleFavorite}
+				favorites={photographerFavorites}
+				onToggleFavorite={togglePhotographerFavorite}
 			/>
 		</div>
 	);

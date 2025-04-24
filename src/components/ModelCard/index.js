@@ -45,6 +45,7 @@ function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 				<img src={image} alt={name} />
 				<FavoriteButton
 					modelId={id}
+					kind={type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)}
 					isFavorited={isFavorited}
 					onToggle={onToggleFavorite}
 					className="favorite-icon card-icon"

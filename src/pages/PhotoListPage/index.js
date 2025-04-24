@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
+import PhotoList from "../../components/PhotoList";
 import "./PhotoListPage.css";
 
 const PhotoListPage = () => {
@@ -8,7 +8,6 @@ const PhotoListPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const { keyword } = useQueryFilters("/photos");
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchPhotos = async () => {
@@ -38,19 +37,7 @@ const PhotoListPage = () => {
 	return (
 		<div className="photos-page" style={{ padding: "24px" }}>
 			<h1 className="admin-title">Photos</h1>
-			<div className="photos-grid">
-				{filteredPhotos.map((photo) => (
-					<div
-						className="photo-card"
-						key={photo._id}
-						onClick={() => navigate(`/photos/${photo._id}`)}
-					>
-						<img key={photo._id} src={photo.images[0]} alt={photo.title} />
-						<h3>{photo.title}</h3>
-						{/* <p>{photo.description}</p> */}
-					</div>
-				))}
-			</div>
+			<PhotoList photos={filteredPhotos} />
 		</div>
 	);
 };

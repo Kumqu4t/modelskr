@@ -8,15 +8,17 @@ function RequireLogin({ children }) {
 	const hasNavigated = useRef(false);
 
 	useEffect(() => {
-		if (!isLoggedIn && !hasNavigated.current) {
+		if (isLoggedIn === false && !hasNavigated.current) {
 			hasNavigated.current = true;
 			alert("로그인 후 이용해주세요.");
 			navigate("/login");
 		}
 	}, [isLoggedIn, navigate]);
 
-	if (!isLoggedIn) return null;
+	if (isLoggedIn === null) return null;
+	if (isLoggedIn === false) return null;
 
 	return children;
 }
+
 export default RequireLogin;

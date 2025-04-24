@@ -34,7 +34,7 @@ function ModelListPage() {
 	}, []);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
 	const filteredModels = useFilters(
 		models,

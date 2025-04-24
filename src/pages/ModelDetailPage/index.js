@@ -9,6 +9,7 @@ import "./ModelDetailPage.css";
 function ModelDetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
+	const kind = "Model";
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
@@ -36,8 +37,9 @@ function ModelDetailPage() {
 		fetchModelDetails();
 	}, [id]);
 
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
+	console.log("favorites: ", favorites);
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/models/${id}`);
@@ -92,12 +94,14 @@ function ModelDetailPage() {
 
 			<div className="image-wrapper">
 				<img src={model.image} alt={model.name} />
-				<FavoriteButton
-					modelId={model._id}
-					isFavorited={favorites.includes(model._id)}
-					onToggle={handleToggleFavorite}
-					className={"favorite-icon detail-icon"}
-				/>
+				{model?._id && (
+					<FavoriteButton
+						modelId={model._id}
+						isFavorited={favorites.some((fav) => fav.item?._id === model._id)}
+						onToggle={handleToggleFavorite}
+						className={"favorite-icon detail-icon"}
+					/>
+				)}
 			</div>
 
 			<div className="model-detail-info">
