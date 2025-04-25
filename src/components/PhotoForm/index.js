@@ -7,6 +7,8 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		images: "",
 		description: "",
 		tags: "",
+		models: [],
+		photographers: [],
 	});
 
 	const [errors, setErrors] = useState({
@@ -14,22 +16,56 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		images: "",
 	});
 
+	const [models, setModels] = useState([]);
+	const [photographers, setPhotographers] = useState([]);
+
+	// 모델과 포토그래퍼 데이터 가져오기
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const modelsRes = await fetch("/api/models");
+				const modelsData = await modelsRes.json();
+				setModels(modelsData);
+
+				const photographersRes = await fetch("/api/photographers");
+				const photographersData = await photographersRes.json();
+				setPhotographers(photographersData);
+			} catch (err) {
+				console.error("데이터 불러오기 실패:", err);
+			}
+		};
+
+		fetchData();
+	}, []);
+
 	useEffect(() => {
 		if (mode === "edit" && photo) {
 			setFormData({
 				...photo,
 				images: photo.images?.join(", ") || "",
 				tags: photo.tags?.join(", ") || "",
+				models: photo.models?.map((m) => m._id) || [],
+				photographers: photo.photographers?.map((p) => p._id) || [],
 			});
 		}
 	}, [mode, photo]);
 
 	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
+		const { name, value, type, options } = e.target;
+		if (type === "select-multiple") {
+			const selectedValues = Array.from(options)
+				.filter((option) => option.selected)
+				.map((option) => option.value);
+			setFormData((prev) => ({
+				...prev,
+				[name]: selectedValues,
+			}));
+		} else {
+			setFormData((prev) => ({
+				...prev,
+				[name]: value,
+			}));
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -124,6 +160,40 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					value={formData.tags}
 					onChange={handleChange}
 				/>
+			</label>
+
+			<label className="photo-form__field">
+				모델 선택
+				<select
+					className="photo-form__input"
+					name="models"
+					multiple
+					value={formData.models}
+					onChange={handleChange}
+				>
+					{models.map((model) => (
+						<option key={model._id} value={model._id}>
+							{model.name}
+						</option>
+					))}
+				</select>
+			</label>
+
+			<label className="photo-form__field">
+				포토그래퍼 선택
+				<select
+					className="photo-form__input"
+					name="photographers"
+					multiple
+					value={formData.photographers}
+					onChange={handleChange}
+				>
+					{photographers.map((photographer) => (
+						<option key={photographer._id} value={photographer._id}>
+							{photographer.name}
+						</option>
+					))}
+				</select>
 			</label>
 
 			<button type="submit" className="photo-form__submit">
