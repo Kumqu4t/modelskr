@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
+import { API_BASE_URL, getHeaders } from "../../api";
 import "./ModelDetailPage.css";
 
 function ModelDetailPage() {
@@ -23,7 +24,7 @@ function ModelDetailPage() {
 	useEffect(() => {
 		const fetchModelDetails = async () => {
 			try {
-				const res = await fetch(`/api/models/${id}`);
+				const res = await fetch(`${API_BASE_URL}/api/models/${id}`);
 				if (!res.ok) throw new Error("모델을 불러오는 데 실패했습니다.");
 				const data = await res.json();
 				setModel(data);
@@ -49,11 +50,9 @@ function ModelDetailPage() {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
 			try {
-				const res = await fetch(`/api/models/${id}`, {
+				const res = await fetch(`${API_BASE_URL}/api/models/${id}`, {
 					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
+					headers: getHeaders(localStorage.getItem("token")),
 				});
 				if (!res.ok) throw new Error("삭제 실패");
 				alert("삭제되었습니다.");
@@ -122,9 +121,7 @@ function ModelDetailPage() {
 						<span
 							className="filter-button"
 							onClick={() =>
-								navigate(
-									`/agencies?keyword=${encodeURIComponent(model.agency.name)}`
-								)
+								navigate(`/agencies/${encodeURIComponent(model.agency._id)}`)
 							}
 						>
 							{model.agency.name}

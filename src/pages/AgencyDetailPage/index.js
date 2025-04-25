@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
 import { useFavorites } from "../../hooks/useFavorites";
@@ -21,13 +22,15 @@ function AgencyDetailPage() {
 	useEffect(() => {
 		const fetchAgencyDetails = async () => {
 			try {
-				const res = await axios.get(`/api/agencies/${decodedName}`);
+				const res = await axios.get(
+					`${API_BASE_URL}/api/agencies/${decodedName}`
+				);
 				setAgency(res.data);
 				setModels(res.data.models);
-				console.log("에이전시 정보 가져오기 성공", res.data);
-				console.log("에이전시 모델 정보 가져오기 성공", res.data.models);
+				// console.log("에이전시 정보 가져오기 성공", res.data);
+				// console.log("에이전시 모델 정보 가져오기 성공", res.data.models);
 			} catch (error) {
-				console.error("에이전시 정보 가져오기 실패", error);
+				// console.error("에이전시 정보 가져오기 실패", error);
 			} finally {
 				setLoading(false);
 			}

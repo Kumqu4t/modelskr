@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import PhotoList from "../../components/PhotoList";
+import { API_BASE_URL } from "../../api";
 import "./PhotoListPage.css";
 
 const PhotoListPage = () => {
@@ -12,7 +13,7 @@ const PhotoListPage = () => {
 	useEffect(() => {
 		const fetchPhotos = async () => {
 			try {
-				const res = await fetch("/api/photos");
+				const res = await fetch(`${API_BASE_URL}/api/photos`);
 				if (!res.ok) throw new Error("사진을 불러오는 데 실패했습니다.");
 				const data = await res.json();
 				setPhotos(data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PeopleForm from "../../components/PeopleForm";
 import PhotoForm from "../../components/PhotoForm";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_BASE_URL, getHeaders } from "../../api";
 
 function FormPage() {
 	const navigate = useNavigate();
@@ -17,7 +18,7 @@ function FormPage() {
 
 			(async () => {
 				try {
-					const res = await fetch(`/api/${formType}/${id}`);
+					const res = await fetch(`${API_BASE_URL}/api/${formType}/${id}`);
 					const data = await res.json();
 					setItem(data);
 					console.log(data);
@@ -29,7 +30,7 @@ function FormPage() {
 
 		(async () => {
 			try {
-				const res = await fetch("/api/agencies");
+				const res = await fetch(`${API_BASE_URL}/api/agencies`);
 				const data = await res.json();
 				setAgencies(data);
 			} catch (err) {
@@ -41,15 +42,14 @@ function FormPage() {
 	const handleSubmit = async (formData) => {
 		try {
 			const token = localStorage.getItem("token");
-			const endpoint = id ? `/api/${formType}/${id}` : `/api/${formType}`;
+			const endpoint = id
+				? `${API_BASE_URL}/api/${formType}/${id}`
+				: `${API_BASE_URL}/api/${formType}`;
 			const method = id ? "PATCH" : "POST";
 
 			const res = await fetch(endpoint, {
 				method,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
+				headers: getHeaders(token),
 				body: JSON.stringify(formData),
 			});
 

@@ -1,3 +1,4 @@
+import { API_BASE_URL, getHeaders } from "../../api";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
@@ -22,7 +23,9 @@ function ModelListPage() {
 	useEffect(() => {
 		const fetchModels = async () => {
 			try {
-				const res = await fetch("/api/models");
+				const res = await fetch(`${API_BASE_URL}/api/models`, {
+					headers: getHeaders(localStorage.getItem("token")),
+				});
 				const data = await res.json();
 				setModels(data);
 			} catch (err) {

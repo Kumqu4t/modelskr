@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL, getHeaders } from "../api";
 
 export function useFavorites(isLoggedIn, kind = "all") {
 	const [favorites, setFavorites] = useState([]);
@@ -8,10 +9,8 @@ export function useFavorites(isLoggedIn, kind = "all") {
 
 		const fetchFavorites = async () => {
 			try {
-				const res = await fetch(`/api/favorites?kind=${kind}`, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
+				const res = await fetch(`${API_BASE_URL}/api/favorites?kind=${kind}`, {
+					headers: getHeaders(localStorage.getItem("token")),
 				});
 				const data = await res.json();
 
@@ -35,12 +34,9 @@ export function useFavorites(isLoggedIn, kind = "all") {
 
 		const method = isFav ? "DELETE" : "POST";
 		try {
-			await fetch("/api/favorites", {
+			await fetch(`${API_BASE_URL}/api/favorites`, {
 				method,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-				},
+				headers: getHeaders(localStorage.getItem("token")),
 				body: JSON.stringify({ id, kind }),
 			});
 			setFavorites((prev) =>
@@ -48,11 +44,8 @@ export function useFavorites(isLoggedIn, kind = "all") {
 					? prev.filter(
 							(fav) =>
 								!(
-									// 일단 무조건 object화 해줌. item이 추가되면 populate되어 객체가 되기 때문
-									(
-										(typeof fav.item === "object" ? fav.item._id : fav.item) ===
-											id && fav.kind === kind
-									)
+									(typeof fav.item === "object" ? fav.item._id : fav.item) ===
+										id && fav.kind === kind
 								)
 					  )
 					: [...prev, { item: { _id: id }, kind }]

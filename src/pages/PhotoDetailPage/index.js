@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import ModelList from "../../components/ModelList";
 import { useFavorites } from "../../hooks/useFavorites";
+import { API_BASE_URL, getHeaders } from "../../api";
 import "./PhotoDetailPage.css";
 
 const PhotoDetailPage = () => {
@@ -21,6 +22,7 @@ const PhotoDetailPage = () => {
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
+
 	const { favorites: modelFavorites, toggleFavorite: toggleModelFavorite } =
 		useFavorites(isLoggedIn, "Model");
 	const {
@@ -33,7 +35,7 @@ const PhotoDetailPage = () => {
 	useEffect(() => {
 		const fetchPhoto = async () => {
 			try {
-				const res = await fetch(`/api/photos/${id}`);
+				const res = await fetch(`${API_BASE_URL}/api/photos/${id}`);
 				if (!res.ok) throw new Error("사진을 불러오는 데 실패했습니다.");
 				const data = await res.json();
 				setPhoto(data);
@@ -53,20 +55,18 @@ const PhotoDetailPage = () => {
 	};
 
 	const handleDelete = async () => {
-		if (window.confirm("정말 삭제하시겠습니까?")) {
-			try {
-				const res = await fetch(`/api/photos/${id}`, {
-					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-				if (!res.ok) throw new Error("사진 삭제 실패");
-				alert("사진이 삭제되었습니다.");
-				navigate("/photos");
-			} catch (err) {
-				alert("사진 삭제 실패");
-			}
+		if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+		try {
+			const res = await fetch(`${API_BASE_URL}/api/photos/${id}`, {
+				method: "DELETE",
+				headers: getHeaders(token),
+			});
+			if (!res.ok) throw new Error("사진 삭제 실패");
+			alert("사진이 삭제되었습니다.");
+			navigate("/photos");
+		} catch (err) {
+			alert("사진 삭제 실패");
 		}
 	};
 
@@ -109,6 +109,7 @@ const PhotoDetailPage = () => {
 					/>
 				</div>
 			</div>
+
 			<div className="photo-gallery">
 				<button
 					onClick={handlePrev}
@@ -131,7 +132,9 @@ const PhotoDetailPage = () => {
 					→
 				</button>
 			</div>
+
 			<p>{photo.description}</p>
+
 			<div className="tags">
 				{photo.tags.map((tag, index) => (
 					<span key={index} className="tag">
@@ -139,6 +142,7 @@ const PhotoDetailPage = () => {
 					</span>
 				))}
 			</div>
+
 			<h2>참여 모델</h2>
 			<ModelList
 				type="models"
@@ -146,6 +150,7 @@ const PhotoDetailPage = () => {
 				favorites={modelFavorites}
 				onToggleFavorite={toggleModelFavorite}
 			/>
+
 			<h2>참여 작가</h2>
 			<ModelList
 				type="photographers"

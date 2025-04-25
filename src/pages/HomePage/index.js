@@ -3,6 +3,7 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ModelList from "../../components/ModelList";
+import { API_BASE_URL } from "../../api";
 import "./HomePage.css";
 
 function HomePage() {
@@ -13,7 +14,7 @@ function HomePage() {
 	useEffect(() => {
 		const fetchRandomModels = async () => {
 			try {
-				const res = await fetch("/api/models/random?limit=4");
+				const res = await fetch(`${API_BASE_URL}/api/models/random?limit=4`);
 				const data = await res.json();
 				setModels(data);
 			} catch (err) {

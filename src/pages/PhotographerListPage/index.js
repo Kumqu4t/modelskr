@@ -6,6 +6,7 @@ import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
+import { API_BASE_URL, getHeaders } from "../../api";
 
 function PhotographerListPage() {
 	const {
@@ -22,7 +23,9 @@ function PhotographerListPage() {
 	useEffect(() => {
 		const fetchPhotographers = async () => {
 			try {
-				const res = await fetch("/api/photographers");
+				const res = await fetch(`${API_BASE_URL}/api/photographers`, {
+					headers: getHeaders(localStorage.getItem("token")),
+				});
 				const data = await res.json();
 				setPhotographers(data);
 			} catch (err) {

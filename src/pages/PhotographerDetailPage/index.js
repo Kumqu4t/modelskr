@@ -1,3 +1,4 @@
+import { API_BASE_URL, getHeaders } from "../../api";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
@@ -23,7 +24,7 @@ function PhotographerDetailPage() {
 	useEffect(() => {
 		const fetchPhotographerDetails = async () => {
 			try {
-				const res = await fetch(`/api/photographers/${id}`);
+				const res = await fetch(`${API_BASE_URL}/api/photographers/${id}`);
 				if (!res.ok) throw new Error("작가 불러오기 실패.");
 				const data = await res.json();
 				setPhotographer(data);
@@ -48,11 +49,9 @@ function PhotographerDetailPage() {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
 			try {
-				const res = await fetch(`/api/photographers/${id}`, {
+				const res = await fetch(`${API_BASE_URL}/api/photographers/${id}`, {
 					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-					},
+					headers: getHeaders(localStorage.getItem("token")),
 				});
 				if (!res.ok) throw new Error("삭제 실패");
 				alert("삭제되었습니다.");
@@ -125,9 +124,7 @@ function PhotographerDetailPage() {
 							className="filter-button"
 							onClick={() =>
 								navigate(
-									`/agencies?keyword=${encodeURIComponent(
-										photographer.agency.name
-									)}`
+									`/agencies/${encodeURIComponent(photographer.agency._id)}`
 								)
 							}
 						>

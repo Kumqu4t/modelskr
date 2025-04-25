@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import "./AgencyListPage.css";
@@ -13,7 +14,7 @@ function AgencyListPage() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get("/api/agencies");
+				const res = await axios.get(`${API_BASE_URL}/api/agencies`);
 				setAgencies(res.data);
 			} catch (err) {
 				console.error("에이전시 목록 가져오기 실패", err);

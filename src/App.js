@@ -24,7 +24,7 @@ import RequireAdmin from "./components/RequireAdmin";
 function App() {
 	return (
 		<Provider store={store}>
-			<GoogleOAuthProvider clientId="492176985275-d927cld9q853m3no1jl4n16kjkucu4n2.apps.googleusercontent.com">
+			<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
 				<Router>
 					<Routes>
 						<Route element={<PageLayout />}>

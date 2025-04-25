@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../api";
 import ModelList from "../../components/ModelList";
 import PhotoList from "../../components/PhotoList";
 import RequireLogin from "../../components/RequireLogin";
@@ -15,9 +16,10 @@ function FavoritePage() {
 		const fetchData = async () => {
 			try {
 				let url = "";
-				if (favoriteType === "Model") url = "/api/models";
-				else if (favoriteType === "Photographer") url = "/api/photographers";
-				else if (favoriteType === "Photo") url = "/api/photos";
+				if (favoriteType === "Model") url = `${API_BASE_URL}/api/models`;
+				else if (favoriteType === "Photographer")
+					url = `${API_BASE_URL}/api/photographers`;
+				else if (favoriteType === "Photo") url = `${API_BASE_URL}/api/photos`;
 
 				const res = await fetch(url);
 				const data = await res.json();
