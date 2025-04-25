@@ -40,7 +40,6 @@ function ModelDetailPage() {
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
-	console.log("favorites: ", favorites);
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/models/${id}`);
