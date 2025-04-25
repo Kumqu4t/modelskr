@@ -35,6 +35,8 @@
 }
 
 .homepage-button-wrapper {
+	display: flex;
+	gap: 8px;
 	position: absolute;
 	top: 24px;
 	right: 12px;

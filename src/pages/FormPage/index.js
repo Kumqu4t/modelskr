@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PeopleForm from "../../components/PeopleForm";
 import PhotoForm from "../../components/PhotoForm";
+import AgencyForm from "../../components/AgencyForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_BASE_URL, getHeaders } from "../../api";
 
@@ -67,6 +68,8 @@ function FormPage() {
 			<h1> </h1>
 			{formType === "photos" ? (
 				<PhotoForm mode={mode} photo={item} onSubmit={handleSubmit} />
+			) : formType === "agencies" ? (
+				<AgencyForm mode={mode} item={item} onSubmit={handleSubmit} />
 			) : (
 				<PeopleForm
 					mode={mode}

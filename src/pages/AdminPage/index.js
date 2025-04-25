@@ -9,7 +9,12 @@ function AdminPage() {
 		<div className="admin-page">
 			<h1 className="admin-title">관리자 페이지</h1>
 			<div
-				style={{ display: "flex", justifyContent: "center", marginTop: "24px" }}
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					marginTop: "24px",
+					gap: "12px",
+				}}
 			>
 				<Button type="default" onClick={() => navigate("/admin/create/models")}>
 					+ 모델 추가
@@ -19,6 +24,12 @@ function AdminPage() {
 					onClick={() => navigate("/admin/create/photographers")}
 				>
 					+ 포토그래퍼 추가
+				</Button>
+				<Button
+					type="default"
+					onClick={() => navigate("/admin/create/agencies")}
+				>
+					+ 에이전시 추가
 				</Button>
 				<Button type="default" onClick={() => navigate("/admin/create/photos")}>
 					+ 사진 추가
