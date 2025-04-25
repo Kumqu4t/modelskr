@@ -1,10 +1,10 @@
 .agency-logo {
 	width: 100px;
 	height: 100px;
+	aspect-ratio: 1 / 1;
 	object-fit: contain;
-	border: 2px solid #ddd; /* 테두리 추가 */
-	border-radius: 999px; /* 둥근 모서리 */
-	padding: 6px; /* 테두리 안쪽 여백 */
+	border: 2px solid #ddd;
+	border-radius: 50%;
 }
 
 .agency-description {

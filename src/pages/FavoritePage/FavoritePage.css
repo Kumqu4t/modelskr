@@ -3,3 +3,27 @@
 	max-width: 1200px;
 	margin: 0 auto;
 }
+.favorite-type-buttons {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 24px;
+}
+
+.favorite-type-buttons button {
+	padding: 8px 16px;
+	border: 0.5px solid black;
+	background-color: white;
+	color: black;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-weight: 500;
+}
+
+.favorite-type-buttons button:hover {
+	background-color: #f0f0f0;
+}
+
+.favorite-type-buttons button.active {
+	background-color: black;
+	color: white;
+}

@@ -25,7 +25,7 @@ export function useFavorites(isLoggedIn, kind = "all") {
 	}, [isLoggedIn, kind]);
 
 	const toggleFavorite = async (id) => {
-		const validFavorites = favorites.filter((fav) => fav.item !== null);
+		const validFavorites = favorites?.filter((fav) => fav.item !== null);
 
 		const isFav = validFavorites.some(
 			(fav) =>

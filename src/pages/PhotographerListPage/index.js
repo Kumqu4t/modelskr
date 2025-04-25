@@ -69,6 +69,9 @@ function PhotographerListPage() {
 				.filter(Boolean)
 		),
 	];
+	if (photographers.some((photographer) => photographer.agency === null)) {
+		agencies.push("무소속");
+	}
 
 	return (
 		<div style={{ padding: "24px" }}>

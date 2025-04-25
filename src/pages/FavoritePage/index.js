@@ -47,17 +47,30 @@ function FavoritePage() {
 			<div className="favorite-page">
 				<h1 className="admin-title">Favorites</h1>
 				<div className="favorite-type-buttons">
-					<button onClick={() => setFavoriteType("Model")}>Models</button>
-					<button onClick={() => setFavoriteType("Photographer")}>
+					<button
+						className={favoriteType === "Model" ? "active" : ""}
+						onClick={() => setFavoriteType("Model")}
+					>
+						Models
+					</button>
+					<button
+						className={favoriteType === "Photographer" ? "active" : ""}
+						onClick={() => setFavoriteType("Photographer")}
+					>
 						Photographers
 					</button>
-					<button onClick={() => setFavoriteType("Photo")}>Photos</button>
+					<button
+						className={favoriteType === "Photo" ? "active" : ""}
+						onClick={() => setFavoriteType("Photo")}
+					>
+						Photos
+					</button>
 				</div>
 				{favoriteType === "Photo" ? (
 					<PhotoList photos={currentItems} />
 				) : (
 					<ModelList
-						type={favoriteType.toLowerCase()}
+						type={favoriteType === "Model" ? "models" : "photographers"}
 						models={currentItems}
 						favorites={favorites}
 						onToggleFavorite={handleToggleFavorite}

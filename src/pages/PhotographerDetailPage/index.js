@@ -120,18 +120,22 @@ function PhotographerDetailPage() {
 				</p>
 				<p>
 					<strong>에이전시:</strong>{" "}
-					<span
-						className="filter-button"
-						onClick={() =>
-							navigate(
-								`/agencies?keyword=${encodeURIComponent(
-									photographer.agency?.name
-								)}`
-							)
-						}
-					>
-						{photographer.agency?.name}
-					</span>
+					{photographer.agency?.name ? (
+						<span
+							className="filter-button"
+							onClick={() =>
+								navigate(
+									`/agencies?keyword=${encodeURIComponent(
+										photographer.agency.name
+									)}`
+								)
+							}
+						>
+							{photographer.agency.name}
+						</span>
+					) : (
+						<span className="filter-button disabled">무소속</span>
+					)}
 				</p>
 				<div className="tag-list">
 					{photographer.tags.map((tag, index) => (
@@ -139,7 +143,7 @@ function PhotographerDetailPage() {
 							key={index}
 							className="filter-button"
 							onClick={() =>
-								navigate(`/photographer?tag=${encodeURIComponent(tag)}`)
+								navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
 							}
 						>
 							{tag}

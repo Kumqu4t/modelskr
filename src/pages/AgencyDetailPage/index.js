@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
+import { useFavorites } from "../../hooks/useFavorites";
 import "./AgencyDetailPage.css";
 
 function AgencyDetailPage() {
@@ -12,6 +14,9 @@ function AgencyDetailPage() {
 	const [agency, setAgency] = useState(null);
 	const [models, setModels] = useState([]);
 	const [loading, setLoading] = useState(true);
+
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
 	useEffect(() => {
 		const fetchAgencyDetails = async () => {
@@ -54,7 +59,12 @@ function AgencyDetailPage() {
 			</div>
 			<div className="agency-models-section">
 				<h2 className="agency-title">소속 모델</h2>
-				<ModelList models={models} />
+				<ModelList
+					type="models"
+					models={models}
+					favorites={favorites}
+					onToggleFavorite={toggleFavorite}
+				/>
 			</div>
 		</div>
 	);

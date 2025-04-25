@@ -8,7 +8,7 @@ import "./HomePage.css";
 function HomePage() {
 	const [models, setModels] = useState([]);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
 	useEffect(() => {
 		const fetchRandomModels = async () => {
@@ -29,6 +29,7 @@ function HomePage() {
 			<h2 className="section-title"> Models of the day </h2>
 			<div className="model-list-section">
 				<ModelList
+					type="models"
 					models={models}
 					favorites={favorites}
 					onToggleFavorite={toggleFavorite}

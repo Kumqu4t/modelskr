@@ -118,18 +118,20 @@ function ModelDetailPage() {
 				</p>
 				<p>
 					<strong>에이전시:</strong>{" "}
-					<span
-						className="filter-button"
-						onClick={() =>
-							navigate(
-								`/agencies?keyword=${encodeURIComponent(
-									model.agency?.name ?? "none"
-								)}`
-							)
-						}
-					>
-						{model.agency?.name || "무소속"}
-					</span>
+					{model.agency?.name ? (
+						<span
+							className="filter-button"
+							onClick={() =>
+								navigate(
+									`/agencies?keyword=${encodeURIComponent(model.agency.name)}`
+								)
+							}
+						>
+							{model.agency.name}
+						</span>
+					) : (
+						<span className="filter-button disabled">무소속</span>
+					)}
 				</p>
 				<div className="tag-list">
 					{model.tags.map((tag, index) => (

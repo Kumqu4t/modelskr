@@ -18,6 +18,9 @@ const PhotoDetailPage = () => {
 
 	const token = localStorage.getItem("token");
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const isAdmin = useSelector(
+		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
+	);
 	const { favorites: modelFavorites, toggleFavorite: toggleModelFavorite } =
 		useFavorites(isLoggedIn, "Model");
 	const {
@@ -81,7 +84,31 @@ const PhotoDetailPage = () => {
 
 	return (
 		<div className="photo-detail-page">
-			<h1>{photo.title}</h1>
+			<div className="headline">
+				<h1>{photo.title}</h1>
+
+				<div className="photo-buttons-wrapper">
+					{isAdmin && (
+						<div className="admin-controls-detail">
+							<Button type="default" onClick={handleEdit}>
+								수정
+							</Button>
+							<Button type="danger" onClick={handleDelete}>
+								삭제
+							</Button>
+						</div>
+					)}
+					<FavoriteButton
+						modelId={photo._id}
+						kind={"Photo"}
+						isFavorited={photoFavorites.some(
+							(fav) => fav.item?._id === photo._id
+						)}
+						onToggle={togglePhotoFavorite}
+						className={"photo-detail-icon"}
+					/>
+				</div>
+			</div>
 			<div className="photo-gallery">
 				<button
 					onClick={handlePrev}
@@ -112,19 +139,6 @@ const PhotoDetailPage = () => {
 					</span>
 				))}
 			</div>
-			<Button type="default" onClick={handleEdit}>
-				수정
-			</Button>
-			<Button type="danger" onClick={handleDelete}>
-				삭제
-			</Button>
-			<FavoriteButton
-				modelId={photo._id}
-				kind={"Photo"}
-				isFavorited={photoFavorites.some((fav) => fav.item?._id === photo._id)}
-				onToggle={togglePhotoFavorite}
-				className={"favorite-icon detail-icon"}
-			/>
 			<h2>참여 모델</h2>
 			<ModelList
 				type="models"

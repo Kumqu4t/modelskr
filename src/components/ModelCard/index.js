@@ -6,7 +6,7 @@ import FavoriteButton from "../FavoriteButton";
 import "./ModelCard.css";
 
 function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
-	const { _id: id, name, image, description } = model;
+	const { _id: id, name, image, description = "" } = model;
 	const navigate = useNavigate();
 
 	const isAdmin = useSelector(
