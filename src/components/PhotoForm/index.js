@@ -19,7 +19,13 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	const [models, setModels] = useState([]);
 	const [photographers, setPhotographers] = useState([]);
 
-	// 모델과 포토그래퍼 데이터 가져오기
+	const [modelSearchTerm, setModelSearchTerm] = useState("");
+	const [photographerSearchTerm, setPhotographerSearchTerm] = useState("");
+	const [modelSearchResults, setModelSearchResults] = useState([]);
+	const [photographerSearchResults, setPhotographerSearchResults] = useState(
+		[]
+	);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -99,6 +105,50 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		onSubmit(processedData);
 	};
 
+	const addModel = (model) => {
+		if (!formData.models.includes(model._id)) {
+			setFormData((prev) => ({
+				...prev,
+				models: [...prev.models, model._id],
+			}));
+		}
+	};
+
+	const removeModel = (modelId, e) => {
+		e.stopPropagation();
+		setFormData((prev) => ({
+			...prev,
+			models: prev.models.filter((id) => id !== modelId),
+		}));
+	};
+
+	const addPhotographer = (photographer) => {
+		if (!formData.photographers.includes(photographer._id)) {
+			setFormData((prev) => ({
+				...prev,
+				photographers: [...prev.photographers, photographer._id],
+			}));
+		}
+	};
+
+	const removePhotographer = (photographerId, e) => {
+		e.stopPropagation();
+		setFormData((prev) => ({
+			...prev,
+			photographers: prev.photographers.filter((id) => id !== photographerId),
+		}));
+	};
+
+	const getModelNameById = (id) => {
+		const model = models.find((m) => m._id === id);
+		return model ? model.name : id;
+	};
+
+	const getPhotographerNameById = (id) => {
+		const photographer = photographers.find((p) => p._id === id);
+		return photographer ? photographer.name : id;
+	};
+
 	return (
 		<form onSubmit={handleSubmit} className="photo-form">
 			<h2 className="photo-form__title">
@@ -162,39 +212,143 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				/>
 			</label>
 
-			<label className="photo-form__field">
-				모델 선택
-				<select
-					className="photo-form__input"
-					name="models"
-					multiple
-					value={formData.models}
-					onChange={handleChange}
-				>
-					{models.map((model) => (
-						<option key={model._id} value={model._id}>
-							{model.name}
-						</option>
-					))}
-				</select>
-			</label>
+			{/* 모델 검색 및 선택 */}
+			<div className="photo-form__field">
+				<label className="photo-form__label">모델 검색 및 선택</label>
 
-			<label className="photo-form__field">
-				포토그래퍼 선택
-				<select
-					className="photo-form__input"
-					name="photographers"
-					multiple
-					value={formData.photographers}
-					onChange={handleChange}
-				>
-					{photographers.map((photographer) => (
-						<option key={photographer._id} value={photographer._id}>
-							{photographer.name}
-						</option>
-					))}
-				</select>
-			</label>
+				{/* 모델 검색 바 */}
+				<div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
+					<input
+						className="photo-form__input"
+						type="text"
+						value={modelSearchTerm}
+						onChange={(e) => {
+							setModelSearchTerm(e.target.value);
+							const results = models.filter((model) =>
+								model.name.toLowerCase().includes(e.target.value.toLowerCase())
+							);
+							setModelSearchResults(results);
+						}}
+						placeholder="모델 이름 검색"
+					/>
+				</div>
+
+				{/* 선택된 모델 리스트 */}
+				{formData.models.length > 0 && (
+					<div
+						className="photo-form__selected-list"
+						style={{ marginBottom: "8px" }}
+					>
+						<p>선택된 모델:</p>
+						<ul style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+							{formData.models.map((modelId) => (
+								<li key={modelId}>
+									{getModelNameById(modelId)}{" "}
+									<button
+										type="button"
+										onClick={(e) => removeModel(modelId, e)}
+										aria-label={`Remove model ${getModelNameById(modelId)}`}
+									>
+										X
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{/* 모델 검색 결과 */}
+				<div className="photo-form__search-results">
+					{modelSearchResults.length > 0 ? (
+						<ul>
+							{modelSearchResults.map((model) => (
+								<li key={model._id}>
+									<button
+										type="button"
+										onClick={() => addModel(model)}
+										style={{ cursor: "pointer" }}
+									>
+										{model.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p>검색 결과가 없습니다.</p>
+					)}
+				</div>
+			</div>
+
+			{/* 포토그래퍼 검색 및 선택 */}
+			<div className="photo-form__field">
+				<label className="photo-form__label">포토그래퍼 검색 및 선택</label>
+
+				{/* 포토그래퍼 검색 바 */}
+				<div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
+					<input
+						className="photo-form__input"
+						type="text"
+						value={photographerSearchTerm}
+						onChange={(e) => {
+							setPhotographerSearchTerm(e.target.value);
+							const results = photographers.filter((photographer) =>
+								photographer.name
+									.toLowerCase()
+									.includes(e.target.value.toLowerCase())
+							);
+							setPhotographerSearchResults(results);
+						}}
+						placeholder="포토그래퍼 이름 검색"
+					/>
+				</div>
+
+				{/* 선택된 포토그래퍼 리스트 */}
+				{formData.photographers.length > 0 && (
+					<div
+						className="photo-form__selected-list"
+						style={{ marginBottom: "8px" }}
+					>
+						<p>선택된 포토그래퍼:</p>
+						<ul style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+							{formData.photographers.map((photographerId) => (
+								<li key={photographerId}>
+									{getPhotographerNameById(photographerId)}{" "}
+									<button
+										type="button"
+										onClick={(e) => removePhotographer(photographerId, e)}
+										aria-label={`Remove photographer ${getPhotographerNameById(
+											photographerId
+										)}`}
+									>
+										X
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{/* 포토그래퍼 검색 결과 */}
+				<div className="photo-form__search-results">
+					{photographerSearchResults.length > 0 ? (
+						<ul>
+							{photographerSearchResults.map((photographer) => (
+								<li key={photographer._id}>
+									<button
+										type="button"
+										onClick={() => addPhotographer(photographer)}
+										style={{ cursor: "pointer" }}
+									>
+										{photographer.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p>검색 결과가 없습니다.</p>
+					)}
+				</div>
+			</div>
 
 			<button type="submit" className="photo-form__submit">
 				{mode === "edit" ? "수정" : "저장"}

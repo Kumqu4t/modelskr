@@ -18,6 +18,29 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 		gender: "",
 	});
 
+	const [agencySearchTerm, setAgencySearchTerm] = useState("");
+	const [agencySearchResults, setAgencySearchResults] = useState([]);
+
+	const addAgency = (agency) => {
+		setFormData((prev) => ({
+			...prev,
+			agency: agency._id,
+		}));
+	};
+
+	const removeAgency = (agencyId, e) => {
+		e.stopPropagation();
+		setFormData((prev) => ({
+			...prev,
+			agency: null,
+		}));
+	};
+
+	const getAgencyNameById = (id) => {
+		const agency = agencies.find((a) => a._id === id);
+		return agency ? agency.name : id;
+	};
+
 	useEffect(() => {
 		if (mode === "edit" && item) {
 			setFormData({
@@ -130,20 +153,59 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 
 			<label className="model-form__field">
 				<span className="model-form__label">에이전시</span>
-				<select
-					className="model-form__input"
-					name="agency"
-					value={formData.agency}
-					onChange={handleChange}
-					aria-describedby="agencyError"
-				>
-					<option value="">선택하세요</option>
-					{agencies.map((agency) => (
-						<option key={agency._id} value={agency._id}>
-							{agency.name}
-						</option>
-					))}
-				</select>
+				<div>
+					<input
+						className="model-form__input"
+						type="text"
+						value={agencySearchTerm}
+						onChange={(e) => {
+							setAgencySearchTerm(e.target.value);
+							const results = agencies.filter((agency) =>
+								agency.name
+									.toLowerCase()
+									.includes(agencySearchTerm.toLowerCase())
+							);
+							setAgencySearchResults(results);
+						}}
+						placeholder="에이전시 이름 검색"
+					/>
+				</div>
+
+				{agencySearchResults.length > 0 && (
+					<div className="photo-form__search-results">
+						<ul>
+							{agencySearchResults.map((agency) => (
+								<li key={agency._id}>
+									<button
+										type="button"
+										onClick={() => addAgency(agency)}
+										style={{ cursor: "pointer" }}
+									>
+										{agency.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{formData.agency && (
+					<div className="photo-form__selected-list">
+						<p>선택된 에이전시:</p>
+						<ul>
+							<li>
+								{getAgencyNameById(formData.agency)}{" "}
+								<button
+									type="button"
+									onClick={(e) => removeAgency(formData.agency, e)}
+									aria-label="Remove agency"
+								>
+									X
+								</button>
+							</li>
+						</ul>
+					</div>
+				)}
 			</label>
 
 			<label className="model-form__field">
