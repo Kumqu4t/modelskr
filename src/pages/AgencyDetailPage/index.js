@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { API_BASE_URL, getHeaders } from "../../api";
+import DefaultHelmet from "../../components/DefaultHelmet";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
 import { useFavorites } from "../../hooks/useFavorites";
@@ -71,42 +72,45 @@ function AgencyDetailPage() {
 	if (!agency) return <p>존재하지 않는 에이전시입니다.</p>;
 
 	return (
-		<div className="agency-detail-page">
-			<div className="agency-info-section">
-				<img src={agency.logo} alt="logo" className="agency-logo" />
-				<div className="agency-text">
-					<h1>{agency.name}</h1>
-					<p className="agency-description">{agency.description}</p>
+		<>
+			<DefaultHelmet title={agency?.name} description={agency?.description} />
+			<div className="agency-detail-page">
+				<div className="agency-info-section">
+					<img src={agency.logo} alt="logo" className="agency-logo" />
+					<div className="agency-text">
+						<h1>{agency.name}</h1>
+						<p className="agency-description">{agency.description}</p>
+					</div>
+					<div className="homepage-button-wrapper">
+						{isAdmin && (
+							<div className="admin-controls-detail">
+								<Button type="default" onClick={handleEdit}>
+									수정
+								</Button>
+								<Button type="danger" onClick={handleDelete}>
+									삭제
+								</Button>
+							</div>
+						)}
+						<Button
+							type="default"
+							onClick={() => window.open(agency.homepage, "_blank")}
+						>
+							홈페이지
+						</Button>
+					</div>
 				</div>
-				<div className="homepage-button-wrapper">
-					{isAdmin && (
-						<div className="admin-controls-detail">
-							<Button type="default" onClick={handleEdit}>
-								수정
-							</Button>
-							<Button type="danger" onClick={handleDelete}>
-								삭제
-							</Button>
-						</div>
-					)}
-					<Button
-						type="default"
-						onClick={() => window.open(agency.homepage, "_blank")}
-					>
-						홈페이지
-					</Button>
+				<div className="agency-models-section">
+					<h2 className="agency-title">소속 모델</h2>
+					<ModelList
+						type="models"
+						models={models}
+						favorites={favorites}
+						onToggleFavorite={toggleFavorite}
+					/>
 				</div>
 			</div>
-			<div className="agency-models-section">
-				<h2 className="agency-title">소속 모델</h2>
-				<ModelList
-					type="models"
-					models={models}
-					favorites={favorites}
-					onToggleFavorite={toggleFavorite}
-				/>
-			</div>
-		</div>
+		</>
 	);
 }
 

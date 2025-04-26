@@ -7,6 +7,7 @@ import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
+import DefaultHelmet from "../../components/DefaultHelmet";
 
 function ModelListPage() {
 	const {
@@ -66,32 +67,38 @@ function ModelListPage() {
 	}
 
 	return (
-		<div style={{ padding: "24px" }}>
-			<h1 className="admin-title">Models</h1>
-			<FilterBar
-				selectedTags={selectedTags}
-				setSelectedTags={setSelectedTags}
-				tags={tags}
-				availableTags={availableTags}
-				gender={gender}
-				setGender={setGender}
-				agency={agency}
-				setAgency={setAgency}
-				agencies={agencies}
+		<>
+			<DefaultHelmet
+				title="모델 리스트"
+				description="모델 리스트와 필터를 통해 원하는 모델을 찾을 수 있습니다."
 			/>
-			<ModelList
-				type="models"
-				models={currentModels}
-				favorites={favorites}
-				onToggleFavorite={toggleFavorite}
-			/>
-			<Pagination
-				totalItems={filteredModels.length}
-				itemLimit={itemLimit}
-				currentPage={currentPage}
-				onPageChange={setCurrentPage}
-			/>
-		</div>
+			<div style={{ padding: "24px" }}>
+				<h1 className="admin-title">Models</h1>
+				<FilterBar
+					selectedTags={selectedTags}
+					setSelectedTags={setSelectedTags}
+					tags={tags}
+					availableTags={availableTags}
+					gender={gender}
+					setGender={setGender}
+					agency={agency}
+					setAgency={setAgency}
+					agencies={agencies}
+				/>
+				<ModelList
+					type="models"
+					models={currentModels}
+					favorites={favorites}
+					onToggleFavorite={toggleFavorite}
+				/>
+				<Pagination
+					totalItems={filteredModels.length}
+					itemLimit={itemLimit}
+					currentPage={currentPage}
+					onPageChange={setCurrentPage}
+				/>
+			</div>
+		</>
 	);
 }
 

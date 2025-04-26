@@ -5,6 +5,7 @@ import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
 import { API_BASE_URL, getHeaders } from "../../api";
+import DefaultHelmet from "../../components/DefaultHelmet";
 import "./ModelDetailPage.css";
 
 function ModelDetailPage() {
@@ -70,89 +71,94 @@ function ModelDetailPage() {
 	if (!model) return <div>해당 모델을 찾을 수 없습니다.</div>;
 
 	return (
-		<div className="model-detail">
-			<div className="buttons-wrapper">
-				{isAdmin && (
-					<div className="admin-controls-detail">
-						<Button type="default" onClick={handleEdit}>
-							수정
-						</Button>
-						<Button type="danger" onClick={handleDelete}>
-							삭제
-						</Button>
-					</div>
-				)}
-				<Button
-					type="default"
-					onClick={() => window.open(model.contact, "_blank")}
-				>
-					Contact
-				</Button>
-			</div>
-
-			<div className="image-wrapper">
-				<img src={model.image} alt={model.name} />
-				{model?._id && (
-					<FavoriteButton
-						modelId={model._id}
-						isFavorited={favorites.some((fav) => fav.item?._id === model._id)}
-						onToggle={handleToggleFavorite}
-						className={"favorite-icon detail-icon"}
-					/>
-				)}
-			</div>
-
-			<div className="model-detail-info">
-				<h2>{model.name}</h2>
-				<p>{model.description}</p>
-				<p>
-					<strong>성별:</strong>{" "}
-					<span
-						className="filter-button"
-						onClick={() => navigate(`/models?gender=${model.gender}`)}
-					>
-						{model.gender}
-					</span>
-				</p>
-				<p>
-					<strong>에이전시:</strong>{" "}
-					{model.agency?.name ? (
-						<span
-							className="filter-button"
-							onClick={() =>
-								navigate(`/agencies/${encodeURIComponent(model.agency._id)}`)
-							}
-						>
-							{model.agency.name}
-						</span>
-					) : (
-						<span className="filter-button disabled">무소속</span>
-					)}
-				</p>
-				<div className="tag-list">
-					{model.tags.map((tag, index) => (
-						<span
-							key={index}
-							className="filter-button"
-							onClick={() => navigate(`/models?tag=${encodeURIComponent(tag)}`)}
-						>
-							{tag}
-						</span>
-					))}
-				</div>
-				<div className="recent-work-list">
-					<h3>최근 활동</h3>
-					{model.recentWork.map((item, index) => (
-						<div key={index} className="recent-work-item">
-							<strong>[{item.type}]</strong>{" "}
-							<a href={item.link} target="_blank" rel="noopener noreferrer">
-								{item.title}
-							</a>
+		<>
+			<DefaultHelmet title={model?.name} description={model?.description} />
+			<div className="model-detail">
+				<div className="buttons-wrapper">
+					{isAdmin && (
+						<div className="admin-controls-detail">
+							<Button type="default" onClick={handleEdit}>
+								수정
+							</Button>
+							<Button type="danger" onClick={handleDelete}>
+								삭제
+							</Button>
 						</div>
-					))}
+					)}
+					<Button
+						type="default"
+						onClick={() => window.open(model.contact, "_blank")}
+					>
+						Contact
+					</Button>
+				</div>
+
+				<div className="image-wrapper">
+					<img src={model.image} alt={model.name} />
+					{model?._id && (
+						<FavoriteButton
+							modelId={model._id}
+							isFavorited={favorites.some((fav) => fav.item?._id === model._id)}
+							onToggle={handleToggleFavorite}
+							className={"favorite-icon detail-icon"}
+						/>
+					)}
+				</div>
+
+				<div className="model-detail-info">
+					<h2>{model.name}</h2>
+					<p>{model.description}</p>
+					<p>
+						<strong>성별:</strong>{" "}
+						<span
+							className="filter-button"
+							onClick={() => navigate(`/models?gender=${model.gender}`)}
+						>
+							{model.gender}
+						</span>
+					</p>
+					<p>
+						<strong>에이전시:</strong>{" "}
+						{model.agency?.name ? (
+							<span
+								className="filter-button"
+								onClick={() =>
+									navigate(`/agencies/${encodeURIComponent(model.agency._id)}`)
+								}
+							>
+								{model.agency.name}
+							</span>
+						) : (
+							<span className="filter-button disabled">무소속</span>
+						)}
+					</p>
+					<div className="tag-list">
+						{model.tags.map((tag, index) => (
+							<span
+								key={index}
+								className="filter-button"
+								onClick={() =>
+									navigate(`/models?tag=${encodeURIComponent(tag)}`)
+								}
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+					<div className="recent-work-list">
+						<h3>최근 활동</h3>
+						{model.recentWork.map((item, index) => (
+							<div key={index} className="recent-work-item">
+								<strong>[{item.type}]</strong>{" "}
+								<a href={item.link} target="_blank" rel="noopener noreferrer">
+									{item.title}
+								</a>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

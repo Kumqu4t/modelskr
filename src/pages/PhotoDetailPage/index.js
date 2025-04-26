@@ -6,6 +6,7 @@ import FavoriteButton from "../../components/FavoriteButton";
 import ModelList from "../../components/ModelList";
 import { useFavorites } from "../../hooks/useFavorites";
 import { API_BASE_URL, getHeaders } from "../../api";
+import DefaultHelmet from "../../components/DefaultHelmet";
 import "./PhotoDetailPage.css";
 
 const PhotoDetailPage = () => {
@@ -83,82 +84,85 @@ const PhotoDetailPage = () => {
 	};
 
 	return (
-		<div className="photo-detail-page">
-			<div className="headline">
-				<h1>{photo.title}</h1>
+		<>
+			<DefaultHelmet title={photo.title} description={photo.description} />
+			<div className="photo-detail-page">
+				<div className="headline">
+					<h1>{photo.title}</h1>
 
-				<div className="photo-buttons-wrapper">
-					{isAdmin && (
-						<div className="admin-controls-detail">
-							<Button type="default" onClick={handleEdit}>
-								수정
-							</Button>
-							<Button type="danger" onClick={handleDelete}>
-								삭제
-							</Button>
-						</div>
-					)}
-					<FavoriteButton
-						modelId={photo._id}
-						kind={"Photo"}
-						isFavorited={photoFavorites.some(
-							(fav) => fav.item?._id === photo._id
+					<div className="photo-buttons-wrapper">
+						{isAdmin && (
+							<div className="admin-controls-detail">
+								<Button type="default" onClick={handleEdit}>
+									수정
+								</Button>
+								<Button type="danger" onClick={handleDelete}>
+									삭제
+								</Button>
+							</div>
 						)}
-						onToggle={togglePhotoFavorite}
-						className={"photo-detail-icon"}
-					/>
+						<FavoriteButton
+							modelId={photo._id}
+							kind={"Photo"}
+							isFavorited={photoFavorites.some(
+								(fav) => fav.item?._id === photo._id
+							)}
+							onToggle={togglePhotoFavorite}
+							className={"photo-detail-icon"}
+						/>
+					</div>
 				</div>
-			</div>
 
-			<div className="photo-gallery">
-				<button
-					onClick={handlePrev}
-					className="nav-button"
-					aria-label="이전 사진"
-				>
-					←
-				</button>
-				<div className="photo-image-wrapper">
-					<img
-						src={photo.images[currentIndex]}
-						alt={`${photo.title} - ${currentIndex + 1}`}
-					/>
+				<div className="photo-gallery">
+					<button
+						onClick={handlePrev}
+						className="nav-button"
+						aria-label="이전 사진"
+					>
+						←
+					</button>
+					<div className="photo-image-wrapper">
+						<img
+							src={photo.images[currentIndex]}
+							alt={`${photo.title} - ${currentIndex + 1}`}
+						/>
+					</div>
+					<button
+						onClick={handleNext}
+						className="nav-button"
+						aria-label="다음 사진"
+					>
+						→
+					</button>
 				</div>
-				<button
-					onClick={handleNext}
-					className="nav-button"
-					aria-label="다음 사진"
-				>
-					→
-				</button>
+
+				<p>{photo.description}</p>
+
+				<div className="tags">
+					{photo.tags.map((tag, index) => (
+						<span key={index} className="tag">
+							{tag}
+						</span>
+					))}
+				</div>
+
+				<h2>참여 모델</h2>
+				<ModelList
+					type="models"
+					models={photo.models}
+					favorites={modelFavorites}
+					onToggleFavorite={toggleModelFavorite}
+				/>
+
+				<h2>참여 작가</h2>
+				<ModelList
+					type="photographers"
+					models={photo.photographers}
+					favorites={photographerFavorites}
+					onToggleFavorite={togglePhotographerFavorite}
+				/>
 			</div>
-
-			<p>{photo.description}</p>
-
-			<div className="tags">
-				{photo.tags.map((tag, index) => (
-					<span key={index} className="tag">
-						{tag}
-					</span>
-				))}
-			</div>
-
-			<h2>참여 모델</h2>
-			<ModelList
-				type="models"
-				models={photo.models}
-				favorites={modelFavorites}
-				onToggleFavorite={toggleModelFavorite}
-			/>
-
-			<h2>참여 작가</h2>
-			<ModelList
-				type="photographers"
-				models={photo.photographers}
-				favorites={photographerFavorites}
-				onToggleFavorite={togglePhotographerFavorite}
-			/>
-		</div>
+		</>
 	);
 };
 

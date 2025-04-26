@@ -1,3 +1,4 @@
+import DefaultHelmet from "../../components/DefaultHelmet";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
@@ -77,32 +78,38 @@ function PhotographerListPage() {
 	}
 
 	return (
-		<div style={{ padding: "24px" }}>
-			<h1 className="admin-title">Photographers</h1>
-			<FilterBar
-				selectedTags={selectedTags}
-				setSelectedTags={setSelectedTags}
-				tags={tags}
-				availableTags={availableTags}
-				gender={gender}
-				setGender={setGender}
-				agency={agency}
-				setAgency={setAgency}
-				agencies={agencies}
+		<>
+			<DefaultHelmet
+				title="포토그래퍼 리스트"
+				description="포토그래퍼 리스트와 필터를 통해 원하는 포토그래퍼를 찾을 수 있습니다."
 			/>
-			<ModelList
-				type="photographers"
-				models={currentPhotographers}
-				favorites={favorites}
-				onToggleFavorite={toggleFavorite}
-			/>
-			<Pagination
-				totalItems={filteredPhotographers.length}
-				itemLimit={itemLimit}
-				currentPage={currentPage}
-				onPageChange={setCurrentPage}
-			/>
-		</div>
+			<div style={{ padding: "24px" }}>
+				<h1 className="admin-title">Photographers</h1>
+				<FilterBar
+					selectedTags={selectedTags}
+					setSelectedTags={setSelectedTags}
+					tags={tags}
+					availableTags={availableTags}
+					gender={gender}
+					setGender={setGender}
+					agency={agency}
+					setAgency={setAgency}
+					agencies={agencies}
+				/>
+				<ModelList
+					type="photographers"
+					models={currentPhotographers}
+					favorites={favorites}
+					onToggleFavorite={toggleFavorite}
+				/>
+				<Pagination
+					totalItems={filteredPhotographers.length}
+					itemLimit={itemLimit}
+					currentPage={currentPage}
+					onPageChange={setCurrentPage}
+				/>
+			</div>
+		</>
 	);
 }
 

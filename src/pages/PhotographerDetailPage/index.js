@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
+import DefaultHelmet from "../../components/DefaultHelmet";
 // import "./ModelDetailPage.css";
 
 function PhotographerDetailPage() {
@@ -70,96 +71,102 @@ function PhotographerDetailPage() {
 	if (!photographer) return <div>해당 작가를 찾을 수 없습니다.</div>;
 
 	return (
-		<div className="model-detail">
-			<div className="buttons-wrapper">
-				{isAdmin && (
-					<div className="admin-controls-detail">
-						<Button type="default" onClick={handleEdit}>
-							수정
-						</Button>
-						<Button type="danger" onClick={handleDelete}>
-							삭제
-						</Button>
-					</div>
-				)}
-				<Button
-					type="default"
-					onClick={() => window.open(photographer.contact, "_blank")}
-				>
-					Contact
-				</Button>
-			</div>
-
-			<div className="image-wrapper">
-				<img src={photographer.image} alt={photographer.name} />
-				<FavoriteButton
-					modelId={photographer._id}
-					kind={kind}
-					isFavorited={favorites.some(
-						(fav) => fav.item?._id === photographer._id
-					)}
-					onToggle={handleToggleFavorite}
-					className={"favorite-icon detail-icon"}
-				/>
-			</div>
-
-			<div className="model-detail-info">
-				<h2>{photographer.name}</h2>
-				<p>{photographer.description}</p>
-				<p>
-					<strong>성별:</strong>{" "}
-					<span
-						className="filter-button"
-						onClick={() =>
-							navigate(`/photographers?gender=${photographer.gender}`)
-						}
-					>
-						{photographer.gender}
-					</span>
-				</p>
-				<p>
-					<strong>에이전시:</strong>{" "}
-					{photographer.agency?.name ? (
-						<span
-							className="filter-button"
-							onClick={() =>
-								navigate(
-									`/agencies/${encodeURIComponent(photographer.agency._id)}`
-								)
-							}
-						>
-							{photographer.agency.name}
-						</span>
-					) : (
-						<span className="filter-button disabled">무소속</span>
-					)}
-				</p>
-				<div className="tag-list">
-					{photographer.tags.map((tag, index) => (
-						<span
-							key={index}
-							className="filter-button"
-							onClick={() =>
-								navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
-							}
-						>
-							{tag}
-						</span>
-					))}
-				</div>
-				<div className="recent-work-list">
-					<h3>최근 활동</h3>
-					{photographer.recentWork.map((item, index) => (
-						<div key={index} className="recent-work-item">
-							<strong>[{item.type}]</strong>{" "}
-							<a href={item.link} target="_blank" rel="noopener noreferrer">
-								{item.title}
-							</a>
+		<>
+			<DefaultHelmet
+				title={photographer.name}
+				description={photographer.description}
+			/>
+			<div className="model-detail">
+				<div className="buttons-wrapper">
+					{isAdmin && (
+						<div className="admin-controls-detail">
+							<Button type="default" onClick={handleEdit}>
+								수정
+							</Button>
+							<Button type="danger" onClick={handleDelete}>
+								삭제
+							</Button>
 						</div>
-					))}
+					)}
+					<Button
+						type="default"
+						onClick={() => window.open(photographer.contact, "_blank")}
+					>
+						Contact
+					</Button>
+				</div>
+
+				<div className="image-wrapper">
+					<img src={photographer.image} alt={photographer.name} />
+					<FavoriteButton
+						modelId={photographer._id}
+						kind={kind}
+						isFavorited={favorites.some(
+							(fav) => fav.item?._id === photographer._id
+						)}
+						onToggle={handleToggleFavorite}
+						className={"favorite-icon detail-icon"}
+					/>
+				</div>
+
+				<div className="model-detail-info">
+					<h2>{photographer.name}</h2>
+					<p>{photographer.description}</p>
+					<p>
+						<strong>성별:</strong>{" "}
+						<span
+							className="filter-button"
+							onClick={() =>
+								navigate(`/photographers?gender=${photographer.gender}`)
+							}
+						>
+							{photographer.gender}
+						</span>
+					</p>
+					<p>
+						<strong>에이전시:</strong>{" "}
+						{photographer.agency?.name ? (
+							<span
+								className="filter-button"
+								onClick={() =>
+									navigate(
+										`/agencies/${encodeURIComponent(photographer.agency._id)}`
+									)
+								}
+							>
+								{photographer.agency.name}
+							</span>
+						) : (
+							<span className="filter-button disabled">무소속</span>
+						)}
+					</p>
+					<div className="tag-list">
+						{photographer.tags.map((tag, index) => (
+							<span
+								key={index}
+								className="filter-button"
+								onClick={() =>
+									navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
+								}
+							>
+								{tag}
+							</span>
+						))}
+					</div>
+					<div className="recent-work-list">
+						<h3>최근 활동</h3>
+						{photographer.recentWork.map((item, index) => (
+							<div key={index} className="recent-work-item">
+								<strong>[{item.type}]</strong>{" "}
+								<a href={item.link} target="_blank" rel="noopener noreferrer">
+									{item.title}
+								</a>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
