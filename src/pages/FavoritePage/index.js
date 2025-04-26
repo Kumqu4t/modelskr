@@ -39,7 +39,7 @@ function FavoritePage() {
 	const handleToggleFavorite = toggleFavorite;
 
 	const filteredItems = models.filter((model) =>
-		favorites.some((fav) => fav.item._id === model._id)
+		(favorites || []).some((fav) => fav?.item?._id === model._id)
 	);
 
 	// 페이지네이션
