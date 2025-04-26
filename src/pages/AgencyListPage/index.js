@@ -3,12 +3,13 @@ import axios from "axios";
 import { API_BASE_URL } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
+import Loading from "../../components/Loading";
 import "./AgencyListPage.css";
 import DefaultHelmet from "../../components/DefaultHelmet";
 
 function AgencyListPage() {
 	const [agencies, setAgencies] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [idLoading, setIsLoading] = useState(true);
 	const { keyword } = useQueryFilters("/agencies");
 	const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ function AgencyListPage() {
 			} catch (err) {
 				console.error("에이전시 목록 가져오기 실패", err);
 			} finally {
-				setLoading(false);
+				setIsLoading(false);
 			}
 		};
 
@@ -35,7 +36,7 @@ function AgencyListPage() {
 		navigate(`/agencies/${id}`);
 	};
 
-	if (loading) return <p>로딩 중...</p>;
+	if (idLoading) return <Loading />;
 
 	return (
 		<>

@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import ModelList from "../../components/ModelList";
 import { API_BASE_URL } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 import "./HomePage.css";
 
 function HomePage() {
 	const [models, setModels] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
@@ -20,11 +22,15 @@ function HomePage() {
 				setModels(data);
 			} catch (err) {
 				console.error("랜덤 모델 불러오기 실패:", err);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
 		fetchRandomModels();
 	}, []);
+
+	if (isLoading) return <Loading />;
 
 	return (
 		<>

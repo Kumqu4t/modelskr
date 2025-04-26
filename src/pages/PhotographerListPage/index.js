@@ -8,6 +8,7 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
 import { API_BASE_URL, getHeaders } from "../../api";
+import Loading from "../../components/Loading";
 
 function PhotographerListPage() {
 	const {
@@ -20,6 +21,7 @@ function PhotographerListPage() {
 		keyword,
 	} = useQueryFilters("/photographers");
 	const [photographers, setPhotographers] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchPhotographers = async () => {
@@ -31,6 +33,8 @@ function PhotographerListPage() {
 				setPhotographers(data);
 			} catch (err) {
 				console.error("작가 데이터를 불러오기 실패:", err);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
@@ -76,6 +80,8 @@ function PhotographerListPage() {
 	if (photographers.some((photographer) => photographer.agency === null)) {
 		agencies.push("무소속");
 	}
+
+	if (isLoading) return <Loading />;
 
 	return (
 		<>

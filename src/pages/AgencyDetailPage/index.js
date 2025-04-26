@@ -6,6 +6,7 @@ import { API_BASE_URL, getHeaders } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
+import Loading from "../../components/Loading";
 import { useFavorites } from "../../hooks/useFavorites";
 import "./AgencyDetailPage.css";
 
@@ -16,7 +17,7 @@ function AgencyDetailPage() {
 
 	const [agency, setAgency] = useState(null);
 	const [models, setModels] = useState([]);
-	const [loading, setLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const isAdmin = useSelector(
@@ -37,7 +38,7 @@ function AgencyDetailPage() {
 			} catch (error) {
 				// console.error("에이전시 정보 가져오기 실패", error);
 			} finally {
-				setLoading(false);
+				setIsLoading(false);
 			}
 		};
 
@@ -67,8 +68,7 @@ function AgencyDetailPage() {
 		}
 	};
 
-	if (loading) return <p>로딩 중...</p>;
-
+	if (isLoading) return <Loading />;
 	if (!agency) return <p>존재하지 않는 에이전시입니다.</p>;
 
 	return (

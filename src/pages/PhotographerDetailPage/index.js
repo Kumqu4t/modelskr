@@ -6,6 +6,7 @@ import FavoriteButton from "../../components/FavoriteButton";
 import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 // import "./ModelDetailPage.css";
 
 function PhotographerDetailPage() {
@@ -66,7 +67,7 @@ function PhotographerDetailPage() {
 
 	const handleToggleFavorite = toggleFavorite;
 
-	if (isLoading) return <div>로딩 중...</div>;
+	if (isLoading) return <Loading />;
 	if (error) return <div>{error}</div>;
 	if (!photographer) return <div>해당 작가를 찾을 수 없습니다.</div>;
 

@@ -8,6 +8,7 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 
 function ModelListPage() {
 	const {
@@ -20,6 +21,7 @@ function ModelListPage() {
 		keyword,
 	} = useQueryFilters("/models");
 	const [models, setModels] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchModels = async () => {
@@ -31,6 +33,8 @@ function ModelListPage() {
 				setModels(data);
 			} catch (err) {
 				console.error("모델 데이터를 불러오기 실패:", err);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
@@ -65,6 +69,8 @@ function ModelListPage() {
 	if (models.some((model) => model.agency === null)) {
 		agencies.push("무소속");
 	}
+
+	if (isLoading) return <Loading />;
 
 	return (
 		<>

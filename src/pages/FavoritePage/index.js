@@ -6,9 +6,11 @@ import RequireLogin from "../../components/RequireLogin";
 import "./FavoritePage.css";
 import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
+import Loading from "../../components/Loading";
 
 function FavoritePage() {
 	const [models, setModels] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [favoriteType, setFavoriteType] = useState("Model");
 	const { favorites, toggleFavorite } = useFavorites(true, favoriteType);
 
@@ -26,6 +28,8 @@ function FavoritePage() {
 				setModels(data);
 			} catch (err) {
 				console.error(`${favoriteType} 불러오기 실패:`, err);
+			} finally {
+				setIsLoading(false);
 			}
 		};
 
@@ -43,6 +47,8 @@ function FavoritePage() {
 	const itemLimit = 8;
 	const startIndex = (currentPage - 1) * itemLimit;
 	const currentItems = filteredItems.slice(startIndex, startIndex + itemLimit);
+
+	if (isLoading) return <Loading />;
 
 	return (
 		<RequireLogin>

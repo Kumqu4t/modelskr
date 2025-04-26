@@ -7,6 +7,7 @@ import ModelList from "../../components/ModelList";
 import { useFavorites } from "../../hooks/useFavorites";
 import { API_BASE_URL, getHeaders } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 import "./PhotoDetailPage.css";
 
 const PhotoDetailPage = () => {
@@ -71,7 +72,7 @@ const PhotoDetailPage = () => {
 		}
 	};
 
-	if (isLoading) return <div>로딩 중...</div>;
+	if (isLoading) return <Loading />;
 	if (error) return <div>{error}</div>;
 	if (!photo) return <div>해당 사진을 찾을 수 없습니다.</div>;
 

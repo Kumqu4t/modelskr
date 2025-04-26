@@ -3,6 +3,7 @@ import { useQueryFilters } from "../../hooks/useQueryFilters";
 import PhotoList from "../../components/PhotoList";
 import { API_BASE_URL } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 import "./PhotoListPage.css";
 
 const PhotoListPage = () => {
@@ -32,7 +33,7 @@ const PhotoListPage = () => {
 		photo.title?.toLowerCase().includes(keyword.toLowerCase())
 	);
 
-	if (isLoading) return <div>로딩 중...</div>;
+	if (isLoading) return <Loading />;
 	if (!photos) return <div>사진이 없습니다.</div>;
 	if (error) return <div>{error}</div>;
 
