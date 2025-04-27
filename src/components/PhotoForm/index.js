@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_BASE_URL } from "../../api";
 import "./PhotoForm.css";
 
 function PhotoForm({ mode, photo, onSubmit }) {
@@ -29,11 +30,13 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const modelsRes = await fetch("/api/models");
+				const modelsRes = await fetch(`${API_BASE_URL}/api/models`);
 				const modelsData = await modelsRes.json();
 				setModels(modelsData);
 
-				const photographersRes = await fetch("/api/photographers");
+				const photographersRes = await fetch(
+					`${API_BASE_URL}/api/photographers`
+				);
 				const photographersData = await photographersRes.json();
 				setPhotographers(photographersData);
 			} catch (err) {
