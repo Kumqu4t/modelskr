@@ -133,6 +133,34 @@ function ModelDetailPage() {
 							<span className="filter-button disabled">무소속</span>
 						)}
 					</p>
+
+					{model.birthDate && (
+						<p>
+							<strong>생년월일:</strong>{" "}
+							{new Date(model.birthDate).toLocaleDateString()}
+						</p>
+					)}
+					{model.nationality && (
+						<p>
+							<strong>국적:</strong> {model.nationality}
+						</p>
+					)}
+					{model.height && (
+						<p>
+							<strong>키:</strong> {model.height} cm
+						</p>
+					)}
+					{model.measurements && (
+						<p>
+							<strong>사이즈:</strong> {model.measurements.chest} /{" "}
+							{model.measurements.waist} / {model.measurements.hips} cm
+						</p>
+					)}
+					{model.shoeSize && (
+						<p>
+							<strong>신발 사이즈:</strong> {model.shoeSize} cm
+						</p>
+					)}
 					<div className="tag-list">
 						{model.tags.map((tag, index) => (
 							<span

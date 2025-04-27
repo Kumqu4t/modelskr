@@ -11,6 +11,11 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 		tags: "",
 		recentWork: "",
 		contact: "",
+		birthDate: "",
+		nationality: "",
+		height: "",
+		measurements: { chest: "", waist: "", hips: "" },
+		shoeSize: "",
 	});
 
 	const [errors, setErrors] = useState({
@@ -53,16 +58,32 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 						?.map((work) => `${work.type}:${work.title}:${work.link}`)
 						.join(", ") || "",
 				contact: item.contact || "",
+				birthDate: item.birthDate || "",
+				nationality: item.nationality || "",
+				height: item.height || "",
+				measurements: item.measurements || { chest: "", waist: "", hips: "" },
+				shoeSize: item.shoeSize || "",
 			});
 		}
 	}, [mode, item, roll]);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setFormData((prev) => ({
-			...prev,
-			[name]: value,
-		}));
+		if (name.startsWith("measurements.")) {
+			const key = name.split(".")[1];
+			setFormData((prev) => ({
+				...prev,
+				measurements: {
+					...prev.measurements,
+					[key]: value,
+				},
+			}));
+		} else {
+			setFormData((prev) => ({
+				...prev,
+				[name]: value,
+			}));
+		}
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -74,6 +95,13 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 		if (Object.keys(formErrors).length > 0) {
 			setErrors(formErrors);
 			return;
+		}
+
+		const filteredFormData = { ...formData };
+		if (roll !== "model") {
+			delete filteredFormData.height;
+			delete filteredFormData.measurements;
+			delete filteredFormData.shoeSize;
 		}
 
 		const tagsArray = formData.tags
@@ -207,6 +235,88 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 					</div>
 				)}
 			</label>
+
+			<label className="model-form__field">
+				<span className="model-form__label">생년월일</span>
+				<input
+					className="model-form__input"
+					type="date"
+					name="birthDate"
+					value={formData.birthDate}
+					onChange={handleChange}
+				/>
+			</label>
+
+			<label className="model-form__field">
+				<span className="model-form__label">국적</span>
+				<input
+					className="model-form__input"
+					type="text"
+					name="nationality"
+					value={formData.nationality}
+					onChange={handleChange}
+				/>
+			</label>
+
+			{/* 모델일 때만 표시되는 필드 */}
+			{roll === "model" && (
+				<>
+					<label className="model-form__field">
+						<span className="model-form__label">키 (cm)</span>
+						<input
+							className="model-form__input"
+							type="number"
+							name="height"
+							value={formData.height}
+							onChange={handleChange}
+						/>
+					</label>
+
+					<label className="model-form__field">
+						<span className="model-form__label">가슴 사이즈</span>
+						<input
+							className="model-form__input"
+							type="number"
+							name="measurements.chest"
+							value={formData.measurements.chest}
+							onChange={handleChange}
+						/>
+					</label>
+
+					<label className="model-form__field">
+						<span className="model-form__label">허리 사이즈</span>
+						<input
+							className="model-form__input"
+							type="number"
+							name="measurements.waist"
+							value={formData.measurements.waist}
+							onChange={handleChange}
+						/>
+					</label>
+
+					<label className="model-form__field">
+						<span className="model-form__label">엉덩이 사이즈</span>
+						<input
+							className="model-form__input"
+							type="number"
+							name="measurements.hips"
+							value={formData.measurements.hips}
+							onChange={handleChange}
+						/>
+					</label>
+
+					<label className="model-form__field">
+						<span className="model-form__label">신발 사이즈</span>
+						<input
+							className="model-form__input"
+							type="number"
+							name="shoeSize"
+							value={formData.shoeSize}
+							onChange={handleChange}
+						/>
+					</label>
+				</>
+			)}
 
 			<label className="model-form__field">
 				설명

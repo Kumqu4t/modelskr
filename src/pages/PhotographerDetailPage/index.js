@@ -141,6 +141,19 @@ function PhotographerDetailPage() {
 							<span className="filter-button disabled">무소속</span>
 						)}
 					</p>
+
+					{photographer.birthDate && (
+						<p>
+							<strong>생년월일:</strong>{" "}
+							{new Date(photographer.birthDate).toLocaleDateString()}
+						</p>
+					)}
+					{photographer.nationality && (
+						<p>
+							<strong>국적:</strong> {photographer.nationality}
+						</p>
+					)}
+
 					<div className="tag-list">
 						{photographer.tags.map((tag, index) => (
 							<span
