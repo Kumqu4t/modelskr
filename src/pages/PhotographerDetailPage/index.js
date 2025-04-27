@@ -97,87 +97,89 @@ function PhotographerDetailPage() {
 					</Button>
 				</div>
 
-				<div className="image-wrapper">
-					<img src={photographer.image} alt={photographer.name} />
-					<FavoriteButton
-						modelId={photographer._id}
-						kind={kind}
-						isFavorited={favorites.some(
-							(fav) => fav.item?._id === photographer._id
+				<div className="imageinfo-wrapper">
+					<div className="image-wrapper">
+						<img src={photographer.image} alt={photographer.name} />
+						<FavoriteButton
+							modelId={photographer._id}
+							kind={kind}
+							isFavorited={favorites.some(
+								(fav) => fav.item?._id === photographer._id
+							)}
+							onToggle={handleToggleFavorite}
+							className={"favorite-icon detail-icon"}
+						/>
+					</div>
+
+					<div className="model-detail-info">
+						<h2>{photographer.name}</h2>
+						{/* <p>{photographer.description}</p> */}
+						<p>
+							<strong>성별:</strong>{" "}
+							<span
+								className="filter-button"
+								onClick={() =>
+									navigate(`/photographers?gender=${photographer.gender}`)
+								}
+							>
+								{photographer.gender}
+							</span>
+						</p>
+						<p>
+							<strong>에이전시:</strong>{" "}
+							{photographer.agency?.name ? (
+								<span
+									className="filter-button"
+									onClick={() =>
+										navigate(
+											`/agencies/${encodeURIComponent(photographer.agency._id)}`
+										)
+									}
+								>
+									{photographer.agency.name}
+								</span>
+							) : (
+								<span className="filter-button disabled">무소속</span>
+							)}
+						</p>
+
+						{photographer.birthDate && (
+							<p>
+								<strong>생년월일:</strong>{" "}
+								{new Date(photographer.birthDate).toLocaleDateString()}
+							</p>
 						)}
-						onToggle={handleToggleFavorite}
-						className={"favorite-icon detail-icon"}
-					/>
+						{photographer.nationality && (
+							<p>
+								<strong>국적:</strong> {photographer.nationality}
+							</p>
+						)}
+
+						<div className="tag-list">
+							{photographer.tags.map((tag, index) => (
+								<span
+									key={index}
+									className="filter-button"
+									onClick={() =>
+										navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
+									}
+								>
+									{tag}
+								</span>
+							))}
+						</div>
+					</div>
 				</div>
-
-				<div className="model-detail-info">
-					<h2>{photographer.name}</h2>
-					<p>{photographer.description}</p>
-					<p>
-						<strong>성별:</strong>{" "}
-						<span
-							className="filter-button"
-							onClick={() =>
-								navigate(`/photographers?gender=${photographer.gender}`)
-							}
-						>
-							{photographer.gender}
-						</span>
-					</p>
-					<p>
-						<strong>에이전시:</strong>{" "}
-						{photographer.agency?.name ? (
-							<span
-								className="filter-button"
-								onClick={() =>
-									navigate(
-										`/agencies/${encodeURIComponent(photographer.agency._id)}`
-									)
-								}
-							>
-								{photographer.agency.name}
-							</span>
-						) : (
-							<span className="filter-button disabled">무소속</span>
-						)}
-					</p>
-
-					{photographer.birthDate && (
-						<p>
-							<strong>생년월일:</strong>{" "}
-							{new Date(photographer.birthDate).toLocaleDateString()}
-						</p>
-					)}
-					{photographer.nationality && (
-						<p>
-							<strong>국적:</strong> {photographer.nationality}
-						</p>
-					)}
-
-					<div className="tag-list">
-						{photographer.tags.map((tag, index) => (
-							<span
-								key={index}
-								className="filter-button"
-								onClick={() =>
-									navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
-								}
-							>
-								{tag}
-							</span>
-						))}
-					</div>
-					<div className="recent-work-list">
-						<h3>최근 활동</h3>
-						{photographer.recentWork.map((item, index) => (
-							<div key={index} className="recent-work-item">
-								<strong>[{item.type}]</strong>{" "}
-								<a href={item.link} target="_blank" rel="noopener noreferrer">
-									{item.title}
-								</a>
-							</div>
-						))}
-					</div>
+				<div className="recent-work-list">
+					<h3>최근 활동</h3>
+					{photographer.recentWork.map((item, index) => (
+						<div key={index} className="recent-work-item">
+							<strong>[{item.type}]</strong>{" "}
+							<a href={item.link} target="_blank" rel="noopener noreferrer">
+								{item.title}
+							</a>
+						</div>
+					))}
 				</div>
 			</div>
 		</>

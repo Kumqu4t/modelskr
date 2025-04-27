@@ -1,6 +1,7 @@
 .model-detail {
 	position: relative;
 	display: flex;
+	flex-direction: column;
 	flex-wrap: wrap;
 	gap: 24px;
 	max-width: 900px;
@@ -16,6 +17,11 @@
 	top: 24px;
 	right: 12px;
 	gap: 8px;
+}
+
+.imageinfo-wrapper {
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .admin-controls-detail {
@@ -41,20 +47,19 @@
 
 .model-detail-info {
 	flex: 1;
-	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	margin-left: 40px;
 }
 
 .model-detail-info h2 {
 	font-size: 28px;
 	font-weight: bold;
-	margin-bottom: 12px;
 }
 
 .model-detail-info p {
 	font-size: 16px;
-	margin-bottom: 8px;
+	margin: 20px 0;
 }
 
 .tag-list {
@@ -62,10 +67,6 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 12px;
-}
-
-.recent-work-list {
-	margin-top: 20px;
 }
 
 .recent-work-item {
@@ -97,13 +98,6 @@
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	cursor: pointer;
 	z-index: 1;
-}
-
-.model-detail-info {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: space-between;
 }
 
 /* 반응형 디자인 추가 */

@@ -93,98 +93,104 @@ function ModelDetailPage() {
 						Contact
 					</Button>
 				</div>
-
-				<div className="image-wrapper">
-					<img src={model.image} alt={model.name} />
-					{model?._id && (
-						<FavoriteButton
-							modelId={model._id}
-							isFavorited={favorites.some((fav) => fav.item?._id === model._id)}
-							onToggle={handleToggleFavorite}
-							className={"favorite-icon detail-icon"}
-						/>
-					)}
-				</div>
-
-				<div className="model-detail-info">
-					<h2>{model.name}</h2>
-					<p>{model.description}</p>
-					<p>
-						<strong>성별:</strong>{" "}
-						<span
-							className="filter-button"
-							onClick={() => navigate(`/models?gender=${model.gender}`)}
-						>
-							{model.gender}
-						</span>
-					</p>
-					<p>
-						<strong>에이전시:</strong>{" "}
-						{model.agency?.name ? (
-							<span
-								className="filter-button"
-								onClick={() =>
-									navigate(`/agencies/${encodeURIComponent(model.agency._id)}`)
-								}
-							>
-								{model.agency.name}
-							</span>
-						) : (
-							<span className="filter-button disabled">무소속</span>
+				<div className="imageinfo-wrapper">
+					<div className="image-wrapper">
+						<img src={model.image} alt={model.name} />
+						{model?._id && (
+							<FavoriteButton
+								modelId={model._id}
+								isFavorited={favorites.some(
+									(fav) => fav.item?._id === model._id
+								)}
+								onToggle={handleToggleFavorite}
+								className={"favorite-icon detail-icon"}
+							/>
 						)}
-					</p>
+					</div>
 
-					{model.birthDate && (
+					<div className="model-detail-info">
+						<h2>{model.name}</h2>
+						{/* <p>{model.description}</p> */}
 						<p>
-							<strong>생년월일:</strong>{" "}
-							{new Date(model.birthDate).toLocaleDateString()}
-						</p>
-					)}
-					{model.nationality && (
-						<p>
-							<strong>국적:</strong> {model.nationality}
-						</p>
-					)}
-					{model.height && (
-						<p>
-							<strong>키:</strong> {model.height} cm
-						</p>
-					)}
-					{model.measurements && (
-						<p>
-							<strong>사이즈:</strong> {model.measurements.chest} /{" "}
-							{model.measurements.waist} / {model.measurements.hips} cm
-						</p>
-					)}
-					{model.shoeSize && (
-						<p>
-							<strong>신발 사이즈:</strong> {model.shoeSize} cm
-						</p>
-					)}
-					<div className="tag-list">
-						{model.tags.map((tag, index) => (
+							<strong>성별:</strong>{" "}
 							<span
-								key={index}
 								className="filter-button"
-								onClick={() =>
-									navigate(`/models?tag=${encodeURIComponent(tag)}`)
-								}
+								onClick={() => navigate(`/models?gender=${model.gender}`)}
 							>
-								{tag}
+								{model.gender}
 							</span>
-						))}
+						</p>
+						<p>
+							<strong>에이전시:</strong>{" "}
+							{model.agency?.name ? (
+								<span
+									className="filter-button"
+									onClick={() =>
+										navigate(
+											`/agencies/${encodeURIComponent(model.agency._id)}`
+										)
+									}
+								>
+									{model.agency.name}
+								</span>
+							) : (
+								<span className="filter-button disabled">무소속</span>
+							)}
+						</p>
+
+						{model.birthDate && (
+							<p>
+								<strong>생년월일:</strong>{" "}
+								{new Date(model.birthDate).toLocaleDateString()}
+							</p>
+						)}
+						{model.nationality && (
+							<p>
+								<strong>국적:</strong> {model.nationality}
+							</p>
+						)}
+						{model.height && (
+							<p>
+								<strong>키:</strong> {model.height} cm
+							</p>
+						)}
+						{model.measurements && (
+							<p>
+								<strong>사이즈:</strong> {model.measurements.chest || "-"} /{" "}
+								{model.measurements.waist || "-"} /{" "}
+								{model.measurements.hips || "-"} inch
+							</p>
+						)}
+						{model.shoeSize && (
+							<p>
+								<strong>신발 사이즈:</strong> {model.shoeSize} mm
+							</p>
+						)}
+						<div className="tag-list">
+							{model.tags.map((tag, index) => (
+								<span
+									key={index}
+									className="filter-button"
+									onClick={() =>
+										navigate(`/models?tag=${encodeURIComponent(tag)}`)
+									}
+								>
+									{tag}
+								</span>
+							))}
+						</div>
 					</div>
-					<div className="recent-work-list">
-						<h3>최근 활동</h3>
-						{model.recentWork.map((item, index) => (
-							<div key={index} className="recent-work-item">
-								<strong>[{item.type}]</strong>{" "}
-								<a href={item.link} target="_blank" rel="noopener noreferrer">
-									{item.title}
-								</a>
-							</div>
-						))}
-					</div>
+				</div>
+				<div className="recent-work-list">
+					<h3>최근 활동</h3>
+					{model.recentWork.map((item, index) => (
+						<div key={index} className="recent-work-item">
+							<strong>[{item.type}]</strong>{" "}
+							<a href={item.link} target="_blank" rel="noopener noreferrer">
+								{item.title}
+							</a>
+						</div>
+					))}
 				</div>
 			</div>
 		</>
