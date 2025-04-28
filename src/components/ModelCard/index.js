@@ -52,7 +52,7 @@ function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 				/>
 			</div>
 			<h3 className="model-name">{name}</h3>
-			<p className="model-description">{description}</p>
+			{/* <p className="model-description">{description}</p> */}
 
 			{isAdmin && (
 				<div className="admin-controls">

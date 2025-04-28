@@ -8,6 +8,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		images: "",
 		description: "",
 		tags: "",
+		category: "",
 		models: [],
 		photographers: [],
 	});
@@ -55,6 +56,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				tags: photo.tags?.join(", ") || "",
 				models: photo.models?.map((m) => m._id) || [],
 				photographers: photo.photographers?.map((p) => p._id) || [],
+				category: photo.category || "others",
 			});
 		}
 	}, [mode, photo]);
@@ -192,6 +194,23 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				<div id="imagesError" className="photo-form__error">
 					{errors.images}
 				</div>
+			</label>
+
+			<label className="photo-form__field">
+				<span className="photo-form__label">
+					카테고리 <span className="photo-form__required">*</span>
+				</span>
+				<select
+					className="photo-form__input"
+					name="category"
+					value={formData.category}
+					onChange={handleChange}
+					required
+				>
+					<option value="commercial">Commercial</option>
+					<option value="editorial">Editorial</option>
+					<option value="others">Others</option>
+				</select>
 			</label>
 
 			<label className="photo-form__field">

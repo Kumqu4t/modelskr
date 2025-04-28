@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/user/userSlice";
@@ -9,7 +9,8 @@ import "./Header.css";
 function Header() {
 	const [keyword, setKeyword] = useState("");
 	const [searchTarget, setSearchTarget] = useState("models");
-	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isProfilesDropdownOpen, setIsProfilesDropdownOpen] = useState(false);
+	const [isPhotosDropdownOpen, setIsPhotosDropdownOpen] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const location = useLocation();
@@ -22,6 +23,13 @@ function Header() {
 		location.pathname.startsWith("/models") ||
 		location.pathname.startsWith("/photographers") ||
 		location.pathname.startsWith("/agencies");
+	const isPhotosActive = location.pathname.startsWith("/photos");
+	const [currentCategory, setCurrentCategory] = useState("");
+
+	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search);
+		setCurrentCategory(searchParams.get("category") || "");
+	}, [location.search]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -70,12 +78,52 @@ function Header() {
 
 				<nav className="nav-links">
 					<div
+						className={`dropdown ${isPhotosActive ? "active" : ""}`}
+						onMouseEnter={() => setIsPhotosDropdownOpen(true)}
+						onMouseLeave={() => setIsPhotosDropdownOpen(false)}
+					>
+						<button
+							className="dropdown-button"
+							onClick={() => navigate("/photos")}
+						>
+							PHOTOS
+						</button>
+						{(isPhotosDropdownOpen || isPhotosActive) && (
+							<div className="dropdown-content">
+								<Link
+									to="/photos?category=commercial"
+									className={`nav-item ${
+										currentCategory === "commercial" ? "active" : ""
+									}`}
+								>
+									Commercial
+								</Link>
+								<Link
+									to="/photos?category=editorial"
+									className={`nav-item ${
+										currentCategory === "editorial" ? "active" : ""
+									}`}
+								>
+									Editorial
+								</Link>
+								<Link
+									to="/photos?category=others"
+									className={`nav-item ${
+										currentCategory === "others" ? "active" : ""
+									}`}
+								>
+									Others
+								</Link>
+							</div>
+						)}
+					</div>
+					<div
 						className={`dropdown ${isProfilesActive ? "active" : ""}`}
-						onMouseEnter={() => setIsDropdownOpen(true)}
-						onMouseLeave={() => setIsDropdownOpen(false)}
+						onMouseEnter={() => setIsProfilesDropdownOpen(true)}
+						onMouseLeave={() => setIsProfilesDropdownOpen(false)}
 					>
 						<button className="dropdown-button">PROFILES</button>
-						{(isDropdownOpen || isProfilesActive) && (
+						{(isProfilesDropdownOpen || isProfilesActive) && (
 							<div className="dropdown-content">
 								<NavLink to="/models" className="nav-item">
 									Models
@@ -89,9 +137,6 @@ function Header() {
 							</div>
 						)}
 					</div>
-					<NavLink to="/photos" className="nav-item">
-						PHOTOS
-					</NavLink>
 				</nav>
 
 				<div className="searchbar-container">

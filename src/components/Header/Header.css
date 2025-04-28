@@ -154,3 +154,7 @@ header {
 .nav-item.active::after {
 	width: 100%;
 }
+
+.nav-item.disactive::after {
+	width: 0%;
+}

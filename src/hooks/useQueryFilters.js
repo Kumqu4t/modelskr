@@ -18,6 +18,9 @@ export function useQueryFilters(basePath = "models") {
 	const [agency, setAgency] = useState(
 		() => searchParams.get("agency") || "all"
 	);
+	const [category, setCategory] = useState(
+		() => searchParams.get("category") || "all"
+	);
 
 	useEffect(() => {
 		const updatedParams = new URLSearchParams(location.search);
@@ -25,6 +28,7 @@ export function useQueryFilters(basePath = "models") {
 		setKeyword(updatedParams.get("keyword") || "");
 		setGender(updatedParams.get("gender") || "all");
 		setAgency(updatedParams.get("agency") || "all");
+		setCategory(updatedParams.get("category") || "all");
 	}, [location.search]);
 
 	// 태그 등 필터링 시 URL 동기화
@@ -34,9 +38,10 @@ export function useQueryFilters(basePath = "models") {
 		if (keyword) params.set("keyword", keyword);
 		if (gender !== "all") params.set("gender", gender);
 		if (agency !== "all") params.set("agency", agency);
+		if (category !== "all") params.set("category", category);
 
 		navigate(`${basePath}?${params.toString()}`, { replace: true });
-	}, [selectedTags, keyword, gender, agency, navigate, basePath]);
+	}, [selectedTags, keyword, gender, agency, category, navigate, basePath]);
 
 	return {
 		selectedTags,
@@ -47,5 +52,7 @@ export function useQueryFilters(basePath = "models") {
 		setAgency,
 		keyword,
 		setKeyword,
+		category,
+		setCategory,
 	};
 }

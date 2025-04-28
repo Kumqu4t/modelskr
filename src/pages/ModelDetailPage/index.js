@@ -90,7 +90,7 @@ function ModelDetailPage() {
 						type="default"
 						onClick={() => window.open(model.contact, "_blank")}
 					>
-						Contact
+						Instagram
 					</Button>
 				</div>
 				<div className="imageinfo-wrapper">
@@ -163,7 +163,7 @@ function ModelDetailPage() {
 						)}
 						{model.shoeSize && (
 							<p>
-								<strong>신발 사이즈:</strong> {model.shoeSize} mm
+								<strong>신발 사이즈:</strong> {model.shoeSize}
 							</p>
 						)}
 						<div className="tag-list">

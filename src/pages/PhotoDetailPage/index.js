@@ -113,6 +113,8 @@ const PhotoDetailPage = () => {
 						/>
 					</div>
 				</div>
+				{/* <h2 onClick={() => navigate(/photos?category=${photo.category})} >{photo.category}</h2> */}
+				<h2>{photo.category}</h2>
 
 				<div className="photo-gallery">
 					<button
