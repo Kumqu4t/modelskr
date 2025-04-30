@@ -10,7 +10,7 @@ function PhotoList({ photos }) {
 	}
 
 	return (
-		<div className="photos-page" style={{ padding: "24px" }}>
+		<div className="photos-page">
 			<div className="photos-grid">
 				{photos.map((photo) => (
 					<div
