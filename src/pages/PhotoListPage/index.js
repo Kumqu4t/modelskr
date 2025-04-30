@@ -15,13 +15,15 @@ const PhotoListPage = () => {
 	useEffect(() => {
 		const fetchPhotos = async () => {
 			try {
-				console.log("category: ", category);
+				const params = new URLSearchParams();
+				if (category && category !== "all") params.set("category", category);
+				if (keyword) params.set("keyword", keyword);
+
 				const res = await fetch(
-					`${API_BASE_URL}/api/photos?category=${category}`
+					`${API_BASE_URL}/api/photos?${params.toString()}`
 				);
 				if (!res.ok) throw new Error("사진을 불러오는 데 실패했습니다.");
 				const data = await res.json();
-				console.log("data: ", data);
 				setPhotos(data);
 			} catch (err) {
 				setError(err.message);
@@ -31,11 +33,7 @@ const PhotoListPage = () => {
 		};
 
 		fetchPhotos();
-	}, [category]);
-
-	const filteredPhotos = photos.filter((photo) =>
-		photo.title?.toLowerCase().includes(keyword.toLowerCase())
-	);
+	}, [category, keyword]);
 
 	if (isLoading) return <Loading />;
 	if (photos.length === 0) return <div>사진이 없습니다.</div>;
@@ -53,7 +51,7 @@ const PhotoListPage = () => {
 						? "All Photos"
 						: category[0].toUpperCase() + category.slice(1)}
 				</h1>
-				<PhotoList photos={filteredPhotos} />
+				<PhotoList photos={photos} />
 			</div>
 		</>
 	);

@@ -16,7 +16,12 @@ function AgencyListPage() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get(`${API_BASE_URL}/api/agencies`);
+				const params = new URLSearchParams();
+				if (keyword) params.set("keyword", keyword);
+
+				const res = await axios.get(
+					`${API_BASE_URL}/api/agencies?${params.toString()}`
+				);
 				setAgencies(res.data);
 			} catch (err) {
 				console.error("에이전시 목록 가져오기 실패", err);
@@ -26,11 +31,7 @@ function AgencyListPage() {
 		};
 
 		fetchData();
-	}, []);
-
-	const filteredAgencies = agencies.filter((agency) =>
-		agency.name?.toLowerCase().includes(keyword.toLowerCase())
-	);
+	}, [keyword]);
 
 	const handleClick = (id) => {
 		navigate(`/agencies/${id}`);
@@ -46,11 +47,11 @@ function AgencyListPage() {
 			/>
 			<div className="agency-page">
 				<h1 className="admin-title">에이전시 리스트</h1>
-				{filteredAgencies.length === 0 ? (
+				{agencies.length === 0 ? (
 					<p>검색 결과가 없습니다.</p>
 				) : (
 					<ul className="agency-list">
-						{filteredAgencies.map((agency) => (
+						{agencies.map((agency) => (
 							<li
 								key={agency._id}
 								className="agency-card"

@@ -1,6 +1,5 @@
 import { API_BASE_URL, getHeaders } from "../../api";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
-import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import FilterBar from "../../components/FilterBar";
@@ -20,16 +19,28 @@ function ModelListPage() {
 		setAgency,
 		keyword,
 	} = useQueryFilters("/models");
+
 	const [models, setModels] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchModels = async () => {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/models`, {
-					headers: getHeaders(localStorage.getItem("token")),
-				});
+				const params = new URLSearchParams();
+				if (gender !== "all") params.set("gender", gender);
+				if (agency !== "all") params.set("agency", agency);
+				selectedTags.forEach((tag) => params.append("tag", tag));
+				if (keyword) params.set("keyword", keyword);
+
+				console.log("변경감지. 새로운 params는?: ", params.toString());
+				const res = await fetch(
+					`${API_BASE_URL}/api/models?${params.toString()}`,
+					{
+						headers: getHeaders(localStorage.getItem("token")),
+					}
+				);
 				const data = await res.json();
+				console.log("변경감지. 새로운 data는?: ", data);
 				setModels(data);
 			} catch (err) {
 				console.error("모델 데이터를 불러오기 실패:", err);
@@ -39,30 +50,18 @@ function ModelListPage() {
 		};
 
 		fetchModels();
-	}, []);
+	}, [selectedTags, keyword, gender, agency]);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
-	const filteredModels = useFilters(
-		models,
-		selectedTags,
-		keyword,
-		gender,
-		agency
-	);
-
-	// 페이지네이션
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemLimit = 8;
 	const startIndex = (currentPage - 1) * itemLimit;
-	const currentModels = filteredModels.slice(
-		startIndex,
-		startIndex + itemLimit
-	);
+	const currentModels = models.slice(startIndex, startIndex + itemLimit);
 
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
-	const availableTags = new Set(filteredModels.flatMap((model) => model.tags));
+	const availableTags = new Set(models.flatMap((model) => model.tags));
 	const agencies = [
 		...new Set(models.map((model) => model.agency?.name).filter(Boolean)),
 	];
@@ -98,7 +97,7 @@ function ModelListPage() {
 					onToggleFavorite={toggleFavorite}
 				/>
 				<Pagination
-					totalItems={filteredModels.length}
+					totalItems={models.length}
 					itemLimit={itemLimit}
 					currentPage={currentPage}
 					onPageChange={setCurrentPage}

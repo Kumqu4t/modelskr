@@ -1,6 +1,5 @@
 import DefaultHelmet from "../../components/DefaultHelmet";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
-import { useFilters } from "../../hooks/useFilters";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import FilterBar from "../../components/FilterBar";
@@ -26,9 +25,18 @@ function PhotographerListPage() {
 	useEffect(() => {
 		const fetchPhotographers = async () => {
 			try {
-				const res = await fetch(`${API_BASE_URL}/api/photographers`, {
-					headers: getHeaders(localStorage.getItem("token")),
-				});
+				const params = new URLSearchParams();
+				if (gender !== "all") params.set("gender", gender);
+				if (agency !== "all") params.set("agency", agency);
+				selectedTags.forEach((tag) => params.append("tag", tag));
+				if (keyword) params.set("keyword", keyword);
+
+				const res = await fetch(
+					`${API_BASE_URL}/api/photographers?${params.toString()}`,
+					{
+						headers: getHeaders(localStorage.getItem("token")),
+					}
+				);
 				const data = await res.json();
 				setPhotographers(data);
 			} catch (err) {
@@ -39,7 +47,7 @@ function PhotographerListPage() {
 		};
 
 		fetchPhotographers();
-	}, []);
+	}, [selectedTags, keyword, gender, agency]);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(
@@ -47,19 +55,11 @@ function PhotographerListPage() {
 		"Photographer"
 	);
 
-	const filteredPhotographers = useFilters(
-		photographers,
-		selectedTags,
-		keyword,
-		gender,
-		agency
-	);
-
 	// 페이지네이션
 	const [currentPage, setCurrentPage] = useState(1);
 	const itemLimit = 8;
 	const startIndex = (currentPage - 1) * itemLimit;
-	const currentPhotographers = filteredPhotographers.slice(
+	const currentPhotographers = photographers.slice(
 		startIndex,
 		startIndex + itemLimit
 	);
@@ -68,7 +68,7 @@ function PhotographerListPage() {
 		...new Set(photographers.flatMap((photographers) => photographers.tags)),
 	];
 	const availableTags = new Set(
-		filteredPhotographers.flatMap((photographers) => photographers.tags)
+		photographers.flatMap((photographers) => photographers.tags)
 	);
 	const agencies = [
 		...new Set(
@@ -109,7 +109,7 @@ function PhotographerListPage() {
 					onToggleFavorite={toggleFavorite}
 				/>
 				<Pagination
-					totalItems={filteredPhotographers.length}
+					totalItems={photographers.length}
 					itemLimit={itemLimit}
 					currentPage={currentPage}
 					onPageChange={setCurrentPage}
