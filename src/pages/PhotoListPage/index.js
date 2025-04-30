@@ -18,6 +18,7 @@ const PhotoListPage = () => {
 				const params = new URLSearchParams();
 				if (category && category !== "all") params.set("category", category);
 				if (keyword) params.set("keyword", keyword);
+				params.set("fields", "images,title,_id");
 
 				const res = await fetch(
 					`${API_BASE_URL}/api/photos?${params.toString()}`

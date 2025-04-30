@@ -21,6 +21,7 @@ function ModelListPage() {
 	} = useQueryFilters("/models");
 
 	const [models, setModels] = useState([]);
+	const [agencyOptions, setAgencyOptions] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -32,7 +33,6 @@ function ModelListPage() {
 				selectedTags.forEach((tag) => params.append("tag", tag));
 				if (keyword) params.set("keyword", keyword);
 
-				console.log("변경감지. 새로운 params는?: ", params.toString());
 				const res = await fetch(
 					`${API_BASE_URL}/api/models?${params.toString()}`,
 					{
@@ -40,7 +40,7 @@ function ModelListPage() {
 					}
 				);
 				const data = await res.json();
-				console.log("변경감지. 새로운 data는?: ", data);
+
 				setModels(data);
 			} catch (err) {
 				console.error("모델 데이터를 불러오기 실패:", err);
@@ -52,6 +52,23 @@ function ModelListPage() {
 		fetchModels();
 	}, [selectedTags, keyword, gender, agency]);
 
+	useEffect(() => {
+		const fetchAgencies = async () => {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/agencies?fields=name`);
+				const data = await res.json();
+				const names = data.map((agency) => agency.name);
+				setAgencyOptions([...names, "무소속"]);
+			} catch (err) {
+				console.error("에이전시 목록 불러오기 실패", err);
+			}
+		};
+
+		fetchAgencies();
+	}, []);
+
+	const agencies = agencyOptions;
+
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
@@ -62,12 +79,6 @@ function ModelListPage() {
 
 	const tags = [...new Set(models.flatMap((model) => model.tags))];
 	const availableTags = new Set(models.flatMap((model) => model.tags));
-	const agencies = [
-		...new Set(models.map((model) => model.agency?.name).filter(Boolean)),
-	];
-	if (models.some((model) => model.agency === null)) {
-		agencies.push("무소속");
-	}
 
 	if (isLoading) return <Loading />;
 

@@ -20,6 +20,7 @@ function PhotographerListPage() {
 		keyword,
 	} = useQueryFilters("/photographers");
 	const [photographers, setPhotographers] = useState([]);
+	const [agencyOptions, setAgencyOptions] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -49,6 +50,21 @@ function PhotographerListPage() {
 		fetchPhotographers();
 	}, [selectedTags, keyword, gender, agency]);
 
+	useEffect(() => {
+		const fetchAgencies = async () => {
+			try {
+				const res = await fetch(`${API_BASE_URL}/api/agencies?fields=name`);
+				const data = await res.json();
+				const names = data.map((agency) => agency.name);
+				setAgencyOptions([...names, "무소속"]);
+			} catch (err) {
+				console.error("에이전시 목록 불러오기 실패", err);
+			}
+		};
+
+		fetchAgencies();
+	}, []);
+
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(
 		isLoggedIn,
@@ -70,16 +86,7 @@ function PhotographerListPage() {
 	const availableTags = new Set(
 		photographers.flatMap((photographers) => photographers.tags)
 	);
-	const agencies = [
-		...new Set(
-			photographers
-				.map((photographers) => photographers.agency?.name)
-				.filter(Boolean)
-		),
-	];
-	if (photographers.some((photographer) => photographer.agency === null)) {
-		agencies.push("무소속");
-	}
+	const agencies = agencyOptions;
 
 	if (isLoading) return <Loading />;
 
