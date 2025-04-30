@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../../redux/user/userSlice";
+import { API_BASE_URL, getHeaders } from "../../api";
 import Header from "../Header";
 import Footer from "../Footer";
 
@@ -12,10 +13,8 @@ function PageLayout() {
 		const token = localStorage.getItem("token");
 
 		if (token) {
-			fetch("/api/auth/me", {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
+			fetch(`${API_BASE_URL}/api/auth/me`, {
+				headers: getHeaders(token),
 			})
 				.then((res) => res.json())
 				.then((user) => dispatch(login(user)))

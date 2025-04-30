@@ -3,11 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
-import ModelList from "../../components/ModelList";
 import { useFavorites } from "../../hooks/useFavorites";
 import { API_BASE_URL, getHeaders } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
+import { linkifyDescription } from "../../utils/linkify";
 import "./PhotoDetailPage.css";
 
 const PhotoDetailPage = () => {
@@ -25,12 +25,6 @@ const PhotoDetailPage = () => {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const { favorites: modelFavorites, toggleFavorite: toggleModelFavorite } =
-		useFavorites(isLoggedIn, "Model");
-	const {
-		favorites: photographerFavorites,
-		toggleFavorite: togglePhotographerFavorite,
-	} = useFavorites(isLoggedIn, "Photographer");
 	const { favorites: photoFavorites, toggleFavorite: togglePhotoFavorite } =
 		useFavorites(isLoggedIn, "Photo");
 
@@ -113,33 +107,63 @@ const PhotoDetailPage = () => {
 						/>
 					</div>
 				</div>
-				{/* <h2 onClick={() => navigate(/photos?category=${photo.category})} >{photo.category}</h2> */}
-				<h2>{photo.category}</h2>
+				<span
+					className="photo-detail-category"
+					onClick={() => navigate(`/photos?category=${photo.category}`)}
+				>
+					{photo.category} {">"}
+				</span>
 
 				<div className="photo-gallery">
-					<button
-						onClick={handlePrev}
-						className="nav-button"
-						aria-label="이전 사진"
-					>
-						←
-					</button>
+					{photo.images.length > 1 && (
+						<button
+							onClick={handlePrev}
+							className="nav-button"
+							aria-label="이전 사진"
+						>
+							{"<"}
+						</button>
+					)}
 					<div className="photo-image-wrapper">
 						<img
 							src={photo.images[currentIndex]}
 							alt={`${photo.title} - ${currentIndex + 1}`}
 						/>
 					</div>
-					<button
-						onClick={handleNext}
-						className="nav-button"
-						aria-label="다음 사진"
-					>
-						→
-					</button>
+					{photo.images.length > 1 && (
+						<button
+							onClick={handleNext}
+							className="nav-button"
+							aria-label="다음 사진"
+						>
+							{">"}
+						</button>
+					)}
+					{photo.images.length > 1 && (
+						<div className="photo-indicator">
+							{photo.images.map((_, idx) => (
+								<span
+									key={idx}
+									className={`indicator-dot ${
+										idx === currentIndex ? "active" : ""
+									}`}
+								/>
+							))}
+						</div>
+					)}
 				</div>
 
-				<p>{photo.description}</p>
+				<p
+					dangerouslySetInnerHTML={{
+						__html: linkifyDescription(photo.description, [
+							...photo.models.map((m) => ({ ...m, type: "model" })),
+							...photo.photographers.map((p) => ({
+								...p,
+								type: "photographer",
+							})),
+						]),
+					}}
+				></p>
 
 				<div className="tags">
 					{photo.tags.map((tag, index) => (
@@ -150,20 +174,30 @@ const PhotoDetailPage = () => {
 				</div>
 
 				<h2>참여 모델</h2>
-				<ModelList
-					type="models"
-					models={photo.models}
-					favorites={modelFavorites}
-					onToggleFavorite={toggleModelFavorite}
-				/>
+				<div className="simple-list">
+					{photo.models.map((model) => (
+						<span
+							key={model._id}
+							className="link-name"
+							onClick={() => navigate(`/models/${model._id}`)}
+						>
+							{model.name}
+						</span>
+					))}
+				</div>
 
 				<h2>참여 작가</h2>
-				<ModelList
-					type="photographers"
-					models={photo.photographers}
-					favorites={photographerFavorites}
-					onToggleFavorite={togglePhotographerFavorite}
-				/>
+				<div className="simple-list">
+					{photo.photographers.map((photographer) => (
+						<span
+							key={photographer._id}
+							className="link-name"
+							onClick={() => navigate(`/photographers/${photographer._id}`)}
+						>
+							{photographer.name}
+						</span>
+					))}
+				</div>
 			</div>
 		</>
 	);
