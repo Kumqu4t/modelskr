@@ -1,12 +1,14 @@
-import { API_BASE_URL, getHeaders } from "../../api";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
-import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
+import {
+	usePhotographerById,
+	useDeletePhotographer,
+} from "../../hooks/photographers";
 // import "./ModelDetailPage.css";
 
 function PhotographerDetailPage() {
@@ -18,27 +20,8 @@ function PhotographerDetailPage() {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const [photographer, setPhotographer] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
+	const { data: photographer, isLoading, error } = usePhotographerById(id);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
-	useEffect(() => {
-		const fetchPhotographerDetails = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/photographers/${id}`);
-				if (!res.ok) throw new Error("작가 불러오기 실패.");
-				const data = await res.json();
-				setPhotographer(data);
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchPhotographerDetails();
-	}, [id]);
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
@@ -47,21 +30,20 @@ function PhotographerDetailPage() {
 		navigate(`/admin/edit/photographers/${id}`);
 	};
 
+	const deletePhotographer = useDeletePhotographer();
+
 	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/photographers/${id}`, {
-					method: "DELETE",
-					headers: getHeaders(localStorage.getItem("token")),
-				});
-				if (!res.ok) throw new Error("삭제 실패");
-				alert("삭제되었습니다.");
-				navigate("/admin");
-			} catch (error) {
-				console.error("삭제 중 오류:", error);
-				alert("삭제에 실패했습니다.");
-			}
+			deletePhotographer.mutate(id, {
+				onSuccess: () => {
+					alert("삭제되었습니다.");
+					navigate("/photographers");
+				},
+				onError: () => {
+					alert("삭제에 실패했습니다.");
+				},
+			});
 		}
 	};
 

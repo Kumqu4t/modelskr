@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { API_BASE_URL } from "../../api";
+import { useModels } from "../../hooks/models/useModels";
+import { usePhotographers } from "../../hooks/photographers/usePhotographers";
 import "./PhotoForm.css";
 
 function PhotoForm({ mode, photo, onSubmit }) {
@@ -18,8 +19,8 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		images: "",
 	});
 
-	const [models, setModels] = useState([]);
-	const [photographers, setPhotographers] = useState([]);
+	const { data: models = [] } = useModels({});
+	const { data: photographers = [] } = usePhotographers({});
 
 	const [modelSearchTerm, setModelSearchTerm] = useState("");
 	const [photographerSearchTerm, setPhotographerSearchTerm] = useState("");
@@ -27,26 +28,6 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	const [photographerSearchResults, setPhotographerSearchResults] = useState(
 		[]
 	);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const modelsRes = await fetch(`${API_BASE_URL}/api/models`);
-				const modelsData = await modelsRes.json();
-				setModels(modelsData);
-
-				const photographersRes = await fetch(
-					`${API_BASE_URL}/api/photographers`
-				);
-				const photographersData = await photographersRes.json();
-				setPhotographers(photographersData);
-			} catch (err) {
-				console.error("데이터 불러오기 실패:", err);
-			}
-		};
-
-		fetchData();
-	}, []);
 
 	useEffect(() => {
 		if (mode === "edit" && photo) {

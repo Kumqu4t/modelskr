@@ -6,7 +6,7 @@ function DefaultHelmet({ title, description, image }) {
 	const desc =
 		description ||
 		"한국 모델, 포토그래퍼, 에이전시 정보를 한눈에 볼 수 있는 사이트입니다.";
-	const img = image || "/default-og-image.png"; // 추가 필요.
+	const img = image || "../../public/SampleIco.ico";
 	const url = window.location.href;
 
 	return (

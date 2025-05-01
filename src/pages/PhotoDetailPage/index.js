@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
 import { useFavorites } from "../../hooks/useFavorites";
-import { API_BASE_URL, getHeaders } from "../../api";
+import { usePhotoById, useDeletePhoto } from "../../hooks/photos";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 import { linkifyDescription } from "../../utils/linkify";
@@ -14,12 +14,10 @@ const PhotoDetailPage = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
-	const [photo, setPhoto] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [currentIndex, setCurrentIndex] = useState(0);
+	const { data: photo, isLoading, error } = usePhotoById(id);
 
-	const token = localStorage.getItem("token");
+	const [currentIndex, setCurrentIndex] = React.useState(0);
+
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
@@ -28,22 +26,7 @@ const PhotoDetailPage = () => {
 	const { favorites: photoFavorites, toggleFavorite: togglePhotoFavorite } =
 		useFavorites(isLoggedIn, "Photo");
 
-	useEffect(() => {
-		const fetchPhoto = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/photos/${id}`);
-				if (!res.ok) throw new Error("사진을 불러오는 데 실패했습니다.");
-				const data = await res.json();
-				setPhoto(data);
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchPhoto();
-	}, [id]);
+	const deletePhoto = useDeletePhoto();
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -53,17 +36,15 @@ const PhotoDetailPage = () => {
 	const handleDelete = async () => {
 		if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
-		try {
-			const res = await fetch(`${API_BASE_URL}/api/photos/${id}`, {
-				method: "DELETE",
-				headers: getHeaders(token),
-			});
-			if (!res.ok) throw new Error("사진 삭제 실패");
-			alert("사진이 삭제되었습니다.");
-			navigate("/photos");
-		} catch (err) {
-			alert("사진 삭제 실패");
-		}
+		deletePhoto.mutate(id, {
+			onSuccess: () => {
+				alert("사진이 삭제되었습니다.");
+				navigate("/photos");
+			},
+			onError: () => {
+				alert("사진 삭제 실패");
+			},
+		});
 	};
 
 	if (isLoading) return <Loading />;

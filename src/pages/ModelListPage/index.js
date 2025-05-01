@@ -1,9 +1,9 @@
-import { API_BASE_URL } from "../../api";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useModels } from "../../hooks/models";
 import { useFavorites } from "../../hooks/useFavorites";
+import { useAgencies } from "../../hooks/agencies/useAgencies";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
@@ -28,24 +28,8 @@ function ModelListPage() {
 		keyword,
 	});
 
-	const [agencyOptions, setAgencyOptions] = useState([]);
-
-	useEffect(() => {
-		const fetchAgencies = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/agencies?fields=name`);
-				const data = await res.json();
-				const names = data.map((agency) => agency.name);
-				setAgencyOptions([...names, "무소속"]);
-			} catch (err) {
-				console.error("에이전시 목록 불러오기 실패", err);
-			}
-		};
-
-		fetchAgencies();
-	}, []);
-
-	const agencies = agencyOptions;
+	const { data: rawAgencies = [] } = useAgencies({ fields: "name" });
+	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");

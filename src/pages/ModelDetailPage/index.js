@@ -2,9 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
-import { useState, useEffect } from "react";
 import { useFavorites } from "../../hooks/useFavorites";
-import { API_BASE_URL, getHeaders } from "../../api";
+import { useModelById, useDeleteModel } from "../../hooks/models";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 import "./ModelDetailPage.css";
@@ -18,27 +17,8 @@ function ModelDetailPage() {
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const [model, setModel] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
+	const { data: model, isLoading, error } = useModelById(id);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
-	useEffect(() => {
-		const fetchModelDetails = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/models/${id}`);
-				if (!res.ok) throw new Error("모델을 불러오는 데 실패했습니다.");
-				const data = await res.json();
-				setModel(data);
-			} catch (err) {
-				setError(err.message);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchModelDetails();
-	}, [id]);
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
@@ -47,21 +27,21 @@ function ModelDetailPage() {
 		navigate(`/admin/edit/models/${id}`);
 	};
 
-	const handleDelete = async (e) => {
+	const deleteModel = useDeleteModel();
+
+	const handleDelete = (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/models/${id}`, {
-					method: "DELETE",
-					headers: getHeaders(localStorage.getItem("token")),
-				});
-				if (!res.ok) throw new Error("삭제 실패");
-				alert("삭제되었습니다.");
-				navigate("/admin");
-			} catch (error) {
-				console.error("삭제 중 오류:", error);
-				alert("삭제에 실패했습니다.");
-			}
+			deleteModel.mutate(id, {
+				onSuccess: () => {
+					alert("삭제되었습니다.");
+					navigate("/admin");
+				},
+				onError: (error) => {
+					console.error("삭제 중 오류:", error);
+					alert("삭제에 실패했습니다.");
+				},
+			});
 		}
 	};
 

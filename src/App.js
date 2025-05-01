@@ -20,7 +20,7 @@ import PhotoListPage from "./pages/PhotoListPage";
 import PhotoDetailPage from "./pages/PhotoDetailPage";
 import FavoritePage from "./pages/FavoritePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PageLayout from "./components/PageLayout/PageLayout";
+import PageLayout from "./components/PageLayout";
 import RequireAdmin from "./components/RequireAdmin";
 
 const queryClient = new QueryClient();

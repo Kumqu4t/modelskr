@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ModelList from "../../components/ModelList";
-import { API_BASE_URL } from "../../api";
+import { useRandomModels } from "../../hooks/models";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 import "./HomePage.css";
 
 function HomePage() {
-	const [models, setModels] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
-
-	useEffect(() => {
-		const fetchRandomModels = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/models/random?limit=4`);
-				const data = await res.json();
-				setModels(data);
-			} catch (err) {
-				console.error("랜덤 모델 불러오기 실패:", err);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchRandomModels();
-	}, []);
+	const { data: models = [], isLoading } = useRandomModels(4);
 
 	if (isLoading) return <Loading />;
 

@@ -1,43 +1,20 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { API_BASE_URL } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
+import { useAgencies } from "../../hooks/agencies/useAgencies";
 import Loading from "../../components/Loading";
 import "./AgencyListPage.css";
 import DefaultHelmet from "../../components/DefaultHelmet";
 
 function AgencyListPage() {
-	const [agencies, setAgencies] = useState([]);
-	const [idLoading, setIsLoading] = useState(true);
 	const { keyword } = useQueryFilters("/agencies");
+	const { data: agencies = [], isLoading } = useAgencies({ keyword });
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const params = new URLSearchParams();
-				if (keyword) params.set("keyword", keyword);
-
-				const res = await axios.get(
-					`${API_BASE_URL}/api/agencies?${params.toString()}`
-				);
-				setAgencies(res.data);
-			} catch (err) {
-				console.error("에이전시 목록 가져오기 실패", err);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchData();
-	}, [keyword]);
 
 	const handleClick = (id) => {
 		navigate(`/agencies/${id}`);
 	};
 
-	if (idLoading) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	return (
 		<>

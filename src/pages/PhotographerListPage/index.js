@@ -1,13 +1,14 @@
-import DefaultHelmet from "../../components/DefaultHelmet";
+import { useState } from "react";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useFavorites } from "../../hooks/useFavorites";
+import { usePhotographers } from "../../hooks/photographers/usePhotographers";
+import { useAgencies } from "../../hooks/agencies/useAgencies";
+import DefaultHelmet from "../../components/DefaultHelmet";
+import Loading from "../../components/Loading";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
-import { useFavorites } from "../../hooks/useFavorites";
-import { API_BASE_URL, getHeaders } from "../../api";
-import Loading from "../../components/Loading";
 
 function PhotographerListPage() {
 	const {
@@ -19,51 +20,16 @@ function PhotographerListPage() {
 		setAgency,
 		keyword,
 	} = useQueryFilters("/photographers");
-	const [photographers, setPhotographers] = useState([]);
-	const [agencyOptions, setAgencyOptions] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
 
-	useEffect(() => {
-		const fetchPhotographers = async () => {
-			try {
-				const params = new URLSearchParams();
-				if (gender !== "all") params.set("gender", gender);
-				if (agency !== "all") params.set("agency", agency);
-				selectedTags.forEach((tag) => params.append("tag", tag));
-				if (keyword) params.set("keyword", keyword);
+	const { data: photographers = [], isLoading } = usePhotographers({
+		gender,
+		agency,
+		selectedTags,
+		keyword,
+	});
 
-				const res = await fetch(
-					`${API_BASE_URL}/api/photographers?${params.toString()}`,
-					{
-						headers: getHeaders(localStorage.getItem("token")),
-					}
-				);
-				const data = await res.json();
-				setPhotographers(data);
-			} catch (err) {
-				console.error("작가 데이터를 불러오기 실패:", err);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchPhotographers();
-	}, [selectedTags, keyword, gender, agency]);
-
-	useEffect(() => {
-		const fetchAgencies = async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/agencies?fields=name`);
-				const data = await res.json();
-				const names = data.map((agency) => agency.name);
-				setAgencyOptions([...names, "무소속"]);
-			} catch (err) {
-				console.error("에이전시 목록 불러오기 실패", err);
-			}
-		};
-
-		fetchAgencies();
-	}, []);
+	const { data: rawAgencies = [] } = useAgencies({ fields: "name" });
+	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(
@@ -86,7 +52,6 @@ function PhotographerListPage() {
 	const availableTags = new Set(
 		photographers.flatMap((photographers) => photographers.tags)
 	);
-	const agencies = agencyOptions;
 
 	if (isLoading) return <Loading />;
 

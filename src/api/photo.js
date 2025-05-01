@@ -4,12 +4,14 @@ export const fetchPhotos = async ({
 	keyword = "",
 	fields = "",
 	selectedTags = [],
+	category = "all",
 }) => {
 	const params = new URLSearchParams();
 
 	selectedTags.forEach((tag) => params.append("tag", tag));
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
+	if (category && category !== "all") params.set("category", category);
 
 	const res = await fetch(`${API_BASE_URL}/api/photos?${params.toString()}`, {
 		headers: getHeaders(localStorage.getItem("token")),

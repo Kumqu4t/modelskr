@@ -43,6 +43,14 @@ export const createModel = async (data) => {
 	return res.json();
 };
 
+export const fetchRandomModels = async (limit = 4) => {
+	const res = await fetch(`${API_BASE_URL}/api/models/random?limit=${limit}`, {
+		headers: getHeaders(localStorage.getItem("token")),
+	});
+	if (!res.ok) throw new Error("랜덤 모델을 불러오는 데 실패했습니다.");
+	return res.json();
+};
+
 export const updateModel = async (id, data) => {
 	const res = await fetch(`${API_BASE_URL}/api/models/${id}`, {
 		method: "PATCH",

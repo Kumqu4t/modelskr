@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import { API_BASE_URL, getHeaders } from "../../api";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import ModelList from "../../components/ModelList";
 import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 import { useFavorites } from "../../hooks/useFavorites";
+import { useAgencyById, useDeleteAgency } from "../../hooks/agencies";
 import "./AgencyDetailPage.css";
 
 function AgencyDetailPage() {
@@ -15,9 +14,9 @@ function AgencyDetailPage() {
 	const navigate = useNavigate();
 	const decodedName = decodeURIComponent(id);
 
-	const [agency, setAgency] = useState(null);
-	const [models, setModels] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const { data: agency, isLoading } = useAgencyById(decodedName);
+	const models = agency?.models || [];
+	const deleteAgency = useDeleteAgency();
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const isAdmin = useSelector(
@@ -25,46 +24,24 @@ function AgencyDetailPage() {
 	);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
-	useEffect(() => {
-		const fetchAgencyDetails = async () => {
-			try {
-				const res = await axios.get(
-					`${API_BASE_URL}/api/agencies/${decodedName}`
-				);
-				setAgency(res.data);
-				setModels(res.data.models);
-				// console.log("에이전시 정보 가져오기 성공", res.data);
-				// console.log("에이전시 모델 정보 가져오기 성공", res.data.models);
-			} catch (error) {
-				// console.error("에이전시 정보 가져오기 실패", error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchAgencyDetails();
-	}, [decodedName]);
-
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/agencies/${id}`);
 	};
 
-	const handleDelete = async (e) => {
+	const handleDelete = (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/agencies/${id}`, {
-					method: "DELETE",
-					headers: getHeaders(localStorage.getItem("token")),
-				});
-				if (!res.ok) throw new Error("삭제 실패");
-				alert("삭제되었습니다.");
-				navigate("/agencies");
-			} catch (error) {
-				console.error("삭제 중 오류:", error);
-				alert("삭제에 실패했습니다.");
-			}
+			deleteAgency.mutate(id, {
+				onSuccess: () => {
+					alert("삭제되었습니다.");
+					navigate("/agencies");
+				},
+				onError: (error) => {
+					console.error("삭제 중 오류:", error);
+					alert("삭제에 실패했습니다.");
+				},
+			});
 		}
 	};
 
