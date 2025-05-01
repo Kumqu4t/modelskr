@@ -1,0 +1,55 @@
+import { API_BASE_URL, getHeaders } from ".";
+
+export const fetchAgencies = async ({ keyword = "", fields = "" }) => {
+	const params = new URLSearchParams();
+	if (keyword) params.set("keyword", keyword);
+	if (fields) params.set("fields", fields);
+
+	const res = await fetch(`${API_BASE_URL}/api/agencies?${params.toString()}`, {
+		headers: getHeaders(localStorage.getItem("token")),
+	});
+
+	if (!res.ok) throw new Error("에이전시 목록을 불러오지 못했습니다.");
+	return res.json();
+};
+
+export const fetchAgencyById = async (id) => {
+	const res = await fetch(`${API_BASE_URL}/api/agencies/${id}`, {
+		headers: getHeaders(localStorage.getItem("token")),
+	});
+
+	if (!res.ok) throw new Error("에이전시 데이터를 불러오지 못했습니다.");
+	return res.json();
+};
+
+export const createAgency = async (data) => {
+	const res = await fetch(`${API_BASE_URL}/api/agencies`, {
+		method: "POST",
+		headers: getHeaders(localStorage.getItem("token")),
+		body: JSON.stringify(data),
+	});
+
+	if (!res.ok) throw new Error("에이전시 생성 실패");
+	return res.json();
+};
+
+export const updateAgency = async (id, data) => {
+	const res = await fetch(`${API_BASE_URL}/api/agencies/${id}`, {
+		method: "PATCH",
+		headers: getHeaders(localStorage.getItem("token")),
+		body: JSON.stringify(data),
+	});
+
+	if (!res.ok) throw new Error("에이전시 수정 실패");
+	return res.json();
+};
+
+export const deleteAgency = async (id) => {
+	const res = await fetch(`${API_BASE_URL}/api/agencies/${id}`, {
+		method: "DELETE",
+		headers: getHeaders(localStorage.getItem("token")),
+	});
+
+	if (!res.ok) throw new Error("에이전시 삭제 실패");
+	return res.json();
+};

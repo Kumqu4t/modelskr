@@ -1,11 +1,12 @@
-import { API_BASE_URL, getHeaders } from "../../api";
+import { API_BASE_URL } from "../../api";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { useModels } from "../../hooks/models";
+import { useFavorites } from "../../hooks/useFavorites";
 import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
-import { useFavorites } from "../../hooks/useFavorites";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 
@@ -20,37 +21,14 @@ function ModelListPage() {
 		keyword,
 	} = useQueryFilters("/models");
 
-	const [models, setModels] = useState([]);
+	const { data: models = [], isLoading } = useModels({
+		gender,
+		agency,
+		selectedTags,
+		keyword,
+	});
+
 	const [agencyOptions, setAgencyOptions] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchModels = async () => {
-			try {
-				const params = new URLSearchParams();
-				if (gender !== "all") params.set("gender", gender);
-				if (agency !== "all") params.set("agency", agency);
-				selectedTags.forEach((tag) => params.append("tag", tag));
-				if (keyword) params.set("keyword", keyword);
-
-				const res = await fetch(
-					`${API_BASE_URL}/api/models?${params.toString()}`,
-					{
-						headers: getHeaders(localStorage.getItem("token")),
-					}
-				);
-				const data = await res.json();
-
-				setModels(data);
-			} catch (err) {
-				console.error("모델 데이터를 불러오기 실패:", err);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		fetchModels();
-	}, [selectedTags, keyword, gender, agency]);
 
 	useEffect(() => {
 		const fetchAgencies = async () => {

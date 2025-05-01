@@ -3,7 +3,27 @@ import PeopleForm from "../../components/PeopleForm";
 import PhotoForm from "../../components/PhotoForm";
 import AgencyForm from "../../components/AgencyForm";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_BASE_URL, getHeaders } from "../../api";
+import {
+	useModelById,
+	useCreateModel,
+	useUpdateModel,
+} from "../../hooks/models";
+import {
+	useAgencies,
+	useAgencyById,
+	useCreateAgency,
+	useUpdateAgency,
+} from "../../hooks/agencies";
+import {
+	usePhotographerById,
+	useCreatePhotographer,
+	useUpdatePhotographer,
+} from "../../hooks/photographers";
+import {
+	useCreatePhoto,
+	useUpdatePhoto,
+	usePhotoById,
+} from "../../hooks/photos";
 
 function FormPage() {
 	const navigate = useNavigate();
@@ -13,54 +33,88 @@ function FormPage() {
 	const [agencies, setAgencies] = useState([]);
 	const roll = formType.slice(0, -1);
 
+	const { data: modelData } = useModelById(id, {
+		enabled: formType === "models",
+	});
+	const { data: agencyData } = useAgencyById(id, {
+		enabled: formType === "agencies",
+	});
+	const { data: photographerData } = usePhotographerById(id, {
+		enabled: formType === "photographers",
+	});
+	const { data: photoData } = usePhotoById(id, {
+		enabled: formType === "photos",
+	});
+	const { data: agenciesData } = useAgencies({});
+	const createModel = useCreateModel();
+	const updateModel = useUpdateModel();
+	const createAgency = useCreateAgency();
+	const updateAgency = useUpdateAgency();
+	const createPhotographer = useCreatePhotographer();
+	const updatePhotographer = useUpdatePhotographer();
+	const createPhoto = useCreatePhoto();
+	const updatePhoto = useUpdatePhoto();
+
 	useEffect(() => {
 		if (id) {
 			setMode("edit");
 
-			(async () => {
-				try {
-					const res = await fetch(`${API_BASE_URL}/api/${formType}/${id}`);
-					const data = await res.json();
-					setItem(data);
-					console.log(data);
-				} catch (err) {
-					console.error(`${formType} 불러오기 실패:`, err);
-				}
-			})();
-		}
-
-		(async () => {
-			try {
-				const res = await fetch(`${API_BASE_URL}/api/agencies`);
-				const data = await res.json();
-				setAgencies(data);
-			} catch (err) {
-				console.error("에이전시 목록 불러오기 실패:", err);
+			let data;
+			if (formType === "models") {
+				data = modelData;
+			} else if (formType === "agencies") {
+				data = agencyData;
+			} else if (formType === "photographers") {
+				data = photographerData;
+			} else if (formType === "photos") {
+				data = photoData;
 			}
-		})();
-	}, [id, formType]);
 
-	const handleSubmit = async (formData) => {
-		try {
-			const token = localStorage.getItem("token");
-			const endpoint = id
-				? `${API_BASE_URL}/api/${formType}/${id}`
-				: `${API_BASE_URL}/api/${formType}`;
-			const method = id ? "PATCH" : "POST";
-
-			const res = await fetch(endpoint, {
-				method,
-				headers: getHeaders(token),
-				body: JSON.stringify(formData),
-			});
-
-			if (!res.ok) throw new Error(`${formType} 저장 실패`);
-
-			const result = await res.json();
-			navigate(`/${formType}/${result._id}`);
-		} catch (err) {
-			console.error(`${formType} 저장 중 오류:`, err);
+			setItem(data);
+			console.log(data);
 		}
+
+		if (agenciesData) {
+			setAgencies(agenciesData);
+		}
+	}, [
+		id,
+		formType,
+		modelData,
+		agencyData,
+		photographerData,
+		photoData,
+		agenciesData,
+	]);
+
+	const handleSubmit = (formData) => {
+		let mutation;
+
+		if (formType === "models") {
+			mutation = id ? updateModel : createModel;
+		} else if (formType === "agencies") {
+			mutation = id ? updateAgency : createAgency;
+		} else if (formType === "photographers") {
+			mutation = id ? updatePhotographer : createPhotographer;
+		} else if (formType === "photos") {
+			mutation = id ? updatePhoto : createPhoto;
+		}
+
+		if (!mutation) {
+			console.error("지원되지 않는 formType입니다.");
+			return;
+		}
+
+		const variables = id ? { id, data: formData } : formData;
+
+		mutation.mutate(variables, {
+			onSuccess: (result) => {
+				navigate(`/${formType}/${result._id}`);
+			},
+			onError: (err) => {
+				console.error(`${formType} 저장 중 오류:`, err);
+			},
+		});
 	};
 
 	return (
