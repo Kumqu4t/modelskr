@@ -19,6 +19,7 @@ import AgencyDetailPage from "./pages/AgencyDetailPage";
 import PhotoListPage from "./pages/PhotoListPage";
 import PhotoDetailPage from "./pages/PhotoDetailPage";
 import FavoritePage from "./pages/FavoritePage";
+import LegalPage from "./pages/LegalPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PageLayout from "./components/PageLayout";
 import RequireAdmin from "./components/RequireAdmin";
@@ -61,6 +62,7 @@ function App() {
 										element={<FormPage />}
 									/>
 								</Route>
+								<Route path="/legal" element={<LegalPage />} />
 								<Route path="*" element={<NotFoundPage />} />
 							</Route>
 						</Routes>
