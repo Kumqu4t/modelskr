@@ -37,7 +37,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				tags: photo.tags?.join(", ") || "",
 				models: photo.models?.map((m) => m._id) || [],
 				photographers: photo.photographers?.map((p) => p._id) || [],
-				category: photo.category || "others",
+				category: photo.category || "",
 			});
 		}
 	}, [mode, photo]);
@@ -188,6 +188,9 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					onChange={handleChange}
 					required
 				>
+					<option value="" disabled>
+						카테고리를 선택하세요
+					</option>
 					<option value="commercial">Commercial</option>
 					<option value="editorial">Editorial</option>
 					<option value="others">Others</option>
