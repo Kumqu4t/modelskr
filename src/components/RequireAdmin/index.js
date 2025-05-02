@@ -8,8 +8,7 @@ function RequireAdmin() {
 	const hasNavigated = useRef(false);
 
 	useEffect(() => {
-		const isAdmin = user?.email === "qufgkswkfl3@gmail.com";
-
+		const isAdmin = user?.email === process.env.REACT_APP_ADMIN_EMAIL;
 		if (!isAdmin && !hasNavigated.current) {
 			hasNavigated.current = true;
 			alert("관리자만 접근 가능한 페이지입니다.");

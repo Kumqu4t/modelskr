@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import ClearCacheButton from "../../components/ClearCacheButton";
 import "./AdminPage.css";
 
 function AdminPage() {
@@ -34,6 +35,7 @@ function AdminPage() {
 				<Button type="default" onClick={() => navigate("/admin/create/photos")}>
 					+ 사진 추가
 				</Button>
+				<ClearCacheButton />
 			</div>
 		</div>
 	);
