@@ -118,10 +118,9 @@ function ModelDetailPage() {
 							)}
 						</p>
 
-						{model.birthDate && (
+						{model.birthYear && (
 							<p>
-								<strong>생년월일:</strong>{" "}
-								{new Date(model.birthDate).toLocaleDateString()}
+								<strong>출생년도:</strong> {model.birthYear}
 							</p>
 						)}
 						{model.nationality && (

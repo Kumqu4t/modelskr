@@ -125,10 +125,9 @@ function PhotographerDetailPage() {
 							)}
 						</p>
 
-						{photographer.birthDate && (
+						{photographer.birthYear && (
 							<p>
-								<strong>생년월일:</strong>{" "}
-								{new Date(photographer.birthDate).toLocaleDateString()}
+								<strong>출생년도:</strong> {photographer.birthYear}
 							</p>
 						)}
 						{photographer.nationality && (

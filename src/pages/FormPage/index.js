@@ -34,16 +34,16 @@ function FormPage() {
 	const roll = formType.slice(0, -1);
 
 	const { data: modelData } = useModelById(id, {
-		enabled: formType === "models",
+		enabled: formType === "models" && !!id,
 	});
 	const { data: agencyData } = useAgencyById(id, {
-		enabled: formType === "agencies",
+		enabled: formType === "agencies" && !!id,
 	});
 	const { data: photographerData } = usePhotographerById(id, {
-		enabled: formType === "photographers",
+		enabled: formType === "photographers" && !!id,
 	});
 	const { data: photoData } = usePhotoById(id, {
-		enabled: formType === "photos",
+		enabled: formType === "photos" && !!id,
 	});
 	const { data: agenciesData } = useAgencies({});
 	const createModel = useCreateModel();

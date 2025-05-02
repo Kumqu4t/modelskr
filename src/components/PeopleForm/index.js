@@ -11,7 +11,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 		tags: "",
 		recentWork: "",
 		contact: "",
-		birthDate: "",
+		birthYear: "",
 		nationality: "",
 		height: "",
 		measurements: { chest: "", waist: "", hips: "" },
@@ -58,7 +58,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 						?.map((work) => `${work.type}:${work.title}:${work.link}`)
 						.join(", ") || "",
 				contact: item.contact || "",
-				birthDate: item.birthDate || "",
+				birthYear: item.birthYear || "",
 				nationality: item.nationality || "",
 				height: item.height || "",
 				measurements: item.measurements || { chest: "", waist: "", hips: "" },
@@ -237,13 +237,15 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 			</label>
 
 			<label className="model-form__field">
-				<span className="model-form__label">생년월일</span>
+				<span className="model-form__label">출생년도</span>
 				<input
 					className="model-form__input"
-					type="date"
-					name="birthDate"
-					value={formData.birthDate}
+					type="number"
+					name="birthYear"
+					value={formData.birthYear}
 					onChange={handleChange}
+					min="1900"
+					max={new Date().getFullYear()}
 				/>
 			</label>
 
