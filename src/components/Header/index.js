@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/user/userSlice";
@@ -11,9 +11,14 @@ function Header() {
 	const [searchTarget, setSearchTarget] = useState("models");
 	const [isProfilesDropdownOpen, setIsProfilesDropdownOpen] = useState(false);
 	const [isPhotosDropdownOpen, setIsPhotosDropdownOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const location = useLocation();
+
+	const mobileMenuRef = useRef(null);
+	const [isMobilePhotosOpen, setIsMobilePhotosOpen] = useState(false);
+	const [isMobileProfilesOpen, setIsMobileProfilesOpen] = useState(false);
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const user = useSelector((state) => state.user.user);
@@ -30,6 +35,39 @@ function Header() {
 		const searchParams = new URLSearchParams(location.search);
 		setCurrentCategory(searchParams.get("category") || "");
 	}, [location.search]);
+
+	useEffect(() => {
+		if (
+			location.pathname.startsWith("/models") ||
+			location.pathname.startsWith("/photographers") ||
+			location.pathname.startsWith("/agencies")
+		) {
+			setIsMobileProfilesOpen(true);
+		} else {
+			setIsMobileProfilesOpen(false);
+		}
+
+		if (location.pathname.startsWith("/photos")) {
+			setIsMobilePhotosOpen(true);
+		} else {
+			setIsMobilePhotosOpen(false);
+		}
+
+		setIsMenuOpen(false);
+	}, [location.pathname, currentCategory]);
+
+	useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target))
+				setIsMenuOpen(false);
+		};
+
+		if (isMenuOpen) document.addEventListener("mousedown", handleClickOutside);
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isMenuOpen]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -53,8 +91,9 @@ function Header() {
 		if (isLoggedIn) {
 			return (
 				<div className="user-info">
-					<img src={user.picture} alt="프로필" />
+					<img src={user.picture} alt="프로필" className="user-picture" />
 					<p>{user.name}</p>
+
 					<Button type="login" onClick={handleLogout}>
 						로그아웃
 					</Button>
@@ -70,7 +109,11 @@ function Header() {
 	};
 
 	return (
-		<header>
+		<header className="header-fixed">
+			<button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+				☰
+			</button>
+
 			<div className="header-inner">
 				<Link to="/" className="logo">
 					Models.kr
@@ -158,9 +201,85 @@ function Header() {
 			</div>
 
 			{isAdmin && (
-				<NavLink to="/admin" className="nav-item">
+				<NavLink to="/admin" className="nav-item admin-link">
 					관리
 				</NavLink>
+			)}
+
+			{/* 모바일 */}
+			{isMenuOpen && (
+				<div className="mobile-menu" ref={mobileMenuRef}>
+					<SearchBar
+						value={keyword}
+						onChange={(e) => setKeyword(e.target.value)}
+						onSubmit={handleSubmit}
+						searchTarget={searchTarget}
+						setSearchTarget={setSearchTarget}
+					/>
+					<button onClick={() => setIsMobilePhotosOpen((prev) => !prev)}>
+						Photos
+					</button>
+					{isMobilePhotosOpen && (
+						<div className="mobile-submenu">
+							<Link
+								to="/photos?category=commercial"
+								className={`mobile-nav-item ${
+									currentCategory === "commercial" ? "active" : ""
+								}`}
+							>
+								Commercial
+							</Link>
+							<Link
+								to="/photos?category=editorial"
+								className={`mobile-nav-item ${
+									currentCategory === "editorial" ? "active" : ""
+								}`}
+							>
+								Editorial
+							</Link>
+							<Link
+								to="/photos?category=others"
+								className={`mobile-nav-item ${
+									currentCategory === "others" ? "active" : ""
+								}`}
+							>
+								Others
+							</Link>
+						</div>
+					)}
+					<button onClick={() => setIsMobileProfilesOpen((prev) => !prev)}>
+						Profiles
+					</button>
+					{isMobileProfilesOpen && (
+						<div className="mobile-submenu">
+							<NavLink to="/models" className="mobile-nav-item">
+								Models
+							</NavLink>
+							<NavLink to="/photographers" className="mobile-nav-item">
+								Photographers
+							</NavLink>
+							<NavLink to="/agencies" className="mobile-nav-item">
+								Agencies
+							</NavLink>
+						</div>
+					)}
+					{isLoggedIn && (
+						<div className="mobile-userbox">
+							<NavLink to="/favorites" className="mobile-nav-item">
+								favorites
+							</NavLink>
+							<Button type="login" onClick={handleLogout}>
+								로그아웃
+							</Button>
+						</div>
+					)}
+					{!isLoggedIn && (
+						<Button type="login" onClick={() => navigate("/login")}>
+							로그인
+						</Button>
+					)}
+					{isAdmin && <NavLink to="/admin">관리</NavLink>}
+				</div>
 			)}
 		</header>
 	);
