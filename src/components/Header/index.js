@@ -58,8 +58,14 @@ function Header() {
 
 	useEffect(() => {
 		const handleClickOutside = (e) => {
-			if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target))
+			const hamburgerBtn = document.querySelector(".hamburger");
+			if (
+				mobileMenuRef.current &&
+				!mobileMenuRef.current.contains(e.target) &&
+				!hamburgerBtn.contains(e.target)
+			) {
 				setIsMenuOpen(false);
+			}
 		};
 
 		if (isMenuOpen) document.addEventListener("mousedown", handleClickOutside);
