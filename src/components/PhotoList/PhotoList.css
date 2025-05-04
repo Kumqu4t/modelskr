@@ -35,3 +35,25 @@
 	font-size: 18px;
 	margin-top: 0px;
 }
+
+@media (max-width: 768px) {
+	.photos-grid {
+		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+		gap: 12px;
+		max-width: 95%;
+		overflow-x: hidden;
+	}
+
+	.photo-card {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		cursor: pointer;
+		transition: transform 0.2s;
+		text-align: center;
+		overflow: hidden;
+		border-radius: 6px;
+		margin: 0 24px;
+		padding: 0 0 40px;
+	}
+}

@@ -14,7 +14,7 @@
 .agency-card {
 	border: 1px solid #ddd;
 	border-radius: 12px;
-	padding: 16px;
+	padding: 20px;
 	transition: box-shadow 0.2s ease;
 	cursor: pointer;
 	background: #fff;
@@ -42,4 +42,30 @@
 
 	line-clamp: 2;
 	box-orient: vertical;
+}
+
+@media (max-width: 768px) {
+	.agency-page {
+		padding: 4px;
+	}
+
+	.agency-list {
+		gap: 16px;
+		justify-items: center;
+	}
+
+	.agency-card {
+		padding: 0px 20px;
+		margin-left: -30px;
+		width: 90%;
+	}
+
+	.agency-card-logo {
+		width: 32px;
+		height: 32px;
+	}
+
+	.agency-description {
+		font-size: 14px;
+	}
 }
