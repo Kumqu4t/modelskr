@@ -75,7 +75,7 @@ function PhotographerDetailPage() {
 						type="default"
 						onClick={() => window.open(photographer.contact, "_blank")}
 					>
-						Contact
+						Instagram
 					</Button>
 				</div>
 

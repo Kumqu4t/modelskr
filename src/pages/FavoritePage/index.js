@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../api";
 import ModelList from "../../components/ModelList";
 import PhotoList from "../../components/PhotoList";
@@ -12,7 +13,8 @@ function FavoritePage() {
 	const [models, setModels] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [favoriteType, setFavoriteType] = useState("Model");
-	const { favorites, toggleFavorite } = useFavorites(true, favoriteType);
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, favoriteType);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -38,8 +40,10 @@ function FavoritePage() {
 
 	const handleToggleFavorite = toggleFavorite;
 
+	console.log("favorites: ", Array.isArray(favorites));
+	const safeFavorites = Array.isArray(favorites) ? favorites : [];
 	const filteredItems = models.filter((model) =>
-		(favorites || []).some((fav) => fav?.item?._id === model._id)
+		(safeFavorites || []).some((fav) => fav?.item?._id === model._id)
 	);
 
 	// 페이지네이션
