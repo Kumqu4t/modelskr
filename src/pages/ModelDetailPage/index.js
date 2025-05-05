@@ -55,7 +55,7 @@ function ModelDetailPage() {
 		<>
 			<DefaultHelmet title={model?.name} description={model?.description} />
 			<div className="model-detail">
-				<div className="buttons-wrapper">
+				<div className="buttons-wrapper desktop-only">
 					{isAdmin && (
 						<div className="admin-controls-detail">
 							<Button type="default" onClick={handleEdit}>
@@ -86,6 +86,24 @@ function ModelDetailPage() {
 								className={"favorite-icon detail-icon"}
 							/>
 						)}
+					</div>
+					<div className="buttons-wrapper mobile-only">
+						{isAdmin && (
+							<div className="admin-controls-detail">
+								<Button type="default" onClick={handleEdit}>
+									수정
+								</Button>
+								<Button type="danger" onClick={handleDelete}>
+									삭제
+								</Button>
+							</div>
+						)}
+						<Button
+							type="default"
+							onClick={() => window.open(model.contact, "_blank")}
+						>
+							Instagram
+						</Button>
 					</div>
 
 					<div className="model-detail-info">

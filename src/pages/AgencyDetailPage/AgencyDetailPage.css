@@ -34,7 +34,7 @@
 	position: relative;
 }
 
-.homepage-button-wrapper {
+.homepage-button-wrapper.desktop-only {
 	display: flex;
 	gap: 8px;
 	position: absolute;
@@ -50,4 +50,33 @@
 
 .agency-text h1 {
 	margin-bottom: 4px;
+}
+
+.mobile-only {
+	display: none;
+}
+
+/* 모바일용 */
+@media (max-width: 768px) {
+	.agency-detail-page {
+		padding: 16px;
+		margin-top: 0px;
+		flex-direction: column;
+	}
+
+	.homepage-button-wrapper.desktop-only {
+		display: none;
+	}
+
+	.mobile-only {
+		display: flex;
+		justify-content: flex-end;
+		gap: 12px;
+		margin-left: 72px;
+		width: 100%;
+	}
+
+	.agency-text {
+		margin-left: 0px;
+	}
 }

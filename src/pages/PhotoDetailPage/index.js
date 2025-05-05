@@ -66,7 +66,7 @@ const PhotoDetailPage = () => {
 				<div className="headline">
 					<h1>{photo.title}</h1>
 
-					<div className="photo-buttons-wrapper">
+					<div className="photo-buttons-wrapper desktop-only">
 						{isAdmin && (
 							<div className="admin-controls-detail">
 								<Button type="default" onClick={handleEdit}>
@@ -134,6 +134,27 @@ const PhotoDetailPage = () => {
 					)}
 				</div>
 
+				<div className="photo-buttons-wrapper mobile-only">
+					{isAdmin && (
+						<div className="admin-controls-detail">
+							<Button type="default" onClick={handleEdit}>
+								수정
+							</Button>
+							<Button type="danger" onClick={handleDelete}>
+								삭제
+							</Button>
+						</div>
+					)}
+					<FavoriteButton
+						modelId={photo._id}
+						kind={"Photo"}
+						isFavorited={photoFavorites.some(
+							(fav) => fav.item?._id === photo._id
+						)}
+						onToggle={togglePhotoFavorite}
+						className={"photo-detail-icon"}
+					/>
+				</div>
 				<p
 					dangerouslySetInnerHTML={{
 						__html: linkifyDescription(photo.description, [

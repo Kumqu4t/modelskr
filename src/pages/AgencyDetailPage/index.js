@@ -58,7 +58,7 @@ function AgencyDetailPage() {
 						<h1>{agency.name}</h1>
 						<p className="agency-description">{agency.description}</p>
 					</div>
-					<div className="homepage-button-wrapper">
+					<div className="homepage-button-wrapper desktop-only">
 						{isAdmin && (
 							<div className="admin-controls-detail">
 								<Button type="default" onClick={handleEdit}>
@@ -76,6 +76,24 @@ function AgencyDetailPage() {
 							홈페이지
 						</Button>
 					</div>
+				</div>
+				<div className="homepage-button-wrapper mobile-only">
+					{isAdmin && (
+						<div className="admin-controls-detail">
+							<Button type="default" onClick={handleEdit}>
+								수정
+							</Button>
+							<Button type="danger" onClick={handleDelete}>
+								삭제
+							</Button>
+						</div>
+					)}
+					<Button
+						type="default"
+						onClick={() => window.open(agency.homepage, "_blank")}
+					>
+						홈페이지
+					</Button>
 				</div>
 				<div className="agency-models-section">
 					<h2 className="agency-title">소속 모델</h2>

@@ -52,11 +52,22 @@
 	align-items: center;
 	justify-content: center;
 	transition: background-color 0.2s ease, transform 0.1s ease;
+	position: absolute;
+	opacity: 50%;
+	z-index: 10;
 }
 
 .nav-button:hover {
 	background-color: #eee;
 	transform: scale(1.05);
+}
+
+.nav-button[aria-label="이전 사진"] {
+	left: 10px;
+}
+
+.nav-button[aria-label="다음 사진"] {
+	right: 10px;
 }
 
 .photo-indicator {
@@ -152,4 +163,66 @@
 .link-name:hover {
 	text-decoration: underline;
 	color: #004999;
+}
+
+.mobile-only {
+	display: none;
+}
+
+@media (max-width: 768px) {
+	.photo-detail-page {
+		padding: 24px 12px;
+	}
+
+	.headline {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+	}
+
+	.photo-buttons-wrapper {
+		width: 100%;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.desktop-only {
+		display: none;
+	}
+
+	.mobile-only {
+		display: flex;
+		margin-top: 16px;
+	}
+
+	.photo-gallery {
+		flex-direction: column;
+	}
+
+	.photo-image-wrapper {
+		width: 100%;
+		height: auto;
+		max-height: 80vh;
+	}
+
+	.photo-image-wrapper img {
+		height: auto;
+		max-height: 80vh;
+	}
+
+	.simple-list {
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.tag {
+		font-size: 13px;
+		padding: 4px 10px;
+	}
+
+	.nav-button {
+		font-size: 1.5rem;
+		padding: 0.5rem;
+	}
 }

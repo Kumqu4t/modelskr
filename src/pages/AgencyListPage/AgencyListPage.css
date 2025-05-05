@@ -67,5 +67,6 @@
 
 	.agency-description {
 		font-size: 14px;
+		min-height: 3.2em;
 	}
 }
