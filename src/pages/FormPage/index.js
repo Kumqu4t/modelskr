@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import PeopleForm from "../../components/PeopleForm";
 import PhotoForm from "../../components/PhotoForm";
 import AgencyForm from "../../components/AgencyForm";
@@ -55,50 +55,71 @@ function FormPage() {
 	const createPhoto = useCreatePhoto();
 	const updatePhoto = useUpdatePhoto();
 
+	const entityMap = useMemo(
+		() => ({
+			models: {
+				data: modelData,
+				create: createModel,
+				update: updateModel,
+				component: PeopleForm,
+				props: { agencies, roll },
+			},
+			agencies: {
+				data: agencyData,
+				create: createAgency,
+				update: updateAgency,
+				component: AgencyForm,
+				props: {},
+			},
+			photographers: {
+				data: photographerData,
+				create: createPhotographer,
+				update: updatePhotographer,
+				component: PeopleForm,
+				props: { agencies, roll },
+			},
+			photos: {
+				data: photoData,
+				create: createPhoto,
+				update: updatePhoto,
+				component: PhotoForm,
+				props: {},
+			},
+		}),
+		[
+			modelData,
+			createModel,
+			updateModel,
+			agencies,
+			roll,
+			agencyData,
+			createAgency,
+			updateAgency,
+			photographerData,
+			createPhotographer,
+			updatePhotographer,
+			photoData,
+			createPhoto,
+			updatePhoto,
+		]
+	);
+
 	useEffect(() => {
 		if (id) {
 			setMode("edit");
-
-			let data;
-			if (formType === "models") {
-				data = modelData;
-			} else if (formType === "agencies") {
-				data = agencyData;
-			} else if (formType === "photographers") {
-				data = photographerData;
-			} else if (formType === "photos") {
-				data = photoData;
-			}
-
+			const data = entityMap[formType]?.data;
 			setItem(data);
-			console.log(data);
 		}
 
 		if (agenciesData) {
 			setAgencies(agenciesData);
 		}
-	}, [
-		id,
-		formType,
-		modelData,
-		agencyData,
-		photographerData,
-		photoData,
-		agenciesData,
-	]);
+	}, [id, formType, agenciesData, entityMap]);
 
 	const handleSubmit = (formData) => {
-		let mutation;
-
-		if (formType === "models") {
-			mutation = id ? updateModel : createModel;
-		} else if (formType === "agencies") {
-			mutation = id ? updateAgency : createAgency;
-		} else if (formType === "photographers") {
-			mutation = id ? updatePhotographer : createPhotographer;
-		} else if (formType === "photos") {
-			mutation = id ? updatePhoto : createPhoto;
-		}
+		const mutation = id
+			? entityMap[formType]?.update
+			: entityMap[formType]?.create;
 
 		if (!mutation) {
 			console.error("지원되지 않는 formType입니다.");
@@ -108,29 +129,22 @@ function FormPage() {
 		const variables = id ? { id, data: formData } : formData;
 
 		mutation.mutate(variables, {
-			onSuccess: (result) => {
-				navigate(`/${formType}/${result._id}`);
-			},
-			onError: (err) => {
-				console.error(`${formType} 저장 중 오류:`, err);
-			},
+			onSuccess: (result) => navigate(`/${formType}/${result._id}`),
+			onError: (err) => console.error(`${formType} 저장 중 오류:`, err),
 		});
 	};
+
+	const FormComponent = entityMap[formType]?.component;
 
 	return (
 		<div>
 			<h1> </h1>
-			{formType === "photos" ? (
-				<PhotoForm mode={mode} photo={item} onSubmit={handleSubmit} />
-			) : formType === "agencies" ? (
-				<AgencyForm mode={mode} item={item} onSubmit={handleSubmit} />
-			) : (
-				<PeopleForm
+			{FormComponent && (
+				<FormComponent
 					mode={mode}
 					item={item}
 					onSubmit={handleSubmit}
-					agencies={agencies}
-					roll={roll}
+					{...entityMap[formType].props}
 				/>
 			)}
 		</div>
