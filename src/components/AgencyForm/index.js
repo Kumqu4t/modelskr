@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useUpload } from "../../hooks/useUpload";
 import "./AgencyForm.css";
 
 function AgencyForm({ mode, item, onSubmit }) {
@@ -15,6 +16,8 @@ function AgencyForm({ mode, item, onSubmit }) {
 		logo: "",
 		homepage: "",
 	});
+
+	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
 
 	useEffect(() => {
 		if (mode === "edit" && item) {
@@ -41,7 +44,7 @@ function AgencyForm({ mode, item, onSubmit }) {
 		let formErrors = {};
 		if (!formData.name) formErrors.name = "이름을 입력해주세요.";
 		if (!formData.description) formErrors.description = "설명을 입력해주세요.";
-		if (!formData.logo) formErrors.logo = "로고 URL을 입력해주세요.";
+		if (!formData.logo) formErrors.logo = "로고를 업로드해주세요.";
 		if (!formData.homepage)
 			formErrors.homepage = "홈페이지 주소를 입력해주세요.";
 
@@ -51,6 +54,27 @@ function AgencyForm({ mode, item, onSubmit }) {
 		}
 
 		onSubmit(formData);
+	};
+
+	const handleLogoUpload = (e) => {
+		const file = e.target.files[0];
+		if (file) {
+			uploadImage(file, {
+				onSuccess: (data) => {
+					setFormData((prev) => ({
+						...prev,
+						logo: data.url,
+					}));
+				},
+				onError: (error) => {
+					console.error("로고 업로드 실패:", error);
+					setErrors((prev) => ({
+						...prev,
+						logo: "로고 업로드에 실패했습니다. 다시 시도해주세요.",
+					}));
+				},
+			});
+		}
 	};
 
 	return (
@@ -93,13 +117,23 @@ function AgencyForm({ mode, item, onSubmit }) {
 					로고 URL <span className="model-form__required">*</span>
 				</span>
 				<input
-					className="model-form__input"
-					type="text"
+					className="agency-form__input"
+					type="file"
 					name="logo"
-					value={formData.logo}
-					onChange={handleChange}
+					onChange={handleLogoUpload}
+					accept="image/*"
 					required
 				/>
+				{isUploading && <span>업로드 중...</span>}
+				{formData.logo && (
+					<div>
+						<img
+							src={formData.logo}
+							alt="Uploaded Logo"
+							style={{ maxWidth: "100%", marginTop: "10px" }}
+						/>
+					</div>
+				)}
 				<div className="model-form__error">{errors.logo}</div>
 			</label>
 

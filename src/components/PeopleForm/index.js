@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useUpload } from "../../hooks/useUpload";
 import "./PeopleForm.css";
 
 function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
@@ -25,6 +26,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 
 	const [agencySearchTerm, setAgencySearchTerm] = useState("");
 	const [agencySearchResults, setAgencySearchResults] = useState([]);
+	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
 
 	const addAgency = (agency) => {
 		setFormData((prev) => ({
@@ -88,6 +90,11 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
+		if (isUploading) {
+			alert("이미지 업로드 중입니다. 완료 후 다시 시도해주세요.");
+			return;
+		}
+
 		let formErrors = {};
 		if (!formData.name) formErrors.name = "이름을 입력해주세요.";
 		if (!formData.gender) formErrors.gender = "성별을 선택해주세요.";
@@ -129,7 +136,33 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 			tags: tagsArray,
 			recentWork: recentWorkArray,
 		};
+		console.log("제출 직전 formData.image:", formData.image);
+		console.log("processedData:", processedData);
 		onSubmit(processedData);
+	};
+
+	const handleImageUpload = (e) => {
+		const file = e.target.files[0];
+		if (file) {
+			uploadImage(file, {
+				onSuccess: (data) => {
+					setFormData((prev) => {
+						const updatedFormData = {
+							...prev,
+							image: data.url,
+						};
+						return updatedFormData;
+					});
+				},
+				onError: (error) => {
+					console.error("이미지 업로드 실패:", error);
+					setErrors((prev) => ({
+						...prev,
+						image: "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+					}));
+				},
+			});
+		}
 	};
 
 	return (
@@ -331,14 +364,23 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 			</label>
 
 			<label className="model-form__field">
-				이미지 URL
+				이미지 업로드
 				<input
 					className="model-form__input"
-					type="text"
+					type="file"
 					name="image"
-					value={formData.image}
-					onChange={handleChange}
+					onChange={handleImageUpload}
 				/>
+				{isUploading && <span>업로드 중...</span>}
+				{formData.image && (
+					<div>
+						<img
+							src={formData.image}
+							alt="Uploaded"
+							style={{ maxWidth: "100%", marginTop: "10px" }}
+						/>
+					</div>
+				)}
 			</label>
 
 			<label className="model-form__field">

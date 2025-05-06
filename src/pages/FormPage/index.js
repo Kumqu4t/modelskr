@@ -142,7 +142,7 @@ function FormPage() {
 			{FormComponent && (
 				<FormComponent
 					mode={mode}
-					item={item}
+					{...(formType === "photos" ? { photo: item } : { item })}
 					onSubmit={handleSubmit}
 					{...entityMap[formType].props}
 				/>

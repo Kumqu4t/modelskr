@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useModels } from "../../hooks/models/useModels";
 import { usePhotographers } from "../../hooks/photographers/usePhotographers";
+import { useUpload } from "../../hooks/useUpload";
 import "./PhotoForm.css";
 
 function PhotoForm({ mode, photo, onSubmit }) {
 	const [formData, setFormData] = useState({
 		title: "",
-		images: "",
+		images: [],
 		description: "",
 		tags: "",
 		category: "",
@@ -16,11 +17,12 @@ function PhotoForm({ mode, photo, onSubmit }) {
 
 	const [errors, setErrors] = useState({
 		title: "",
-		images: "",
+		images: [],
 	});
 
 	const { data: models = [] } = useModels({});
 	const { data: photographers = [] } = usePhotographers({});
+	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
 
 	const [modelSearchTerm, setModelSearchTerm] = useState("");
 	const [photographerSearchTerm, setPhotographerSearchTerm] = useState("");
@@ -30,10 +32,12 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	);
 
 	useEffect(() => {
+		console.log("mode, photo: ", mode, photo);
 		if (mode === "edit" && photo) {
+			console.log("editing photo: ", photo);
 			setFormData({
 				...photo,
-				images: photo.images?.join(", ") || "",
+				images: photo.images || [],
 				tags: photo.tags?.join(", ") || "",
 				models: photo.models?.map((m) => m._id) || [],
 				photographers: photo.photographers?.map((p) => p._id) || [],
@@ -65,17 +69,14 @@ function PhotoForm({ mode, photo, onSubmit }) {
 
 		let formErrors = {};
 		if (!formData.title) formErrors.title = "제목을 입력해주세요.";
-		if (!formData.images) formErrors.images = "이미지 URL을 입력해주세요.";
+		if (!formData.images) formErrors.images = "이미지를 업로드해주세요.";
 
 		if (Object.keys(formErrors).length > 0) {
 			setErrors(formErrors);
 			return;
 		}
 
-		const imagesArray = formData.images
-			.split(",")
-			.map((url) => url.trim())
-			.filter((url) => url);
+		const imagesArray = formData.images;
 
 		const tagsArray = formData.tags
 			.split(",")
@@ -89,6 +90,36 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		};
 
 		onSubmit(processedData);
+	};
+
+	const handlePhotoUpload = (e) => {
+		const files = Array.from(e.target.files);
+		if (files.length > 0) {
+			files.forEach((file) => {
+				uploadImage(file, {
+					onSuccess: (data) => {
+						setFormData((prev) => ({
+							...prev,
+							images: [...prev.images, data.url],
+						}));
+					},
+					onError: (error) => {
+						console.error("사진 업로드 실패:", error);
+						setErrors((prev) => ({
+							...prev,
+							images: "사진 업로드에 실패했습니다. 다시 시도해주세요.",
+						}));
+					},
+				});
+			});
+		}
+	};
+
+	const handleRemovePhoto = (imageUrl) => {
+		setFormData((prev) => ({
+			...prev,
+			images: prev.images.filter((url) => url !== imageUrl),
+		}));
 	};
 
 	const addModel = (model) => {
@@ -161,17 +192,39 @@ function PhotoForm({ mode, photo, onSubmit }) {
 
 			<label className="photo-form__field">
 				<span className="photo-form__label">
-					이미지 URL <span className="photo-form__required">*</span>
+					사진 업로드 <span className="photo-form__required">*</span>
 				</span>
 				<input
 					className="photo-form__input"
-					type="text"
+					type="file"
 					name="images"
-					value={formData.images}
-					onChange={handleChange}
+					onChange={handlePhotoUpload}
+					accept="image/*"
+					multiple
 					required
 					aria-describedby="imagesError"
 				/>
+				{isUploading && <span>업로드 중...</span>}
+				{formData.images.length > 0 && (
+					<div className="photo-form__photos-preview">
+						{formData.images.map((imageUrl, index) => (
+							<div key={index} className="photo-form__photo">
+								<img
+									src={imageUrl}
+									alt={`${index + 1}`}
+									style={{ maxWidth: "100px", marginRight: "10px" }}
+								/>
+								<button
+									type="button"
+									onClick={() => handleRemovePhoto(imageUrl)}
+									className="photo-form__remove-photo-btn"
+								>
+									제거
+								</button>
+							</div>
+						))}
+					</div>
+				)}
 				<div id="imagesError" className="photo-form__error">
 					{errors.images}
 				</div>
