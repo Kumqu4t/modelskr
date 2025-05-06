@@ -18,7 +18,7 @@ function PhotoList({ photos }) {
 						key={photo._id}
 						onClick={() => navigate(`/photos/${photo._id}`)}
 					>
-						<img src={photo.images?.[0]} alt={photo.title} />
+						<img src={photo.images?.[0].url} alt={photo.title} />
 						<h3>{photo.title}</h3>
 					</div>
 				))}

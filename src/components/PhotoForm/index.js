@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useModels } from "../../hooks/models/useModels";
 import { usePhotographers } from "../../hooks/photographers/usePhotographers";
 import { useUpload } from "../../hooks/useUpload";
+import { useRemoveImage } from "../../hooks/useRemoveImage";
 import "./PhotoForm.css";
 
 function PhotoForm({ mode, photo, onSubmit }) {
@@ -23,6 +24,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	const { data: models = [] } = useModels({});
 	const { data: photographers = [] } = usePhotographers({});
 	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
+	const { mutate: removeImage } = useRemoveImage();
 
 	const [modelSearchTerm, setModelSearchTerm] = useState("");
 	const [photographerSearchTerm, setPhotographerSearchTerm] = useState("");
@@ -100,7 +102,13 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					onSuccess: (data) => {
 						setFormData((prev) => ({
 							...prev,
-							images: [...prev.images, data.url],
+							images: [
+								...prev.images,
+								{
+									url: data.url,
+									public_id: data.public_id,
+								},
+							],
 						}));
 					},
 					onError: (error) => {
@@ -115,11 +123,20 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		}
 	};
 
-	const handleRemovePhoto = (imageUrl) => {
-		setFormData((prev) => ({
-			...prev,
-			images: prev.images.filter((url) => url !== imageUrl),
-		}));
+	const handleRemovePhoto = (public_id) => {
+		removeImage(public_id, {
+			onSuccess: (data) => {
+				console.log("삭제 성공:", data);
+				setFormData((prevData) => ({
+					...prevData,
+					images: prevData.images.filter((img) => img.public_id !== public_id),
+				}));
+				console.log("삭제 후 images: ", formData.images);
+			},
+			onError: (error) => {
+				console.error("삭제 실패:", error);
+			},
+		});
 	};
 
 	const addModel = (model) => {
@@ -201,22 +218,21 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					onChange={handlePhotoUpload}
 					accept="image/*"
 					multiple
-					required
 					aria-describedby="imagesError"
 				/>
 				{isUploading && <span>업로드 중...</span>}
 				{formData.images.length > 0 && (
 					<div className="photo-form__photos-preview">
-						{formData.images.map((imageUrl, index) => (
+						{formData.images.map((image, index) => (
 							<div key={index} className="photo-form__photo">
 								<img
-									src={imageUrl}
+									src={image.url}
 									alt={`${index + 1}`}
 									style={{ maxWidth: "100px", marginRight: "10px" }}
 								/>
 								<button
 									type="button"
-									onClick={() => handleRemovePhoto(imageUrl)}
+									onClick={() => handleRemovePhoto(image.public_id)}
 									className="photo-form__remove-photo-btn"
 								>
 									제거

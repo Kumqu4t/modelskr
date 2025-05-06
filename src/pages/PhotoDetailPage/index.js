@@ -107,7 +107,7 @@ const PhotoDetailPage = () => {
 					)}
 					<div className="photo-image-wrapper">
 						<img
-							src={photo.images[currentIndex]}
+							src={photo.images[currentIndex].url}
 							alt={`${photo.title} - ${currentIndex + 1}`}
 						/>
 					</div>
