@@ -81,7 +81,7 @@ function PhotographerDetailPage() {
 
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={photographer.image} alt={photographer.name} />
+						<img src={photographer.image?.url} alt={photographer.name} />
 						<FavoriteButton
 							modelId={photographer._id}
 							kind={kind}

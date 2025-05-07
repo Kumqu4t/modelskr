@@ -12,7 +12,7 @@ function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 	return (
 		<div className="model-card" onClick={handleCardClick}>
 			<div className="image-wrapper">
-				<img src={image} alt={name} />
+				<img src={image?.url} alt={name} />
 				<FavoriteButton
 					modelId={id}
 					kind={type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)}

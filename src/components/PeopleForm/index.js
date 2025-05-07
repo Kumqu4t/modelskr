@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useUpload } from "../../hooks/useUpload";
+import { useRemoveImage } from "../../hooks/useRemoveImage";
 import "./PeopleForm.css";
 
 function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 	const [formData, setFormData] = useState({
 		name: "",
-		image: "",
+		image: { url: "", public_id: "" },
 		description: "",
 		gender: "",
 		agency: "",
@@ -27,6 +28,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 	const [agencySearchTerm, setAgencySearchTerm] = useState("");
 	const [agencySearchResults, setAgencySearchResults] = useState([]);
 	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
+	const { mutate: removeImage } = useRemoveImage();
 
 	const addAgency = (agency) => {
 		setFormData((prev) => ({
@@ -149,7 +151,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 					setFormData((prev) => {
 						const updatedFormData = {
 							...prev,
-							image: data.url,
+							image: { url: data.url, public_id: data.public_id },
 						};
 						return updatedFormData;
 					});
@@ -163,6 +165,21 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 				},
 			});
 		}
+	};
+
+	const handleRemoveImage = (public_id) => {
+		removeImage(public_id, {
+			onSuccess: (data) => {
+				console.log("삭제 성공:", data);
+				setFormData((prevData) => ({
+					...prevData,
+					image: { url: "", public_id: "" },
+				}));
+			},
+			onError: (error) => {
+				console.error("삭제 실패:", error);
+			},
+		});
 	};
 
 	return (
@@ -364,7 +381,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 			</label>
 
 			<label className="model-form__field">
-				이미지 업로드
+				이미지 업로드 (* 사진이 완전히 표시된 후 저장 버튼을 눌러주세요)
 				<input
 					className="model-form__input"
 					type="file"
@@ -372,13 +389,20 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 					onChange={handleImageUpload}
 				/>
 				{isUploading && <span>업로드 중...</span>}
-				{formData.image && (
+				{formData.image?.url && (
 					<div>
 						<img
-							src={formData.image}
+							src={formData.image.url}
 							alt="Uploaded"
 							style={{ maxWidth: "100%", marginTop: "10px" }}
 						/>
+						<button
+							type="button"
+							onClick={() => handleRemoveImage(formData.image.public_id)}
+							style={{ marginTop: "5px" }}
+						>
+							이미지 삭제
+						</button>
 					</div>
 				)}
 			</label>
@@ -417,7 +441,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, roll }) {
 			</label>
 
 			<button type="submit" className="model-form__submit">
-				{mode === "edit" ? "수정" : "저장"}
+				저장
 			</button>
 		</form>
 	);

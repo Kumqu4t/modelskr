@@ -75,7 +75,7 @@ function ModelDetailPage() {
 				</div>
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={model.image} alt={model.name} />
+						<img src={model.image.url} alt={model.name} />
 						{model?._id && (
 							<FavoriteButton
 								modelId={model._id}

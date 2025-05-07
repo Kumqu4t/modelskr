@@ -209,7 +209,8 @@ function PhotoForm({ mode, photo, onSubmit }) {
 
 			<label className="photo-form__field">
 				<span className="photo-form__label">
-					사진 업로드 <span className="photo-form__required">*</span>
+					사진 업로드 (* 사진이 완전히 표시된 후 저장 버튼을 눌러주세요)
+					<span className="photo-form__required">*</span>
 				</span>
 				<input
 					className="photo-form__input"
@@ -426,7 +427,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 			</div>
 
 			<button type="submit" className="photo-form__submit">
-				{mode === "edit" ? "수정" : "저장"}
+				저장
 			</button>
 		</form>
 	);
