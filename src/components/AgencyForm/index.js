@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useUpload } from "../../hooks/useUpload";
+import { useRemoveImage } from "../../hooks/useRemoveImage";
 import "./AgencyForm.css";
 
 function AgencyForm({ mode, item, onSubmit }) {
@@ -18,6 +19,7 @@ function AgencyForm({ mode, item, onSubmit }) {
 	});
 
 	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
+	const { mutate: removeImage } = useRemoveImage();
 
 	useEffect(() => {
 		if (mode === "edit" && item) {
@@ -63,7 +65,10 @@ function AgencyForm({ mode, item, onSubmit }) {
 				onSuccess: (data) => {
 					setFormData((prev) => ({
 						...prev,
-						logo: data.url,
+						logo: {
+							url: data.url,
+							public_id: data.public_id,
+						},
 					}));
 				},
 				onError: (error) => {
@@ -72,6 +77,22 @@ function AgencyForm({ mode, item, onSubmit }) {
 						...prev,
 						logo: "로고 업로드에 실패했습니다. 다시 시도해주세요.",
 					}));
+				},
+			});
+		}
+	};
+
+	const handleRemoveLogo = () => {
+		if (formData.logo?.public_id) {
+			removeImage(formData.logo.public_id, {
+				onSuccess: () => {
+					setFormData((prev) => ({
+						...prev,
+						logo: { url: "", public_id: "" },
+					}));
+				},
+				onError: (err) => {
+					console.error("로고 삭제 실패:", err);
 				},
 			});
 		}
@@ -128,10 +149,13 @@ function AgencyForm({ mode, item, onSubmit }) {
 				{formData.logo && (
 					<div>
 						<img
-							src={formData.logo}
+							src={formData.logo.url}
 							alt="Uploaded Logo"
 							style={{ maxWidth: "100%", marginTop: "10px" }}
 						/>
+						<button type="button" onClick={handleRemoveLogo}>
+							삭제
+						</button>
 					</div>
 				)}
 				<div className="model-form__error">{errors.logo}</div>

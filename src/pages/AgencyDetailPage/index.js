@@ -53,7 +53,7 @@ function AgencyDetailPage() {
 			<DefaultHelmet title={agency?.name} description={agency?.description} />
 			<div className="agency-detail-page">
 				<div className="agency-info-section">
-					<img src={agency.logo} alt="logo" className="agency-logo" />
+					<img src={agency.logo?.url} alt="logo" className="agency-logo" />
 					<div className="agency-text">
 						<h1>{agency.name}</h1>
 						<p className="agency-description">{agency.description}</p>

@@ -35,7 +35,7 @@ function AgencyListPage() {
 								onClick={() => handleClick(agency._id)}
 							>
 								<img
-									src={agency.logo}
+									src={agency.logo?.url}
 									alt={`${agency.name} 로고`}
 									className="agency-card-logo"
 								/>
