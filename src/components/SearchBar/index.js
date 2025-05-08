@@ -27,7 +27,7 @@ function SearchBar({
 						onChange={(e) => setSearchTarget(e.target.value)}
 					>
 						<option value="models">모델</option>
-						<option value="photographers">포토그래퍼</option>
+						<option value="people">아티스트</option>
 						<option value="agencies">에이전시</option>
 						<option value="photos">사진</option>
 					</select>

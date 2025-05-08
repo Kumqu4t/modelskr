@@ -21,8 +21,7 @@ function FavoritePage() {
 			try {
 				let url = "";
 				if (favoriteType === "Model") url = `${API_BASE_URL}/api/models`;
-				else if (favoriteType === "Photographer")
-					url = `${API_BASE_URL}/api/photographers`;
+				else if (favoriteType === "People") url = `${API_BASE_URL}/api/people`;
 				else if (favoriteType === "Photo") url = `${API_BASE_URL}/api/photos`;
 
 				const res = await fetch(url);
@@ -66,10 +65,10 @@ function FavoritePage() {
 						Models
 					</button>
 					<button
-						className={favoriteType === "Photographer" ? "active" : ""}
-						onClick={() => setFavoriteType("Photographer")}
+						className={favoriteType === "Person" ? "active" : ""}
+						onClick={() => setFavoriteType("Person")}
 					>
-						Photographers
+						People
 					</button>
 					<button
 						className={favoriteType === "Photo" ? "active" : ""}
@@ -82,7 +81,7 @@ function FavoritePage() {
 					<PhotoList photos={currentItems} />
 				) : (
 					<ModelList
-						type={favoriteType === "Model" ? "models" : "photographers"}
+						type={favoriteType === "Model" ? "models" : "people"}
 						models={currentItems}
 						favorites={favorites}
 						onToggleFavorite={handleToggleFavorite}

@@ -15,10 +15,10 @@ import {
 	useUpdateAgency,
 } from "../../hooks/agencies";
 import {
-	usePhotographerById,
-	useCreatePhotographer,
-	useUpdatePhotographer,
-} from "../../hooks/photographers";
+	usePersonById,
+	useCreatePerson,
+	useUpdatePerson,
+} from "../../hooks/people";
 import {
 	useCreatePhoto,
 	useUpdatePhoto,
@@ -31,7 +31,7 @@ function FormPage() {
 	const [mode, setMode] = useState("create");
 	const [item, setItem] = useState(null);
 	const [agencies, setAgencies] = useState([]);
-	const roll = formType.slice(0, -1);
+	const MorP = formType.slice(0, -1);
 
 	const { data: modelData } = useModelById(id, {
 		enabled: formType === "models" && !!id,
@@ -39,8 +39,8 @@ function FormPage() {
 	const { data: agencyData } = useAgencyById(id, {
 		enabled: formType === "agencies" && !!id,
 	});
-	const { data: photographerData } = usePhotographerById(id, {
-		enabled: formType === "photographers" && !!id,
+	const { data: personData } = usePersonById(id, {
+		enabled: formType === "people" && !!id,
 	});
 	const { data: photoData } = usePhotoById(id, {
 		enabled: formType === "photos" && !!id,
@@ -50,8 +50,8 @@ function FormPage() {
 	const updateModel = useUpdateModel();
 	const createAgency = useCreateAgency();
 	const updateAgency = useUpdateAgency();
-	const createPhotographer = useCreatePhotographer();
-	const updatePhotographer = useUpdatePhotographer();
+	const createPerson = useCreatePerson();
+	const updatePerson = useUpdatePerson();
 	const createPhoto = useCreatePhoto();
 	const updatePhoto = useUpdatePhoto();
 
@@ -62,7 +62,7 @@ function FormPage() {
 				create: createModel,
 				update: updateModel,
 				component: PeopleForm,
-				props: { agencies, roll },
+				props: { agencies, MorP: MorP },
 			},
 			agencies: {
 				data: agencyData,
@@ -71,12 +71,12 @@ function FormPage() {
 				component: AgencyForm,
 				props: {},
 			},
-			photographers: {
-				data: photographerData,
-				create: createPhotographer,
-				update: updatePhotographer,
+			people: {
+				data: personData,
+				create: createPerson,
+				update: updatePerson,
 				component: PeopleForm,
-				props: { agencies, roll },
+				props: { MorP: MorP },
 			},
 			photos: {
 				data: photoData,
@@ -91,13 +91,13 @@ function FormPage() {
 			createModel,
 			updateModel,
 			agencies,
-			roll,
+			MorP,
 			agencyData,
 			createAgency,
 			updateAgency,
-			photographerData,
-			createPhotographer,
-			updatePhotographer,
+			personData,
+			createPerson,
+			updatePerson,
 			photoData,
 			createPhoto,
 			updatePhoto,

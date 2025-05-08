@@ -26,7 +26,7 @@ function Header() {
 
 	const isProfilesActive =
 		location.pathname.startsWith("/models") ||
-		location.pathname.startsWith("/photographers") ||
+		location.pathname.startsWith("/people") ||
 		location.pathname.startsWith("/agencies");
 	const isPhotosActive = location.pathname.startsWith("/photos");
 	const [currentCategory, setCurrentCategory] = useState("");
@@ -39,7 +39,7 @@ function Header() {
 	useEffect(() => {
 		if (
 			location.pathname.startsWith("/models") ||
-			location.pathname.startsWith("/photographers") ||
+			location.pathname.startsWith("/people") ||
 			location.pathname.startsWith("/agencies")
 		) {
 			setIsMobileProfilesOpen(true);
@@ -177,8 +177,8 @@ function Header() {
 								<NavLink to="/models" className="nav-item">
 									Models
 								</NavLink>
-								<NavLink to="/photographers" className="nav-item">
-									Photographers
+								<NavLink to="/people" className="nav-item">
+									People
 								</NavLink>
 								<NavLink to="/agencies" className="nav-item">
 									Agencies
@@ -261,8 +261,8 @@ function Header() {
 							<NavLink to="/models" className="mobile-nav-item">
 								Models
 							</NavLink>
-							<NavLink to="/photographers" className="mobile-nav-item">
-								Photographers
+							<NavLink to="/people" className="mobile-nav-item">
+								People
 							</NavLink>
 							<NavLink to="/agencies" className="mobile-nav-item">
 								Agencies

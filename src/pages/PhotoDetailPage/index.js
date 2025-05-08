@@ -188,15 +188,15 @@ const PhotoDetailPage = () => {
 					))}
 				</div>
 
-				<h2>참여 작가</h2>
+				<h2>참여 인물</h2>
 				<div className="simple-list">
-					{photo.photographers.map((photographer) => (
+					{photo.people.map((person) => (
 						<span
-							key={photographer._id}
+							key={person._id}
 							className="link-name"
-							onClick={() => navigate(`/photographers/${photographer._id}`)}
+							onClick={() => navigate(`/people/${person._id}`)}
 						>
-							{photographer.name}
+							{person.name}
 						</span>
 					))}
 				</div>

@@ -10,7 +10,7 @@ const linkifyDescription = (text, people) => {
 		const link =
 			person.type === "model"
 				? `/models/${person._id}`
-				: `/photographers/${person._id}`;
+				: `/people/${person._id}`;
 		result = result.replace(
 			regex,
 			`<span class="link-name" onclick="window.location='${link}'">$1</span>`

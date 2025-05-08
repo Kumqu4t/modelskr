@@ -5,40 +5,37 @@ import FavoriteButton from "../../components/FavoriteButton";
 import { useFavorites } from "../../hooks/useFavorites";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
-import {
-	usePhotographerById,
-	useDeletePhotographer,
-} from "../../hooks/photographers";
-import "./PhotographerDetailPage.css";
+import { usePersonById, useDeletePerson } from "../../hooks/people";
+import "./PersonDetailPage.css";
 
-function PhotographerDetailPage() {
+function PersonDetailPage() {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const kind = "Photographer";
+	const kind = "Person";
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
 
-	const { data: photographer, isLoading, error } = usePhotographerById(id);
+	const { data: person, isLoading, error } = usePersonById(id);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
-		navigate(`/admin/edit/photographers/${id}`);
+		navigate(`/admin/edit/people/${id}`);
 	};
 
-	const deletePhotographer = useDeletePhotographer();
+	const deletePerson = useDeletePerson();
 
 	const handleDelete = async (e) => {
 		e.stopPropagation();
 		if (window.confirm("정말 삭제하시겠습니까?")) {
-			deletePhotographer.mutate(id, {
+			deletePerson.mutate(id, {
 				onSuccess: () => {
 					alert("삭제되었습니다.");
-					navigate("/photographers");
+					navigate("/people");
 				},
 				onError: () => {
 					alert("삭제에 실패했습니다.");
@@ -51,14 +48,11 @@ function PhotographerDetailPage() {
 
 	if (isLoading) return <Loading />;
 	if (error) return <div>{error}</div>;
-	if (!photographer) return <div>해당 작가를 찾을 수 없습니다.</div>;
+	if (!person) return <div>해당 인물을 찾을 수 없습니다.</div>;
 
 	return (
 		<>
-			<DefaultHelmet
-				title={photographer.name}
-				description={photographer.description}
-			/>
+			<DefaultHelmet title={person.name} description={person.description} />
 			<div className="model-detail">
 				<div className="buttons-wrapper desktop-only">
 					{isAdmin && (
@@ -73,7 +67,7 @@ function PhotographerDetailPage() {
 					)}
 					<Button
 						type="default"
-						onClick={() => window.open(photographer.contact, "_blank")}
+						onClick={() => window.open(person.contact, "_blank")}
 					>
 						Instagram
 					</Button>
@@ -81,12 +75,12 @@ function PhotographerDetailPage() {
 
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={photographer.image?.url} alt={photographer.name} />
+						<img src={person.image?.url} alt={person.name} />
 						<FavoriteButton
-							modelId={photographer._id}
+							modelId={person._id}
 							kind={kind}
 							isFavorited={favorites.some(
-								(fav) => fav.item?._id === photographer._id
+								(fav) => fav.item?._id === person._id
 							)}
 							onToggle={handleToggleFavorite}
 							className={"favorite-icon detail-icon"}
@@ -105,62 +99,52 @@ function PhotographerDetailPage() {
 						)}
 						<Button
 							type="default"
-							onClick={() => window.open(photographer.contact, "_blank")}
+							onClick={() => window.open(person.contact, "_blank")}
 						>
 							Contact
 						</Button>
 					</div>
 
 					<div className="model-detail-info">
-						<h2>{photographer.name}</h2>
-						{/* <p>{photographer.description}</p> */}
+						<h2>{person.name}</h2>
+						{/* <p>{person.description}</p> */}
+						<p>
+							<strong>직업:</strong>{" "}
+							<span
+								className="filter-button"
+								onClick={() => navigate(`/people?role=${person.role}`)}
+							>
+								{person.role}
+							</span>
+						</p>
 						<p>
 							<strong>성별:</strong>{" "}
 							<span
 								className="filter-button"
-								onClick={() =>
-									navigate(`/photographers?gender=${photographer.gender}`)
-								}
+								onClick={() => navigate(`/people?gender=${person.gender}`)}
 							>
-								{photographer.gender}
+								{person.gender}
 							</span>
 						</p>
-						<p>
-							<strong>에이전시:</strong>{" "}
-							{photographer.agency?.name ? (
-								<span
-									className="filter-button"
-									onClick={() =>
-										navigate(
-											`/agencies/${encodeURIComponent(photographer.agency._id)}`
-										)
-									}
-								>
-									{photographer.agency.name}
-								</span>
-							) : (
-								<span className="filter-button disabled">무소속</span>
-							)}
-						</p>
 
-						{photographer.birthYear && (
+						{person.birthYear && (
 							<p>
-								<strong>출생년도:</strong> {photographer.birthYear}
+								<strong>출생년도:</strong> {person.birthYear}
 							</p>
 						)}
-						{photographer.nationality && (
+						{person.nationality && (
 							<p>
-								<strong>국적:</strong> {photographer.nationality}
+								<strong>국적:</strong> {person.nationality}
 							</p>
 						)}
 
 						<div className="tag-list">
-							{photographer.tags.map((tag, index) => (
+							{person.tags.map((tag, index) => (
 								<span
 									key={index}
 									className="filter-button"
 									onClick={() =>
-										navigate(`/photographers?tag=${encodeURIComponent(tag)}`)
+										navigate(`/people?tag=${encodeURIComponent(tag)}`)
 									}
 								>
 									{tag}
@@ -171,7 +155,7 @@ function PhotographerDetailPage() {
 				</div>
 				<div className="recent-work-list">
 					<h3>최근 활동</h3>
-					{photographer.recentWork.map((item, index) => (
+					{person.recentWork.map((item, index) => (
 						<div key={index} className="recent-work-item">
 							<strong>[{item.type}]</strong>{" "}
 							<a href={item.link} target="_blank" rel="noopener noreferrer">
@@ -185,4 +169,4 @@ function PhotographerDetailPage() {
 	);
 }
 
-export default PhotographerDetailPage;
+export default PersonDetailPage;

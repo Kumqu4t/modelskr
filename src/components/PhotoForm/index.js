@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModels } from "../../hooks/models/useModels";
-import { usePhotographers } from "../../hooks/photographers/usePhotographers";
+import { usePeople } from "../../hooks/people/usePeople";
 import { useUpload } from "../../hooks/useUpload";
 import { useRemoveImage } from "../../hooks/useRemoveImage";
 import "./PhotoForm.css";
@@ -13,7 +13,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		tags: "",
 		category: "",
 		models: [],
-		photographers: [],
+		people: [],
 	});
 
 	const [errors, setErrors] = useState({
@@ -22,16 +22,14 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	});
 
 	const { data: models = [] } = useModels({});
-	const { data: photographers = [] } = usePhotographers({});
+	const { data: people = [] } = usePeople({});
 	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
 	const { mutate: removeImage } = useRemoveImage();
 
 	const [modelSearchTerm, setModelSearchTerm] = useState("");
-	const [photographerSearchTerm, setPhotographerSearchTerm] = useState("");
+	const [personSearchTerm, setPersonSearchTerm] = useState("");
 	const [modelSearchResults, setModelSearchResults] = useState([]);
-	const [photographerSearchResults, setPhotographerSearchResults] = useState(
-		[]
-	);
+	const [personSearchResults, setPersonSearchResults] = useState([]);
 
 	useEffect(() => {
 		console.log("mode, photo: ", mode, photo);
@@ -42,7 +40,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				images: photo.images || [],
 				tags: photo.tags?.join(", ") || "",
 				models: photo.models?.map((m) => m._id) || [],
-				photographers: photo.photographers?.map((p) => p._id) || [],
+				people: photo.people?.map((p) => p._id) || [],
 				category: photo.category || "",
 			});
 		}
@@ -156,20 +154,20 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		}));
 	};
 
-	const addPhotographer = (photographer) => {
-		if (!formData.photographers.includes(photographer._id)) {
+	const addPerson = (person) => {
+		if (!formData.people.includes(person._id)) {
 			setFormData((prev) => ({
 				...prev,
-				photographers: [...prev.photographers, photographer._id],
+				people: [...prev.people, person._id],
 			}));
 		}
 	};
 
-	const removePhotographer = (photographerId, e) => {
+	const removePerson = (personId, e) => {
 		e.stopPropagation();
 		setFormData((prev) => ({
 			...prev,
-			photographers: prev.photographers.filter((id) => id !== photographerId),
+			people: prev.people.filter((id) => id !== personId),
 		}));
 	};
 
@@ -178,9 +176,9 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		return model ? model.name : id;
 	};
 
-	const getPhotographerNameById = (id) => {
-		const photographer = photographers.find((p) => p._id === id);
-		return photographer ? photographer.name : id;
+	const getPersonNameById = (id) => {
+		const person = people.find((p) => p._id === id);
+		return person ? person.name : id;
 	};
 
 	return (
@@ -355,46 +353,42 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				</div>
 			</div>
 
-			{/* 포토그래퍼 검색 및 선택 */}
+			{/* 아티스트 검색 및 선택 */}
 			<div className="photo-form__field">
-				<label className="photo-form__label">포토그래퍼 검색 및 선택</label>
+				<label className="photo-form__label">아티스트 검색 및 선택</label>
 
-				{/* 포토그래퍼 검색 바 */}
+				{/* 아티스트 검색 바 */}
 				<div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
 					<input
 						className="photo-form__input"
 						type="text"
-						value={photographerSearchTerm}
+						value={personSearchTerm}
 						onChange={(e) => {
-							setPhotographerSearchTerm(e.target.value);
-							const results = photographers.filter((photographer) =>
-								photographer.name
-									.toLowerCase()
-									.includes(e.target.value.toLowerCase())
+							setPersonSearchTerm(e.target.value);
+							const results = people.filter((person) =>
+								person.name.toLowerCase().includes(e.target.value.toLowerCase())
 							);
-							setPhotographerSearchResults(results);
+							setPersonSearchResults(results);
 						}}
-						placeholder="포토그래퍼 이름 검색"
+						placeholder="아티스트 이름 검색"
 					/>
 				</div>
 
-				{/* 선택된 포토그래퍼 리스트 */}
-				{formData.photographers.length > 0 && (
+				{/* 선택된 아티스트 리스트 */}
+				{formData.people.length > 0 && (
 					<div
 						className="photo-form__selected-list"
 						style={{ marginBottom: "8px" }}
 					>
 						<p>선택된 포토그래퍼:</p>
 						<ul style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-							{formData.photographers.map((photographerId) => (
-								<li key={photographerId}>
-									{getPhotographerNameById(photographerId)}{" "}
+							{formData.people.map((personId) => (
+								<li key={personId}>
+									{getPersonNameById(personId)}{" "}
 									<button
 										type="button"
-										onClick={(e) => removePhotographer(photographerId, e)}
-										aria-label={`Remove photographer ${getPhotographerNameById(
-											photographerId
-										)}`}
+										onClick={(e) => removePerson(personId, e)}
+										aria-label={`Remove person ${getPersonNameById(personId)}`}
 									>
 										X
 									</button>
@@ -404,18 +398,18 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					</div>
 				)}
 
-				{/* 포토그래퍼 검색 결과 */}
+				{/* 아티스트 검색 결과 */}
 				<div className="photo-form__search-results">
-					{photographerSearchResults.length > 0 ? (
+					{personSearchResults.length > 0 ? (
 						<ul>
-							{photographerSearchResults.map((photographer) => (
-								<li key={photographer._id}>
+							{personSearchResults.map((person) => (
+								<li key={person._id}>
 									<button
 										type="button"
-										onClick={() => addPhotographer(photographer)}
+										onClick={() => addPerson(person)}
 										style={{ cursor: "pointer" }}
 									>
-										{photographer.name}
+										{person.name}
 									</button>
 								</li>
 							))}
