@@ -7,7 +7,10 @@ import DefaultHelmet from "../../components/DefaultHelmet";
 
 function AgencyListPage() {
 	const { keyword } = useQueryFilters("/agencies");
-	const { data: agencies = [], isLoading } = useAgencies({ keyword });
+	const { data: agencies = [], isLoading } = useAgencies({
+		keyword,
+		fields: "name logo description",
+	});
 	const navigate = useNavigate();
 
 	const handleClick = (id) => {
