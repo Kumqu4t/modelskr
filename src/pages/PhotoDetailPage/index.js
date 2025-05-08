@@ -20,7 +20,7 @@ const PhotoDetailPage = () => {
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const isAdmin = useSelector(
-		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
+		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL
 	);
 
 	const { favorites: photoFavorites, toggleFavorite: togglePhotoFavorite } =
@@ -158,8 +158,8 @@ const PhotoDetailPage = () => {
 				<p
 					dangerouslySetInnerHTML={{
 						__html: linkifyDescription(photo.description, [
-							...photo.models.map((m) => ({ ...m, type: "model" })),
-							...photo.people.map((p) => ({
+							...photo.models?.map((m) => ({ ...m, type: "model" })),
+							...photo.people?.map((p) => ({
 								...p,
 								type: "person",
 							})),
@@ -168,7 +168,7 @@ const PhotoDetailPage = () => {
 				></p>
 
 				<div className="tags">
-					{photo.tags.map((tag, index) => (
+					{photo.tags?.map((tag, index) => (
 						<span key={index} className="tag">
 							{tag}
 						</span>
@@ -177,7 +177,7 @@ const PhotoDetailPage = () => {
 
 				<h2>참여 모델</h2>
 				<div className="simple-list">
-					{photo.models.map((model) => (
+					{photo.models?.map((model) => (
 						<span
 							key={model._id}
 							className="link-name"

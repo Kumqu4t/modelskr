@@ -10,20 +10,12 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 
 function PersonListPage() {
-	const {
-		selectedTags,
-		setSelectedTags,
-		gender,
-		setGender,
-		role,
-		setRole,
-		keyword,
-	} = useQueryFilters("/people");
+	const { gender, setGender, role, setRole, keyword } =
+		useQueryFilters("/people");
 
 	const { data: people = [], isLoading } = usePeople({
 		gender,
 		role,
-		selectedTags,
 		keyword,
 	});
 
@@ -36,9 +28,6 @@ function PersonListPage() {
 	const startIndex = (currentPage - 1) * itemLimit;
 	const currentPeople = people.slice(startIndex, startIndex + itemLimit);
 
-	const tags = [...new Set(people.flatMap((person) => person.tags))];
-	const availableTags = new Set(people.flatMap((person) => person.tags));
-
 	if (isLoading) return <Loading />;
 
 	return (
@@ -50,10 +39,6 @@ function PersonListPage() {
 			<div style={{ padding: "24px" }}>
 				<h1 className="admin-title">People</h1>
 				<FilterBar
-					selectedTags={selectedTags}
-					setSelectedTags={setSelectedTags}
-					tags={tags}
-					availableTags={availableTags}
 					gender={gender}
 					setGender={setGender}
 					role={role}

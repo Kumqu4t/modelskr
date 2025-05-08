@@ -2,16 +2,14 @@ import { API_BASE_URL, getHeaders } from ".";
 
 export const fetchPeople = async ({
 	gender,
-	role = "",
-	selectedTags = [],
+	role,
 	keyword = "",
 	fields = "",
 }) => {
 	const params = new URLSearchParams();
 
 	if (gender && gender !== "all") params.set("gender", gender);
-	if (role) params.set("role", role);
-	selectedTags.forEach((tag) => params.append("tag", tag));
+	if (role && role !== "all") params.set("role", role);
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
 
@@ -20,6 +18,7 @@ export const fetchPeople = async ({
 	});
 
 	if (!res.ok) throw new Error("아티스트 데이터를 불러오는 데 실패했습니다.");
+
 	return res.json();
 };
 

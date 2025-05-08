@@ -14,7 +14,7 @@ function PersonDetailPage() {
 	const kind = "Person";
 
 	const isAdmin = useSelector(
-		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
+		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL
 	);
 
 	const { data: person, isLoading, error } = usePersonById(id);
@@ -101,7 +101,7 @@ function PersonDetailPage() {
 							type="default"
 							onClick={() => window.open(person.contact, "_blank")}
 						>
-							Contact
+							Instagram
 						</Button>
 					</div>
 
@@ -137,20 +137,6 @@ function PersonDetailPage() {
 								<strong>국적:</strong> {person.nationality}
 							</p>
 						)}
-
-						<div className="tag-list">
-							{person.tags.map((tag, index) => (
-								<span
-									key={index}
-									className="filter-button"
-									onClick={() =>
-										navigate(`/people?tag=${encodeURIComponent(tag)}`)
-									}
-								>
-									{tag}
-								</span>
-							))}
-						</div>
 					</div>
 				</div>
 				<div className="recent-work-list">

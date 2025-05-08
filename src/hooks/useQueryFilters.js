@@ -6,9 +6,6 @@ export function useQueryFilters(basePath = "/models") {
 	const navigate = useNavigate();
 	const searchParams = new URLSearchParams(location.search);
 
-	const [selectedTags, setSelectedTags] = useState(() =>
-		searchParams.getAll("tag")
-	);
 	const [keyword, setKeyword] = useState(
 		() => searchParams.get("keyword") || ""
 	);
@@ -25,7 +22,6 @@ export function useQueryFilters(basePath = "/models") {
 
 	useEffect(() => {
 		const updatedParams = new URLSearchParams(location.search);
-		setSelectedTags(updatedParams.getAll("tag"));
 		setKeyword(updatedParams.get("keyword") || "");
 		setGender(updatedParams.get("gender") || "all");
 		setRole(updatedParams.get("role") || "all");
@@ -35,7 +31,6 @@ export function useQueryFilters(basePath = "/models") {
 
 	useEffect(() => {
 		const params = new URLSearchParams();
-		selectedTags.forEach((tag) => params.append("tag", tag));
 		if (keyword) params.set("keyword", keyword);
 		if (gender !== "all") params.set("gender", gender);
 		if (category !== "all") params.set("category", category);
@@ -45,20 +40,9 @@ export function useQueryFilters(basePath = "/models") {
 		if (basePath === "/people" && role !== "all") params.set("role", role);
 
 		navigate(`${basePath}?${params.toString()}`, { replace: true });
-	}, [
-		selectedTags,
-		keyword,
-		gender,
-		role,
-		agency,
-		category,
-		navigate,
-		basePath,
-	]);
+	}, [keyword, gender, role, agency, category, navigate, basePath]);
 
 	return {
-		selectedTags,
-		setSelectedTags,
 		gender,
 		setGender,
 		role,

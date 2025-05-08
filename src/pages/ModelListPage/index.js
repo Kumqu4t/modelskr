@@ -11,20 +11,12 @@ import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 
 function ModelListPage() {
-	const {
-		selectedTags,
-		setSelectedTags,
-		gender,
-		setGender,
-		agency,
-		setAgency,
-		keyword,
-	} = useQueryFilters("/models");
+	const { gender, setGender, agency, setAgency, keyword } =
+		useQueryFilters("/models");
 
 	const { data: models = [], isLoading } = useModels({
 		gender,
 		agency,
-		selectedTags,
 		keyword,
 	});
 
@@ -39,9 +31,6 @@ function ModelListPage() {
 	const startIndex = (currentPage - 1) * itemLimit;
 	const currentModels = models.slice(startIndex, startIndex + itemLimit);
 
-	const tags = [...new Set(models.flatMap((model) => model.tags))];
-	const availableTags = new Set(models.flatMap((model) => model.tags));
-
 	if (isLoading) return <Loading />;
 
 	return (
@@ -53,10 +42,6 @@ function ModelListPage() {
 			<div style={{ padding: "24px" }}>
 				<h1 className="admin-title">Models</h1>
 				<FilterBar
-					selectedTags={selectedTags}
-					setSelectedTags={setSelectedTags}
-					tags={tags}
-					availableTags={availableTags}
 					gender={gender}
 					setGender={setGender}
 					agency={agency}

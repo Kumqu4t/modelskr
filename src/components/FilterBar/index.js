@@ -1,12 +1,8 @@
-import React, { useState } from "react";
-import FilterButton from "../FilterButton";
+import React from "react";
+// import FilterButton from "../FilterButton";
 import "./FilterBar.css";
 
 function FilterBar({
-	selectedTags,
-	setSelectedTags,
-	tags,
-	availableTags,
 	gender,
 	setGender,
 	agency,
@@ -16,14 +12,6 @@ function FilterBar({
 	setRole,
 	type,
 }) {
-	const [showAllTags, setShowAllTags] = useState(false);
-
-	const toggleTag = (tag) => {
-		setSelectedTags((prev) =>
-			prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-		);
-	};
-
 	return (
 		<div className="filter-bar">
 			<div className="filter-group">
@@ -60,30 +48,6 @@ function FilterBar({
 						</select>
 					</>
 				)}
-			</div>
-
-			<div className="filter-group">
-				<label className="filter-label">태그</label>
-				<div className="tag-filter">
-					{tags.slice(0, showAllTags ? tags.length : 5).map((tag) => (
-						<FilterButton
-							key={tag}
-							active={selectedTags.includes(tag)}
-							onClick={() => toggleTag(tag)}
-							disabled={!availableTags.has(tag)}
-						>
-							{tag}
-						</FilterButton>
-					))}
-					{tags.length > 5 && (
-						<button
-							className="toggle-tags-button"
-							onClick={() => setShowAllTags((prev) => !prev)}
-						>
-							{showAllTags ? "◀ 접기" : "펼치기 ▶"}
-						</button>
-					)}
-				</div>
 			</div>
 		</div>
 	);

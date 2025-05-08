@@ -163,19 +163,6 @@ function ModelDetailPage() {
 								<strong>신발 사이즈:</strong> {model.shoeSize}
 							</p>
 						)}
-						<div className="tag-list">
-							{model.tags.map((tag, index) => (
-								<span
-									key={index}
-									className="filter-button"
-									onClick={() =>
-										navigate(`/models?tag=${encodeURIComponent(tag)}`)
-									}
-								>
-									{tag}
-								</span>
-							))}
-						</div>
 					</div>
 				</div>
 				<div className="recent-work-list">

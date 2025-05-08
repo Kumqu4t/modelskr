@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useFilters(models, selectedTags, keyword, gender, agency) {
+export function useFilters(models, keyword, gender, agency) {
 	const [filteredModels, setFilteredModels] = useState([]);
 
 	useEffect(() => {
@@ -18,12 +18,6 @@ export function useFilters(models, selectedTags, keyword, gender, agency) {
 			}
 		}
 
-		if (selectedTags.length > 0) {
-			filtered = filtered.filter((model) =>
-				selectedTags.every((tag) => model.tags.includes(tag))
-			);
-		}
-
 		if (keyword) {
 			filtered = filtered.filter((model) =>
 				model.name.toLowerCase().includes(keyword.toLowerCase())
@@ -31,7 +25,7 @@ export function useFilters(models, selectedTags, keyword, gender, agency) {
 		}
 
 		setFilteredModels(filtered);
-	}, [models, selectedTags, keyword, gender, agency]);
+	}, [models, keyword, gender, agency]);
 
 	return filteredModels;
 }
