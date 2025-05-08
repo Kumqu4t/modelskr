@@ -21,7 +21,7 @@ function FavoritePage() {
 			try {
 				let url = "";
 				if (favoriteType === "Model") url = `${API_BASE_URL}/api/models`;
-				else if (favoriteType === "People") url = `${API_BASE_URL}/api/people`;
+				else if (favoriteType === "Person") url = `${API_BASE_URL}/api/people`;
 				else if (favoriteType === "Photo") url = `${API_BASE_URL}/api/photos`;
 
 				const res = await fetch(url);
@@ -39,7 +39,6 @@ function FavoritePage() {
 
 	const handleToggleFavorite = toggleFavorite;
 
-	console.log("favorites: ", Array.isArray(favorites));
 	const safeFavorites = Array.isArray(favorites) ? favorites : [];
 	const filteredItems = models.filter((model) =>
 		(safeFavorites || []).some((fav) => fav?.item?._id === model._id)
