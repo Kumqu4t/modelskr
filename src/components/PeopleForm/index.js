@@ -108,42 +108,46 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 			return;
 		}
 
-		const filteredFormData = { ...formData };
-		if (MorP !== "model") {
-			delete filteredFormData.agency;
-			delete filteredFormData.height;
-			delete filteredFormData.measurements;
-			delete filteredFormData.shoeSize;
-		} else {
-			delete filteredFormData.role;
-		}
-
 		const tagsArray = formData.tags
-			.split(",")
+			?.split(",")
 			.map((t) => t.trim())
 			.filter((t) => t);
 
-		const recentWorkArray = formData.recentWork
-			.split(",")
-			.map((item) => {
-				const [type, title, ...linkParts] = item
-					.split(":")
-					.map((s) => s.trim());
-				const link = linkParts.join(":");
-				if (type && title && link) {
-					return { type, title, link };
-				}
-				return null;
-			})
-			.filter(Boolean);
+		const recentWorkArray =
+			formData.recentWork && formData.recentWork.trim() !== ""
+				? formData.recentWork
+						.split(",")
+						.map((item) => {
+							const [type, title, ...linkParts] = item
+								.split(":")
+								.map((s) => s.trim());
+							const link = linkParts.join(":");
+							if (type && title && link) {
+								return { type, title, link };
+							}
+							return null;
+						})
+						.filter(Boolean)
+				: [];
 
 		let processedData = {
 			...formData,
 			tags: tagsArray,
 			recentWork: recentWorkArray,
 		};
+
 		if (MorP === "model")
-			processedData = { ...formData, agency: formData.agency || null };
+			processedData = { ...processedData, agency: formData.agency || null };
+
+		if (MorP !== "model") {
+			delete processedData.agency;
+			delete processedData.height;
+			delete processedData.measurements;
+			delete processedData.shoeSize;
+		}
+		if (MorP === "model") {
+			delete processedData.role;
+		}
 
 		console.log("processedData:", processedData);
 		onSubmit(processedData);
