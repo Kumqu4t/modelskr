@@ -30,10 +30,12 @@ function Header() {
 		location.pathname.startsWith("/agencies");
 	const isPhotosActive = location.pathname.startsWith("/photos");
 	const [currentCategory, setCurrentCategory] = useState("");
+	const [currentRole, setCurrentRole] = useState("");
 
 	useEffect(() => {
 		const searchParams = new URLSearchParams(location.search);
 		setCurrentCategory(searchParams.get("category") || "");
+		setCurrentRole(searchParams.get("role") || "");
 	}, [location.search]);
 
 	useEffect(() => {
@@ -171,15 +173,41 @@ function Header() {
 						onMouseEnter={() => setIsProfilesDropdownOpen(true)}
 						onMouseLeave={() => setIsProfilesDropdownOpen(false)}
 					>
-						<button className="dropdown-button">PROFILES</button>
+						<button
+							className="dropdown-button"
+							onClick={() => navigate("/models")}
+						>
+							PROFILES
+						</button>
 						{(isProfilesDropdownOpen || isProfilesActive) && (
 							<div className="dropdown-content">
 								<NavLink to="/models" className="nav-item">
 									Models
 								</NavLink>
-								<NavLink to="/people" className="nav-item">
-									People
-								</NavLink>
+								<Link
+									to="/people?role=photographer"
+									className={`nav-item ${
+										currentRole === "photographer" ? "active" : ""
+									}`}
+								>
+									Photographer
+								</Link>
+								<Link
+									to="/people?role=hair"
+									className={`nav-item ${
+										currentRole === "hair" ? "active" : ""
+									}`}
+								>
+									Hair
+								</Link>
+								<Link
+									to="/people?role=makeup"
+									className={`nav-item ${
+										currentRole === "makeup" ? "active" : ""
+									}`}
+								>
+									Makeup
+								</Link>
 								<NavLink to="/agencies" className="nav-item">
 									Agencies
 								</NavLink>
@@ -261,9 +289,30 @@ function Header() {
 							<NavLink to="/models" className="mobile-nav-item">
 								Models
 							</NavLink>
-							<NavLink to="/people" className="mobile-nav-item">
-								People
-							</NavLink>
+							<Link
+								to="/people?role=photographer"
+								className={`mobile-nav-item ${
+									currentRole === "photographer" ? "active" : ""
+								}`}
+							>
+								Photographer
+							</Link>
+							<Link
+								to="/people?role=hair"
+								className={`mobile-nav-item ${
+									currentRole === "hair" ? "active" : ""
+								}`}
+							>
+								Hair
+							</Link>
+							<Link
+								to="/people?role=makeup"
+								className={`mobile-nav-item ${
+									currentRole === "makeup" ? "active" : ""
+								}`}
+							>
+								Makeup
+							</Link>
 							<NavLink to="/agencies" className="mobile-nav-item">
 								Agencies
 							</NavLink>

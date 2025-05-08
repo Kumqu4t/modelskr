@@ -10,8 +10,7 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 
 function PersonListPage() {
-	const { gender, setGender, role, setRole, keyword } =
-		useQueryFilters("/people");
+	const { gender, setGender, role, keyword } = useQueryFilters("/people");
 
 	const { data: people = [], isLoading } = usePeople({
 		gender,
@@ -37,14 +36,8 @@ function PersonListPage() {
 				description="People 리스트와 필터를 통해 원하는 사람을 찾을 수 있습니다."
 			/>
 			<div style={{ padding: "24px" }}>
-				<h1 className="admin-title">People</h1>
-				<FilterBar
-					gender={gender}
-					setGender={setGender}
-					role={role}
-					setRole={setRole}
-					type={"people"}
-				/>
+				<h1 className="admin-title">{role[0].toUpperCase() + role.slice(1)}</h1>
+				<FilterBar gender={gender} setGender={setGender} type={"people"} />
 				<ModelList
 					type="people"
 					models={currentPeople}
