@@ -107,7 +107,7 @@ const PhotoDetailPage = () => {
 					)}
 					<div className="photo-image-wrapper">
 						<img
-							src={photo.images[currentIndex].url}
+							src={photo.images[currentIndex]?.url}
 							alt={`${photo.title} - ${currentIndex + 1}`}
 						/>
 					</div>
@@ -122,7 +122,7 @@ const PhotoDetailPage = () => {
 					)}
 					{photo.images.length > 1 && (
 						<div className="photo-indicator">
-							{photo.images.map((_, idx) => (
+							{photo.images?.map((_, idx) => (
 								<span
 									key={idx}
 									className={`indicator-dot ${
@@ -159,9 +159,9 @@ const PhotoDetailPage = () => {
 					dangerouslySetInnerHTML={{
 						__html: linkifyDescription(photo.description, [
 							...photo.models.map((m) => ({ ...m, type: "model" })),
-							...photo.photographers.map((p) => ({
+							...photo.people.map((p) => ({
 								...p,
-								type: "photographer",
+								type: "person",
 							})),
 						]),
 					}}
@@ -190,7 +190,7 @@ const PhotoDetailPage = () => {
 
 				<h2>참여 인물</h2>
 				<div className="simple-list">
-					{photo.people.map((person) => (
+					{photo.people?.map((person) => (
 						<span
 							key={person._id}
 							className="link-name"

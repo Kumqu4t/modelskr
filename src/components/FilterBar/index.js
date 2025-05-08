@@ -12,6 +12,9 @@ function FilterBar({
 	agency,
 	setAgency,
 	agencies,
+	role,
+	setRole,
+	type,
 }) {
 	const [showAllTags, setShowAllTags] = useState(false);
 
@@ -33,15 +36,30 @@ function FilterBar({
 			</div>
 
 			<div className="filter-group">
-				<label className="filter-label">에이전시</label>
-				<select value={agency} onChange={(e) => setAgency(e.target.value)}>
-					<option value="all">전체</option>
-					{agencies.map((agencyName) => (
-						<option key={agencyName} value={agencyName}>
-							{agencyName}
-						</option>
-					))}
-				</select>
+				{type === "people" && (
+					<>
+						<label className="filter-label">직업</label>
+						<select value={role} onChange={(e) => setRole(e.target.value)}>
+							<option value="all">전체</option>
+							<option value="photographer">포토그래퍼</option>
+							<option value="hair">헤어</option>
+							<option value="makeup">메이크업</option>
+						</select>
+					</>
+				)}
+				{type === "models" && (
+					<>
+						<label className="filter-label">에이전시</label>
+						<select value={agency} onChange={(e) => setAgency(e.target.value)}>
+							<option value="all">전체</option>
+							{agencies.map((agencyName) => (
+								<option key={agencyName} value={agencyName}>
+									{agencyName}
+								</option>
+							))}
+						</select>
+					</>
+				)}
 			</div>
 
 			<div className="filter-group">

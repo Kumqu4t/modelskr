@@ -62,6 +62,7 @@ function ModelListPage() {
 					agency={agency}
 					setAgency={setAgency}
 					agencies={agencies}
+					type={"models"}
 				/>
 				<ModelList
 					type="models"

@@ -353,11 +353,11 @@ function PhotoForm({ mode, photo, onSubmit }) {
 				</div>
 			</div>
 
-			{/* 아티스트 검색 및 선택 */}
+			{/* 인물 검색 및 선택 */}
 			<div className="photo-form__field">
-				<label className="photo-form__label">아티스트 검색 및 선택</label>
+				<label className="photo-form__label">인물 검색 및 선택</label>
 
-				{/* 아티스트 검색 바 */}
+				{/* 인물 검색 바 */}
 				<div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
 					<input
 						className="photo-form__input"
@@ -370,17 +370,17 @@ function PhotoForm({ mode, photo, onSubmit }) {
 							);
 							setPersonSearchResults(results);
 						}}
-						placeholder="아티스트 이름 검색"
+						placeholder="인물 이름 검색"
 					/>
 				</div>
 
-				{/* 선택된 아티스트 리스트 */}
+				{/* 선택된 인물 리스트 */}
 				{formData.people.length > 0 && (
 					<div
 						className="photo-form__selected-list"
 						style={{ marginBottom: "8px" }}
 					>
-						<p>선택된 포토그래퍼:</p>
+						<p>선택된 인물:</p>
 						<ul style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
 							{formData.people.map((personId) => (
 								<li key={personId}>
@@ -398,7 +398,7 @@ function PhotoForm({ mode, photo, onSubmit }) {
 					</div>
 				)}
 
-				{/* 아티스트 검색 결과 */}
+				{/* 인물 검색 결과 */}
 				<div className="photo-form__search-results">
 					{personSearchResults.length > 0 ? (
 						<ul>

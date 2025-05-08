@@ -2,10 +2,10 @@ import { API_BASE_URL, getHeaders } from ".";
 
 export const fetchPeople = async ({
 	gender,
+	role = "",
 	selectedTags = [],
 	keyword = "",
 	fields = "",
-	role = "",
 }) => {
 	const params = new URLSearchParams();
 
