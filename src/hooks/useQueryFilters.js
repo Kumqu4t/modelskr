@@ -19,6 +19,9 @@ export function useQueryFilters(basePath = "/models") {
 	const [category, setCategory] = useState(
 		() => searchParams.get("category") || "all"
 	);
+	const [height, setHeight] = useState(
+		() => searchParams.get("height") || "all"
+	);
 
 	useEffect(() => {
 		const updatedParams = new URLSearchParams(location.search);
@@ -27,6 +30,7 @@ export function useQueryFilters(basePath = "/models") {
 		setRole(updatedParams.get("role") || "all");
 		setAgency(updatedParams.get("agency") || "all");
 		setCategory(updatedParams.get("category") || "all");
+		setHeight(updatedParams.get("height") || "all");
 	}, [location.search]);
 
 	useEffect(() => {
@@ -34,13 +38,14 @@ export function useQueryFilters(basePath = "/models") {
 		if (keyword) params.set("keyword", keyword);
 		if (gender !== "all") params.set("gender", gender);
 		if (category !== "all") params.set("category", category);
+		if (height !== "all") params.set("height", height);
 
 		if (basePath === "/models" && agency !== "all")
 			params.set("agency", agency);
 		if (basePath === "/people" && role !== "all") params.set("role", role);
 
 		navigate(`${basePath}?${params.toString()}`, { replace: true });
-	}, [keyword, gender, role, agency, category, navigate, basePath]);
+	}, [keyword, gender, role, agency, category, height, navigate, basePath]);
 
 	return {
 		gender,
@@ -53,5 +58,7 @@ export function useQueryFilters(basePath = "/models") {
 		setKeyword,
 		category,
 		setCategory,
+		height,
+		setHeight,
 	};
 }

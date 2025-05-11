@@ -3,6 +3,7 @@ import { API_BASE_URL, getHeaders } from ".";
 export const fetchModels = async ({
 	gender,
 	agency,
+	height,
 	keyword = "",
 	fields = "",
 }) => {
@@ -10,6 +11,7 @@ export const fetchModels = async ({
 
 	if (gender && gender !== "all") params.set("gender", gender);
 	if (agency && agency !== "all") params.set("agency", agency);
+	if (height && height !== "all") params.set("height", height);
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
 

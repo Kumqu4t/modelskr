@@ -11,12 +11,13 @@ import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 
 function ModelListPage() {
-	const { gender, setGender, agency, setAgency, keyword } =
+	const { gender, setGender, agency, setAgency, height, setHeight, keyword } =
 		useQueryFilters("/models");
 
 	const { data: models = [], isLoading } = useModels({
 		gender,
 		agency,
+		height,
 		keyword,
 	});
 
@@ -47,6 +48,8 @@ function ModelListPage() {
 					agency={agency}
 					setAgency={setAgency}
 					agencies={agencies}
+					height={height}
+					setHeight={setHeight}
 					type={"models"}
 				/>
 				<ModelList
