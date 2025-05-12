@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
 import { useFavorites } from "../../hooks/useFavorites";
@@ -10,22 +9,20 @@ import ModelList from "../../components/ModelList";
 import Pagination from "../../components/Pagination";
 
 function PersonListPage() {
-	const { gender, setGender, role, keyword } = useQueryFilters("/people");
+	const { gender, setGender, role, keyword, page, setPage } =
+		useQueryFilters("/people");
 
-	const { data: people = [], isLoading } = usePeople({
+	const { data, isLoading } = usePeople({
 		gender,
 		role,
 		keyword,
+		page,
 	});
+	const people = data?.people || [];
+	const totalCount = data?.totalCount || 0;
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Person");
-
-	// 페이지네이션
-	const [currentPage, setCurrentPage] = useState(1);
-	const itemLimit = 8;
-	const startIndex = (currentPage - 1) * itemLimit;
-	const currentPeople = people.slice(startIndex, startIndex + itemLimit);
 
 	if (isLoading) return <Loading />;
 
@@ -40,15 +37,14 @@ function PersonListPage() {
 				<FilterBar gender={gender} setGender={setGender} type={"people"} />
 				<ModelList
 					type="people"
-					models={currentPeople}
+					models={people}
 					favorites={favorites}
 					onToggleFavorite={toggleFavorite}
 				/>
 				<Pagination
-					totalItems={people.length}
-					itemLimit={itemLimit}
-					currentPage={currentPage}
-					onPageChange={setCurrentPage}
+					totalItems={totalCount}
+					currentPage={page}
+					onPageChange={setPage}
 				/>
 			</div>
 		</>

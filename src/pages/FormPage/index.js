@@ -45,7 +45,14 @@ function FormPage() {
 	const { data: photoData } = usePhotoById(id, {
 		enabled: formType === "photos" && !!id,
 	});
-	const { data: agenciesData } = useAgencies({});
+	const { data: agenciesDatas } = useAgencies({
+		limit: 9999,
+	});
+	const agenciesData = useMemo(
+		() => agenciesDatas?.agencies || [],
+		[agenciesDatas]
+	);
+
 	const createModel = useCreateModel();
 	const updateModel = useUpdateModel();
 	const createAgency = useCreateAgency();

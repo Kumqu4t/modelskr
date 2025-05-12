@@ -6,6 +6,8 @@ export const fetchModels = async ({
 	height,
 	keyword = "",
 	fields = "",
+	page = 1,
+	limit = 16,
 }) => {
 	const params = new URLSearchParams();
 
@@ -14,6 +16,8 @@ export const fetchModels = async ({
 	if (height && height !== "all") params.set("height", height);
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
+	params.set("page", page);
+	params.set("limit", limit);
 
 	const res = await fetch(`${API_BASE_URL}/api/models?${params.toString()}`, {
 		headers: getHeaders(localStorage.getItem("token")),

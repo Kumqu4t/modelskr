@@ -4,20 +4,21 @@ import { usePhotos } from "../../hooks/photos/usePhotos";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import PhotoList from "../../components/PhotoList";
 import Loading from "../../components/Loading";
+import Pagination from "../../components/Pagination";
 import "./PhotoListPage.css";
 
 const PhotoListPage = () => {
-	const { keyword, category } = useQueryFilters("/photos");
+	const { keyword, category, page, setPage } = useQueryFilters("/photos");
 
-	const {
-		data: photos = [],
-		isLoading,
-		error,
-	} = usePhotos({
+	const { data, isLoading, error } = usePhotos({
 		category,
 		keyword,
 		fields: "images,title,_id",
+		page,
+		limit: 8,
 	});
+	const photos = data?.photos || [];
+	const totalCount = data?.totalCount || 0;
 
 	if (isLoading) return <Loading />;
 	if (photos.length === 0) return <div>사진이 없습니다.</div>;
@@ -36,6 +37,12 @@ const PhotoListPage = () => {
 						: category[0].toUpperCase() + category.slice(1)}
 				</h1>
 				<PhotoList photos={photos} />
+				<Pagination
+					totalItems={totalCount}
+					currentPage={page}
+					itemLimit={8}
+					onPageChange={setPage}
+				/>
 			</div>
 		</>
 	);

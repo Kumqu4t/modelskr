@@ -1,9 +1,16 @@
 import { API_BASE_URL, getHeaders } from ".";
 
-export const fetchAgencies = async ({ keyword = "", fields = "" }) => {
+export const fetchAgencies = async ({
+	keyword = "",
+	fields = "",
+	page = 1,
+	limit = 16,
+}) => {
 	const params = new URLSearchParams();
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
+	params.set("page", page);
+	params.set("limit", limit);
 
 	const res = await fetch(`${API_BASE_URL}/api/agencies?${params.toString()}`, {
 		headers: getHeaders(localStorage.getItem("token")),

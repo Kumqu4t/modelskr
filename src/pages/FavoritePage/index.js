@@ -27,6 +27,9 @@ function FavoritePage() {
 				const res = await fetch(url);
 				const data = await res.json();
 				setModels(data);
+				if (favoriteType === "Model") setModels(data.models || []);
+				else if (favoriteType === "Person") setModels(data.people || []);
+				else if (favoriteType === "Photo") setModels(data.photos || []);
 			} catch (err) {
 				console.error(`${favoriteType} 불러오기 실패:`, err);
 			} finally {

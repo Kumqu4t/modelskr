@@ -21,8 +21,16 @@ function PhotoForm({ mode, photo, onSubmit }) {
 		images: [],
 	});
 
-	const { data: models = [] } = useModels({});
-	const { data: people = [] } = usePeople({});
+	const { data: modelsData } = useModels({
+		limit: 9999,
+		fields: "name",
+	});
+	const models = modelsData?.models || [];
+	const { data: peopleData } = usePeople({
+		limit: 9999,
+		fields: "name",
+	});
+	const people = peopleData?.people || [];
 	const { mutate: uploadImage, isLoading: isUploading } = useUpload();
 	const { mutate: removeImage } = useRemoveImage();
 

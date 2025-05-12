@@ -5,6 +5,8 @@ export const fetchPeople = async ({
 	role,
 	keyword = "",
 	fields = "",
+	page = 1,
+	limit = 16,
 }) => {
 	const params = new URLSearchParams();
 
@@ -12,12 +14,14 @@ export const fetchPeople = async ({
 	if (role && role !== "all") params.set("role", role);
 	if (keyword) params.set("keyword", keyword);
 	if (fields) params.set("fields", fields);
+	params.set("page", page);
+	params.set("limit", limit);
 
 	const res = await fetch(`${API_BASE_URL}/api/people?${params.toString()}`, {
 		headers: getHeaders(localStorage.getItem("token")),
 	});
 
-	if (!res.ok) throw new Error("아티스트 데이터를 불러오는 데 실패했습니다.");
+	if (!res.ok) throw new Error("인물 데이터를 불러오는 데 실패했습니다.");
 
 	return res.json();
 };

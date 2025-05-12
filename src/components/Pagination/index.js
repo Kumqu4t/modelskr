@@ -1,6 +1,6 @@
 import "./Pagination.css";
 
-function Pagination({ totalItems, itemLimit, currentPage, onPageChange }) {
+function Pagination({ totalItems, itemLimit = 16, currentPage, onPageChange }) {
 	const totalPages = Math.ceil(totalItems / itemLimit);
 
 	return (

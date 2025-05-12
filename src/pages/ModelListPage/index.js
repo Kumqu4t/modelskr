@@ -1,6 +1,5 @@
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import { useModels } from "../../hooks/models";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useAgencies } from "../../hooks/agencies/useAgencies";
@@ -11,26 +10,37 @@ import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 
 function ModelListPage() {
-	const { gender, setGender, agency, setAgency, height, setHeight, keyword } =
-		useQueryFilters("/models");
+	const {
+		gender,
+		setGender,
+		agency,
+		setAgency,
+		height,
+		setHeight,
+		keyword,
+		page,
+		setPage,
+	} = useQueryFilters("/models");
 
-	const { data: models = [], isLoading } = useModels({
+	const { data, isLoading } = useModels({
 		gender,
 		agency,
 		height,
 		keyword,
+		page: page,
 	});
+	const models = data?.models || [];
+	const totalCount = data?.totalCount || 0;
 
-	const { data: rawAgencies = [] } = useAgencies({ fields: "name" });
+	const { data: agenciesData } = useAgencies({
+		fields: "name",
+		limit: 9999,
+	});
+	const rawAgencies = agenciesData?.agencies || [];
 	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
-
-	const [currentPage, setCurrentPage] = useState(1);
-	const itemLimit = 8;
-	const startIndex = (currentPage - 1) * itemLimit;
-	const currentModels = models.slice(startIndex, startIndex + itemLimit);
 
 	if (isLoading) return <Loading />;
 
@@ -54,15 +64,14 @@ function ModelListPage() {
 				/>
 				<ModelList
 					type="models"
-					models={currentModels}
+					models={models}
 					favorites={favorites}
 					onToggleFavorite={toggleFavorite}
 				/>
 				<Pagination
-					totalItems={models.length}
-					itemLimit={itemLimit}
-					currentPage={currentPage}
-					onPageChange={setCurrentPage}
+					totalItems={totalCount}
+					currentPage={page}
+					onPageChange={setPage}
 				/>
 			</div>
 		</>
