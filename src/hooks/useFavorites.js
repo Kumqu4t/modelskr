@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { API_BASE_URL, getHeaders } from "../api";
+import { handleAuthError } from "../utils/handleAuthError";
 
 export function useFavorites(isLoggedIn, kind = "all") {
 	const [favorites, setFavorites] = useState([]);
@@ -12,6 +13,7 @@ export function useFavorites(isLoggedIn, kind = "all") {
 				const res = await fetch(`${API_BASE_URL}/api/favorites?kind=${kind}`, {
 					headers: getHeaders(localStorage.getItem("token")),
 				});
+				await handleAuthError(res);
 				const data = await res.json();
 
 				setFavorites(data);
@@ -34,11 +36,12 @@ export function useFavorites(isLoggedIn, kind = "all") {
 
 		const method = isFav ? "DELETE" : "POST";
 		try {
-			await fetch(`${API_BASE_URL}/api/favorites`, {
+			const res = await fetch(`${API_BASE_URL}/api/favorites`, {
 				method,
 				headers: getHeaders(localStorage.getItem("token")),
 				body: JSON.stringify({ id, kind }),
 			});
+			await handleAuthError(res);
 			setFavorites((prev) =>
 				isFav
 					? prev.filter(
