@@ -1,5 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { getCloudinaryThumbnail } from "../../utils/getCloudinaryThumbnail";
 import FavoriteButton from "../FavoriteButton";
 import "./ModelCard.css";
 
@@ -12,7 +12,11 @@ function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 	return (
 		<div className="model-card" onClick={handleCardClick}>
 			<div className="image-wrapper">
-				<img src={image?.url} alt={name} />
+				<img
+					src={getCloudinaryThumbnail(image?.url)}
+					alt={name}
+					loading="lazy"
+				/>
 				<FavoriteButton
 					modelId={id}
 					kind={type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)}
