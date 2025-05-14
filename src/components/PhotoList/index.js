@@ -1,5 +1,5 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+import { getCloudinaryThumbnail } from "../../utils/getCloudinaryThumbnail";
 import "./PhotoList.css";
 
 function PhotoList({ photos }) {
@@ -18,7 +18,15 @@ function PhotoList({ photos }) {
 						key={photo._id}
 						onClick={() => navigate(`/photos/${photo._id}`)}
 					>
-						<img src={photo.images?.[0].url} alt={photo.title} />
+						<img
+							src={getCloudinaryThumbnail(
+								photo.images?.[0].url,
+								600,
+								800,
+								"limit"
+							)}
+							alt={photo.title}
+						/>
 						<h3>{photo.title}</h3>
 					</div>
 				))}
