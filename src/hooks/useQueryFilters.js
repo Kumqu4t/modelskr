@@ -47,7 +47,7 @@ export function useQueryFilters(basePath = "/models") {
 			params.set("agency", agency);
 		if (basePath === "/people" && role !== "all") params.set("role", role);
 
-		navigate(`${basePath}?${params.toString()}`, { replace: true });
+		navigate(`${basePath}?${params.toString()}`);
 	}, [
 		keyword,
 		gender,
