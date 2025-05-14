@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { API_BASE_URL } from "../../api";
@@ -5,9 +6,9 @@ import ModelList from "../../components/ModelList";
 import PhotoList from "../../components/PhotoList";
 import RequireLogin from "../../components/RequireLogin";
 import "./FavoritePage.css";
-import Pagination from "../../components/Pagination";
 import { useFavorites } from "../../hooks/useFavorites";
 import Loading from "../../components/Loading";
+const Pagination = lazy(() => import("../../components/Pagination"));
 
 function FavoritePage() {
 	const [models, setModels] = useState([]);
@@ -89,12 +90,14 @@ function FavoritePage() {
 						onToggleFavorite={handleToggleFavorite}
 					/>
 				)}
-				<Pagination
-					totalItems={filteredItems.length}
-					itemLimit={itemLimit}
-					currentPage={currentPage}
-					onPageChange={setCurrentPage}
-				/>
+				<Suspense fallback={<div>페이지네이션 로딩중...</div>}>
+					<Pagination
+						totalItems={filteredItems.length}
+						itemLimit={itemLimit}
+						currentPage={currentPage}
+						onPageChange={setCurrentPage}
+					/>
+				</Suspense>
 			</div>
 		</RequireLogin>
 	);

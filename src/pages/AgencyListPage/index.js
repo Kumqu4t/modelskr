@@ -1,10 +1,11 @@
+import { lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useAgencies } from "../../hooks/agencies/useAgencies";
 import Loading from "../../components/Loading";
-import Pagination from "../../components/Pagination";
 import "./AgencyListPage.css";
 import DefaultHelmet from "../../components/DefaultHelmet";
+const Pagination = lazy(() => import("../../components/Pagination"));
 
 function AgencyListPage() {
 	const { keyword, page, setPage } = useQueryFilters("/agencies");
@@ -52,11 +53,13 @@ function AgencyListPage() {
 								</li>
 							))}
 						</ul>
-						<Pagination
-							totalItems={totalCount}
-							currentPage={page}
-							onPageChange={setPage}
-						/>
+						<Suspense fallback={<div>페이지네이션 로딩중...</div>}>
+							<Pagination
+								totalItems={totalCount}
+								currentPage={page}
+								onPageChange={setPage}
+							/>
+						</Suspense>
 					</>
 				)}
 			</div>

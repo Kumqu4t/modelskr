@@ -1,12 +1,13 @@
+import { lazy, Suspense } from "react";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
 import { useFavorites } from "../../hooks/useFavorites";
 import { usePeople } from "../../hooks/people/usePeople";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
-import FilterBar from "../../components/FilterBar";
 import ModelList from "../../components/ModelList";
-import Pagination from "../../components/Pagination";
+const FilterBar = lazy(() => import("../../components/FilterBar"));
+const Pagination = lazy(() => import("../../components/Pagination"));
 
 function PersonListPage() {
 	const { gender, setGender, role, keyword, page, setPage } =
@@ -34,18 +35,22 @@ function PersonListPage() {
 			/>
 			<div style={{ padding: "24px" }}>
 				<h1 className="admin-title">{role[0].toUpperCase() + role.slice(1)}</h1>
-				<FilterBar gender={gender} setGender={setGender} type={"people"} />
+				<Suspense fallback={<div>필터 로딩중...</div>}>
+					<FilterBar gender={gender} setGender={setGender} type={"people"} />
+				</Suspense>
 				<ModelList
 					type="people"
 					models={people}
 					favorites={favorites}
 					onToggleFavorite={toggleFavorite}
 				/>
-				<Pagination
-					totalItems={totalCount}
-					currentPage={page}
-					onPageChange={setPage}
-				/>
+				<Suspense fallback={<div>페이지네이션 로딩중...</div>}>
+					<Pagination
+						totalItems={totalCount}
+						currentPage={page}
+						onPageChange={setPage}
+					/>
+				</Suspense>
 			</div>
 		</>
 	);

@@ -1,11 +1,11 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { usePhotos } from "../../hooks/photos/usePhotos";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import PhotoList from "../../components/PhotoList";
 import Loading from "../../components/Loading";
-import Pagination from "../../components/Pagination";
 import "./PhotoListPage.css";
+const Pagination = lazy(() => import("../../components/Pagination"));
 
 const PhotoListPage = () => {
 	const { keyword, category, page, setPage } = useQueryFilters("/photos");
@@ -37,12 +37,14 @@ const PhotoListPage = () => {
 						: category[0].toUpperCase() + category.slice(1)}
 				</h1>
 				<PhotoList photos={photos} />
-				<Pagination
-					totalItems={totalCount}
-					currentPage={page}
-					itemLimit={8}
-					onPageChange={setPage}
-				/>
+				<Suspense fallback={<div>페이지네이션 로딩중...</div>}>
+					<Pagination
+						totalItems={totalCount}
+						currentPage={page}
+						itemLimit={8}
+						onPageChange={setPage}
+					/>
+				</Suspense>
 			</div>
 		</>
 	);
