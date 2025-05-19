@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useUsers } from "../../hooks/admins/useUsers";
+import { useUsers, useTodayVisits, useRecentVisits } from "../../hooks/admins";
 import Button from "../../components/Button";
 import ClearCacheButton from "../../components/ClearCacheButton";
 import "./AdminPage.css";
@@ -11,6 +11,10 @@ function AdminPage() {
 		isLoading,
 		isError,
 	} = useUsers({ fields: "email,name" });
+	const { data: todayVisitData, isLoading: loadingTodayVisits } =
+		useTodayVisits();
+	const { data: recentVisitData, isLoading: loadingRecentVisits } =
+		useRecentVisits();
 
 	if (isLoading) return <p>로딩 중...</p>;
 	if (isError) return <p>유저 데이터를 불러오는 데 실패했습니다.</p>;
@@ -18,14 +22,7 @@ function AdminPage() {
 	return (
 		<div className="admin-page">
 			<h1 className="admin-title">관리자 페이지</h1>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					marginTop: "24px",
-					gap: "12px",
-				}}
-			>
+			<div className="admin-button-row">
 				<Button type="default" onClick={() => navigate("/admin/create/models")}>
 					+ 모델 추가
 				</Button>
@@ -43,29 +40,60 @@ function AdminPage() {
 				</Button>
 				<ClearCacheButton />
 			</div>
-			<table
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					marginTop: "24px",
-					gap: "12px",
-				}}
-			>
-				<thead>
-					<tr>
-						<th>이름</th>
-						<th>이메일</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map((user) => (
-						<tr key={user._id}>
-							<td>{user.name}</td>
-							<td>{user.email}</td>
+
+			<section className="admin-section">
+				<h2>오늘 방문자 수</h2>
+				{loadingTodayVisits ? (
+					<p>방문자 수 로딩 중...</p>
+				) : (
+					<p>{todayVisitData?.count}명</p>
+				)}
+			</section>
+
+			<section className="admin-section">
+				<h2>최근 7일 방문자 수</h2>
+				{loadingRecentVisits ? (
+					<p>방문자 수 로딩 중...</p>
+				) : (
+					<table className="admin-table">
+						<thead>
+							<tr>
+								<th>날짜</th>
+								<th>방문자 수</th>
+							</tr>
+						</thead>
+						<tbody>
+							{recentVisitData?.map((day) => (
+								<tr key={day.date}>
+									<td>{day.date}</td>
+									<td>{day.count}명</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				)}
+			</section>
+
+			<section className="admin-section">
+				<h2>유저 목록</h2>
+
+				<table className="admin-table">
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>이메일</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{users.map((user) => (
+							<tr key={user._id}>
+								<td>{user.name}</td>
+								<td>{user.email}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</section>
 		</div>
 	);
 }

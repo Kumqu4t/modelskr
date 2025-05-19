@@ -25,3 +25,21 @@ export const fetchUsers = async ({ fields = "" }) => {
 		throw error;
 	}
 };
+
+export const fetchTodayVisits = async () => {
+	const res = await fetch(`${API_BASE_URL}/api/admin/visits/today`);
+
+	await handleAuthError(res);
+	if (!res.ok) throw new Error("방문자 수 조회 실패");
+
+	return res.json();
+};
+
+export const fetchRecentVisits = async () => {
+	const res = await fetch(`${API_BASE_URL}/api/admin/visits/recent`);
+
+	await handleAuthError(res);
+	if (!res.ok) throw new Error("방문자 수 조회 실패");
+
+	return res.json();
+};

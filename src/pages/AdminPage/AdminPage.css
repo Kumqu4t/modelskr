@@ -10,9 +10,11 @@
 }
 
 .admin-section {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+	margin-top: 32px;
+	width: 100%;
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .model-list-section {
@@ -29,6 +31,13 @@
 	margin-bottom: 12px;
 }
 
+.table {
+	display: flex;
+	flex-direction: column;
+	margin-top: 24px;
+	gap: 12px;
+}
+
 @media (max-width: 600px) {
 	.admin-page > div {
 		flex-direction: column;
@@ -38,4 +47,30 @@
 	.admin-page > div button {
 		width: 100%;
 	}
+}
+
+.admin-button-row {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+.admin-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 12px;
+}
+
+.admin-table th,
+.admin-table td {
+	border: 1px solid #ddd;
+	padding: 8px 12px;
+	text-align: left;
+}
+
+.admin-table th {
+	background-color: #f3f3f3;
+	font-weight: bold;
 }
