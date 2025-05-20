@@ -43,8 +43,7 @@ export function useQueryFilters(basePath = "/models") {
 		if (height !== "all") params.set("height", height);
 		if (page !== 1) params.set("page", page);
 
-		if (basePath === "/models" && agency !== "all")
-			params.set("agency", agency);
+		if (agency !== "all") params.set("agency", agency);
 		if (basePath === "/people" && role !== "all") params.set("role", role);
 
 		navigate(`${basePath}?${params.toString()}`);

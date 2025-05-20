@@ -83,7 +83,7 @@ function FormPage() {
 				create: createPerson,
 				update: updatePerson,
 				component: PeopleForm,
-				props: { MorP: MorP },
+				props: { agencies, MorP: MorP },
 			},
 			photos: {
 				data: photoData,

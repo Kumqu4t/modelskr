@@ -3,6 +3,7 @@ import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
 import { useFavorites } from "../../hooks/useFavorites";
 import { usePeople } from "../../hooks/people/usePeople";
+import { useAgencies } from "../../hooks/agencies/useAgencies";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 import ModelList from "../../components/ModelList";
@@ -10,17 +11,25 @@ const FilterBar = lazy(() => import("../../components/FilterBar"));
 const Pagination = lazy(() => import("../../components/Pagination"));
 
 function PersonListPage() {
-	const { gender, setGender, role, keyword, page, setPage } =
+	const { gender, setGender, agency, setAgency, role, keyword, page, setPage } =
 		useQueryFilters("/people");
 
 	const { data, isLoading } = usePeople({
 		gender,
+		agency,
 		role,
 		keyword,
 		page,
 	});
 	const people = data?.people || [];
 	const totalCount = data?.totalCount || 0;
+
+	const { data: agenciesData } = useAgencies({
+		fields: "name",
+		limit: 9999,
+	});
+	const rawAgencies = agenciesData?.agencies || [];
+	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Person");
@@ -36,7 +45,14 @@ function PersonListPage() {
 			<div style={{ padding: "24px" }}>
 				<h1 className="admin-title">{role[0].toUpperCase() + role.slice(1)}</h1>
 				<Suspense fallback={<div>필터 로딩중...</div>}>
-					<FilterBar gender={gender} setGender={setGender} type={"people"} />
+					<FilterBar
+						gender={gender}
+						setGender={setGender}
+						agency={agency}
+						setAgency={setAgency}
+						agencies={agencies}
+						type={"people"}
+					/>
 				</Suspense>
 				<ModelList
 					type="people"

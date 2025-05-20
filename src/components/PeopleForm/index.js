@@ -132,15 +132,12 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 
 		let processedData = {
 			...formData,
+			agency: formData.agency || null,
 			tags: tagsArray,
 			recentWork: recentWorkArray,
 		};
 
-		if (MorP === "model")
-			processedData = { ...processedData, agency: formData.agency || null };
-
 		if (MorP !== "model") {
-			delete processedData.agency;
 			delete processedData.height;
 			delete processedData.measurements;
 			delete processedData.shoeSize;
@@ -262,6 +259,62 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 					onChange={handleChange}
 				/>
 			</label>
+			<label className="model-form__field">
+				<span className="model-form__label">에이전시</span>
+				<div>
+					<input
+						className="model-form__input"
+						type="text"
+						value={agencySearchTerm}
+						onChange={(e) => {
+							setAgencySearchTerm(e.target.value);
+							const results = agencies.filter((agency) =>
+								agency.name
+									.toLowerCase()
+									.includes(agencySearchTerm.toLowerCase())
+							);
+							setAgencySearchResults(results);
+						}}
+						placeholder="에이전시 이름 검색"
+					/>
+				</div>
+
+				{agencySearchResults.length > 0 && (
+					<div className="photo-form__search-results">
+						<ul>
+							{agencySearchResults.map((agency) => (
+								<li key={agency._id}>
+									<button
+										type="button"
+										onClick={() => addAgency(agency)}
+										style={{ cursor: "pointer" }}
+									>
+										{agency.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{formData.agency && (
+					<div className="photo-form__selected-list">
+						<p>선택된 에이전시:</p>
+						<ul>
+							<li>
+								{getAgencyNameById(formData.agency)}{" "}
+								<button
+									type="button"
+									onClick={(e) => removeAgency(formData.agency, e)}
+									aria-label="Remove agency"
+								>
+									X
+								</button>
+							</li>
+						</ul>
+					</div>
+				)}
+			</label>
 			{/* 아티스트일 때만 표시되는 필드 */}
 			{MorP !== "model" && (
 				<label className="model-form__field">
@@ -287,62 +340,6 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 			{/* 모델일 때만 표시되는 필드 */}
 			{MorP === "model" && (
 				<>
-					<label className="model-form__field">
-						<span className="model-form__label">에이전시</span>
-						<div>
-							<input
-								className="model-form__input"
-								type="text"
-								value={agencySearchTerm}
-								onChange={(e) => {
-									setAgencySearchTerm(e.target.value);
-									const results = agencies.filter((agency) =>
-										agency.name
-											.toLowerCase()
-											.includes(agencySearchTerm.toLowerCase())
-									);
-									setAgencySearchResults(results);
-								}}
-								placeholder="에이전시 이름 검색"
-							/>
-						</div>
-
-						{agencySearchResults.length > 0 && (
-							<div className="photo-form__search-results">
-								<ul>
-									{agencySearchResults.map((agency) => (
-										<li key={agency._id}>
-											<button
-												type="button"
-												onClick={() => addAgency(agency)}
-												style={{ cursor: "pointer" }}
-											>
-												{agency.name}
-											</button>
-										</li>
-									))}
-								</ul>
-							</div>
-						)}
-
-						{formData.agency && (
-							<div className="photo-form__selected-list">
-								<p>선택된 에이전시:</p>
-								<ul>
-									<li>
-										{getAgencyNameById(formData.agency)}{" "}
-										<button
-											type="button"
-											onClick={(e) => removeAgency(formData.agency, e)}
-											aria-label="Remove agency"
-										>
-											X
-										</button>
-									</li>
-								</ul>
-							</div>
-						)}
-					</label>
 					<label className="model-form__field">
 						<span className="model-form__label">키 (cm)</span>
 						<input

@@ -22,6 +22,13 @@ function PersonDetailPage() {
 
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, kind);
 
+	const sampleImageURL =
+		person?.role === "photographer"
+			? "https://res.cloudinary.com/db1u4ngue/image/upload/v1747720917/modelskr/duikulw07bmohubcarwe.png"
+			: person?.role === "hair"
+			? "https://res.cloudinary.com/db1u4ngue/image/upload/v1747721665/modelskr/uub5czhbtxtctu2hxbx8.png"
+			: "https://res.cloudinary.com/db1u4ngue/image/upload/v1747721442/modelskr/a29e70v0iet7e3hjdbfm.png";
+
 	const handleEdit = (e) => {
 		e.stopPropagation();
 		navigate(`/admin/edit/people/${id}`);
@@ -75,7 +82,7 @@ function PersonDetailPage() {
 
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={person.image?.url} alt={person.name} />
+						<img src={person.image?.url || sampleImageURL} alt={person.name} />
 						<FavoriteButton
 							modelId={person._id}
 							kind={kind}
@@ -107,7 +114,7 @@ function PersonDetailPage() {
 
 					<div className="model-detail-info">
 						<h2>{person.name}</h2>
-						{/* <p>{person.description}</p> */}
+						<p>{person.description}</p>
 						<p>
 							<strong>직업:</strong>{" "}
 							<span
@@ -126,7 +133,23 @@ function PersonDetailPage() {
 								{person.gender}
 							</span>
 						</p>
-
+						<p>
+							<strong>에이전시:</strong>{" "}
+							{person.agency?.name ? (
+								<span
+									className="filter-button"
+									onClick={() =>
+										navigate(
+											`/agencies/${encodeURIComponent(person.agency._id)}`
+										)
+									}
+								>
+									{person.agency.name}
+								</span>
+							) : (
+								<span className="filter-button disabled">무소속</span>
+							)}
+						</p>
 						{person.birthYear && (
 							<p>
 								<strong>출생년도:</strong> {person.birthYear}

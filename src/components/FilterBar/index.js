@@ -21,20 +21,20 @@ function FilterBar({
 					<option value="male">남성</option>
 					<option value="female">여성</option>
 				</select>
+				<label className="filter-label">에이전시</label>
+				<select value={agency} onChange={(e) => setAgency(e.target.value)}>
+					<option value="all">전체</option>
+					{agencies.map((agencyName) => (
+						<option key={agencyName} value={agencyName}>
+							{agencyName}
+						</option>
+					))}
+				</select>
 			</div>
 
 			<div className="filter-group">
 				{type === "models" && (
 					<>
-						<label className="filter-label">에이전시</label>
-						<select value={agency} onChange={(e) => setAgency(e.target.value)}>
-							<option value="all">전체</option>
-							{agencies.map((agencyName) => (
-								<option key={agencyName} value={agencyName}>
-									{agencyName}
-								</option>
-							))}
-						</select>
 						<label className="filter-label">키</label>
 						<select value={height} onChange={(e) => setHeight(e.target.value)}>
 							<option value="all">전체</option>

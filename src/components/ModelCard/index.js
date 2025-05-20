@@ -8,12 +8,22 @@ function ModelCard({ type, model, isFavorited, onToggleFavorite }) {
 	const navigate = useNavigate();
 
 	const handleCardClick = () => navigate(`/${type}/${id}`);
+	const sampleImageURL =
+		type !== "people"
+			? ""
+			: model?.role === "photographer"
+			? "https://res.cloudinary.com/db1u4ngue/image/upload/v1747720917/modelskr/duikulw07bmohubcarwe.png"
+			: model?.role === "hair"
+			? "https://res.cloudinary.com/db1u4ngue/image/upload/v1747721665/modelskr/uub5czhbtxtctu2hxbx8.png"
+			: model?.role === "makeup"
+			? "https://res.cloudinary.com/db1u4ngue/image/upload/v1747721442/modelskr/a29e70v0iet7e3hjdbfm.png"
+			: "";
 
 	return (
 		<div className="model-card" onClick={handleCardClick}>
 			<div className="image-wrapper">
 				<img
-					src={getCloudinaryThumbnail(image?.url)}
+					src={getCloudinaryThumbnail(image?.url || sampleImageURL)}
 					alt={name}
 					loading="lazy"
 				/>

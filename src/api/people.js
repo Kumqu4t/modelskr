@@ -3,6 +3,7 @@ import { handleAuthError } from "../utils/handleAuthError";
 
 export const fetchPeople = async ({
 	gender,
+	agency,
 	role,
 	keyword = "",
 	fields = "",
@@ -13,6 +14,7 @@ export const fetchPeople = async ({
 		const params = new URLSearchParams();
 
 		if (gender && gender !== "all") params.set("gender", gender);
+		if (agency && agency !== "all") params.set("agency", agency);
 		if (role && role !== "all") params.set("role", role);
 		if (keyword) params.set("keyword", keyword);
 		if (fields) params.set("fields", fields);

@@ -108,7 +108,7 @@ function ModelDetailPage() {
 
 					<div className="model-detail-info">
 						<h2>{model.name}</h2>
-						{/* <p>{model.description}</p> */}
+						<p>{model.description}</p>
 						<p>
 							<strong>성별:</strong>{" "}
 							<span
