@@ -8,6 +8,7 @@ import { usePhotoById, useDeletePhoto } from "../../hooks/photos";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
 import { linkifyDescription } from "../../utils/linkify";
+import { getCloudinaryWebp } from "../../utils/getCloudinaryWebp";
 import "./PhotoDetailPage.css";
 
 const PhotoDetailPage = () => {
@@ -107,7 +108,7 @@ const PhotoDetailPage = () => {
 					)}
 					<div className="photo-image-wrapper">
 						<img
-							src={photo.images[currentIndex]?.url}
+							src={getCloudinaryWebp(photo.images[currentIndex]?.url)}
 							alt={`${photo.title} - ${currentIndex + 1}`}
 						/>
 					</div>
