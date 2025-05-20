@@ -61,13 +61,14 @@ function AgencyForm({ mode, item, onSubmit }) {
 	const handleLogoUpload = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			uploadImage(file, {
+			uploadImage([file], {
 				onSuccess: (data) => {
+					const image = data.images[0];
 					setFormData((prev) => ({
 						...prev,
 						logo: {
-							url: data.url,
-							public_id: data.public_id,
+							url: image.url,
+							public_id: image.public_id,
 						},
 					}));
 				},

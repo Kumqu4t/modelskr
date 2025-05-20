@@ -153,15 +153,16 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 	const handleImageUpload = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			uploadImage(file, {
+			uploadImage([file], {
 				onSuccess: (data) => {
-					setFormData((prev) => {
-						const updatedFormData = {
-							...prev,
-							image: { url: data.url, public_id: data.public_id },
-						};
-						return updatedFormData;
-					});
+					const image = data.images?.[0];
+					setFormData((prev) => ({
+						...prev,
+						image: {
+							url: image.url,
+							public_id: image.public_id,
+						},
+					}));
 				},
 				onError: (error) => {
 					console.error("이미지 업로드 실패:", error);

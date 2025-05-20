@@ -103,28 +103,20 @@ function PhotoForm({ mode, photo, onSubmit }) {
 	const handlePhotoUpload = (e) => {
 		const files = Array.from(e.target.files);
 		if (files.length > 0) {
-			files.forEach((file) => {
-				uploadImage(file, {
-					onSuccess: (data) => {
-						setFormData((prev) => ({
-							...prev,
-							images: [
-								...prev.images,
-								{
-									url: data.url,
-									public_id: data.public_id,
-								},
-							],
-						}));
-					},
-					onError: (error) => {
-						console.error("사진 업로드 실패:", error);
-						setErrors((prev) => ({
-							...prev,
-							images: "사진 업로드에 실패했습니다. 다시 시도해주세요.",
-						}));
-					},
-				});
+			uploadImage(files, {
+				onSuccess: (data) => {
+					setFormData((prev) => ({
+						...prev,
+						images: [...prev.images, ...data.images],
+					}));
+				},
+				onError: (error) => {
+					console.error("사진 업로드 실패:", error);
+					setErrors((prev) => ({
+						...prev,
+						images: "사진 업로드에 실패했습니다. 다시 시도해주세요.",
+					}));
+				},
 			});
 		}
 	};

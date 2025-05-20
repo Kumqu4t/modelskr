@@ -1,8 +1,10 @@
 import { API_BASE_URL } from ".";
 
-export const uploadImage = async (file) => {
+export const uploadImage = async (files) => {
 	const formData = new FormData();
-	formData.append("image", file);
+	files.forEach((file) => {
+		formData.append("images", file);
+	});
 
 	try {
 		const res = await fetch(`${API_BASE_URL}/api/upload`, {
