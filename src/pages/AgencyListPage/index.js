@@ -14,11 +14,12 @@ function AgencyListPage() {
 	const { keyword, page, setPage } = useQueryFilters("/agencies");
 	const { data, isLoading } = useAgencies({
 		keyword,
-		fields: "name logo description",
+		fields: "name,logo,description",
 		page,
 	});
 	const agencies = data?.agencies || [];
 	const totalCount = data?.totalCount || 0;
+	console.log(data);
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL
