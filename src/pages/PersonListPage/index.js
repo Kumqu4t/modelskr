@@ -1,16 +1,19 @@
 import { lazy, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
-import { useFavorites } from "../../hooks/useFavorites";
 import { usePeople } from "../../hooks/people/usePeople";
+import { useFavorites } from "../../hooks/useFavorites";
 import { useAgencies } from "../../hooks/agencies/useAgencies";
-import DefaultHelmet from "../../components/DefaultHelmet";
-import Loading from "../../components/Loading";
 import ModelList from "../../components/ModelList";
+import DefaultHelmet from "../../components/DefaultHelmet";
+import Button from "../../components/Button";
+import Loading from "../../components/Loading";
 const FilterBar = lazy(() => import("../../components/FilterBar"));
 const Pagination = lazy(() => import("../../components/Pagination"));
 
 function PersonListPage() {
+	const navigate = useNavigate();
 	const { gender, setGender, agency, setAgency, role, keyword, page, setPage } =
 		useQueryFilters("/people");
 
@@ -32,6 +35,9 @@ function PersonListPage() {
 	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const isAdmin = useSelector(
+		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL
+	);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Person");
 
 	if (isLoading) return <Loading />;
@@ -53,6 +59,23 @@ function PersonListPage() {
 						agencies={agencies}
 						type={"people"}
 					/>
+					{isAdmin && (
+						<div
+							style={{
+								maxWidth: "1200px",
+								margin: "0 auto 16px",
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<Button
+								type="default"
+								onClick={() => navigate("/admin/create/people")}
+							>
+								+ 인물 추가
+							</Button>
+						</div>
+					)}
 				</Suspense>
 				<ModelList
 					type="people"

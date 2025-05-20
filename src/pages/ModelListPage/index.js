@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryFilters } from "../../hooks/useQueryFilters";
 import { useSelector } from "react-redux";
 import { useModels } from "../../hooks/models";
@@ -6,11 +7,13 @@ import { useFavorites } from "../../hooks/useFavorites";
 import { useAgencies } from "../../hooks/agencies/useAgencies";
 import ModelList from "../../components/ModelList";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Button from "../../components/Button";
 import Loading from "../../components/Loading";
 const FilterBar = lazy(() => import("../../components/FilterBar"));
 const Pagination = lazy(() => import("../../components/Pagination"));
 
 function ModelListPage() {
+	const navigate = useNavigate();
 	const {
 		gender,
 		setGender,
@@ -41,6 +44,9 @@ function ModelListPage() {
 	const agencies = [...rawAgencies.map((a) => a.name), "무소속"];
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+	const isAdmin = useSelector(
+		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL
+	);
 	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
 
 	if (isLoading) return <Loading />;
@@ -64,6 +70,23 @@ function ModelListPage() {
 						setHeight={setHeight}
 						type={"models"}
 					/>
+					{isAdmin && (
+						<div
+							style={{
+								maxWidth: "1200px",
+								margin: "0 auto 16px",
+								display: "flex",
+								justifyContent: "flex-end",
+							}}
+						>
+							<Button
+								type="default"
+								onClick={() => navigate("/admin/create/models")}
+							>
+								+ 모델 추가
+							</Button>
+						</div>
+					)}
 				</Suspense>
 				<ModelList
 					type="models"
