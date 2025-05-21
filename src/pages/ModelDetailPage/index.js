@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Button from "../../components/Button";
-import FavoriteButton from "../../components/FavoriteButton";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useModelById, useDeleteModel } from "../../hooks/models";
+import { getCloudinaryWebp } from "../../utils/getCloudinaryWebp";
 import DefaultHelmet from "../../components/DefaultHelmet";
+import Button from "../../components/Button";
+import FavoriteButton from "../../components/FavoriteButton";
 import Loading from "../../components/Loading";
 import "./ModelDetailPage.css";
 
@@ -75,7 +76,13 @@ function ModelDetailPage() {
 				</div>
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={model.image?.url} alt={model.name} />
+						<img
+							src={getCloudinaryWebp(model.image?.url)}
+							alt={model.name}
+							onClick={() => {
+								if (model.image?.url) window.open(model.image?.url, "_blank");
+							}}
+						/>
 						{model?._id && (
 							<FavoriteButton
 								modelId={model._id}

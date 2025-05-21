@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useFavorites } from "../../hooks/useFavorites";
+import { usePersonById, useDeletePerson } from "../../hooks/people";
+import { getCloudinaryWebp } from "../../utils/getCloudinaryWebp";
+import DefaultHelmet from "../../components/DefaultHelmet";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
-import { useFavorites } from "../../hooks/useFavorites";
-import DefaultHelmet from "../../components/DefaultHelmet";
 import Loading from "../../components/Loading";
-import { usePersonById, useDeletePerson } from "../../hooks/people";
 import "./PersonDetailPage.css";
 
 function PersonDetailPage() {
@@ -82,7 +83,13 @@ function PersonDetailPage() {
 
 				<div className="imageinfo-wrapper">
 					<div className="image-wrapper">
-						<img src={person.image?.url || sampleImageURL} alt={person.name} />
+						<img
+							src={getCloudinaryWebp(person.image?.url || sampleImageURL)}
+							alt={person.name}
+							onClick={() => {
+								if (person.image?.url) window.open(person.image?.url, "_blank");
+							}}
+						/>
 						<FavoriteButton
 							modelId={person._id}
 							kind={kind}
