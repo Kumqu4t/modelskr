@@ -19,7 +19,7 @@ function AgencyListPage() {
 	});
 	const agencies = data?.agencies || [];
 	const totalCount = data?.totalCount || 0;
-	console.log(data);
+	console.log("data: ", data);
 
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === process.env.REACT_APP_ADMIN_EMAIL

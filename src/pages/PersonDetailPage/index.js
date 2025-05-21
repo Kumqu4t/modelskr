@@ -6,6 +6,7 @@ import { getCloudinaryWebp } from "../../utils/getCloudinaryWebp";
 import DefaultHelmet from "../../components/DefaultHelmet";
 import Button from "../../components/Button";
 import FavoriteButton from "../../components/FavoriteButton";
+import FilterButton from "../../components/FilterButton";
 import Loading from "../../components/Loading";
 import "./PersonDetailPage.css";
 
@@ -133,18 +134,16 @@ function PersonDetailPage() {
 						</p>
 						<p>
 							<strong>성별:</strong>{" "}
-							<span
-								className="filter-button"
-								onClick={() => navigate(`/people?gender=${person.gender}`)}
+							<FilterButton
+								onClick={() => navigate(`/models?gender=${person.gender}`)}
 							>
 								{person.gender}
-							</span>
+							</FilterButton>
 						</p>
 						<p>
 							<strong>에이전시:</strong>{" "}
 							{person.agency?.name ? (
-								<span
-									className="filter-button"
+								<FilterButton
 									onClick={() =>
 										navigate(
 											`/agencies/${encodeURIComponent(person.agency._id)}`
@@ -152,9 +151,9 @@ function PersonDetailPage() {
 									}
 								>
 									{person.agency.name}
-								</span>
+								</FilterButton>
 							) : (
-								<span className="filter-button disabled">무소속</span>
+								<FilterButton disabled="disabled">무소속</FilterButton>
 							)}
 						</p>
 						{person.birthYear && (

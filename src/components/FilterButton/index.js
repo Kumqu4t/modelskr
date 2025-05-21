@@ -1,12 +1,9 @@
-import React from "react";
 import "./FilterButton.css";
 
-function FilterButton({ active, onClick, children, disabled }) {
+function FilterButton({ active = "", onClick, children, disabled = "" }) {
 	return (
 		<button
-			className={`filter-button ${active ? "active" : ""} ${
-				disabled ? "disabled" : ""
-			}`}
+			className={`filter-button ${active} ${disabled}`}
 			onClick={onClick}
 			disabled={disabled}
 		>
