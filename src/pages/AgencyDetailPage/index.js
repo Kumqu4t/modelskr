@@ -16,13 +16,17 @@ function AgencyDetailPage() {
 
 	const { data: agency, isLoading } = useAgencyById(decodedName);
 	const models = agency?.models || [];
+	const people = agency?.people || [];
 	const deleteAgency = useDeleteAgency();
 
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const isAdmin = useSelector(
 		(state) => state.user.user?.email === "qufgkswkfl3@gmail.com"
 	);
-	const { favorites, toggleFavorite } = useFavorites(isLoggedIn, "Model");
+	const { favorites: modelFavorites, toggleFavorite: toggleModelFavorite } =
+		useFavorites(isLoggedIn, "Model");
+	const { favorites: personFavorites, toggleFavorite: togglePersonFavorite } =
+		useFavorites(isLoggedIn, "Person");
 
 	const handleEdit = (e) => {
 		e.stopPropagation();
@@ -95,15 +99,28 @@ function AgencyDetailPage() {
 						홈페이지
 					</Button>
 				</div>
-				<div className="agency-models-section">
-					<h2 className="agency-title">소속 모델</h2>
-					<ModelList
-						type="models"
-						models={models}
-						favorites={favorites}
-						onToggleFavorite={toggleFavorite}
-					/>
-				</div>
+				{models.length > 0 && (
+					<div className="agency-models-section">
+						<h2 className="agency-title">소속 모델</h2>
+						<ModelList
+							type="models"
+							models={models}
+							favorites={modelFavorites}
+							onToggleFavorite={toggleModelFavorite}
+						/>
+					</div>
+				)}
+				{people.length > 0 && (
+					<div className="agency-models-section">
+						<h2 className="agency-title">소속 아티스트</h2>
+						<ModelList
+							type="people"
+							models={people}
+							favorites={personFavorites}
+							onToggleFavorite={togglePersonFavorite}
+						/>
+					</div>
+				)}
 			</div>
 		</>
 	);
