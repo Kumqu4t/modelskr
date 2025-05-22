@@ -23,7 +23,6 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 
 	const [errors, setErrors] = useState({
 		name: "",
-		gender: "",
 	});
 
 	const [agencySearchTerm, setAgencySearchTerm] = useState("");
@@ -101,7 +100,6 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 
 		let formErrors = {};
 		if (!formData.name) formErrors.name = "이름을 입력해주세요.";
-		if (!formData.gender) formErrors.gender = "성별을 선택해주세요.";
 
 		if (Object.keys(formErrors).length > 0) {
 			setErrors(formErrors);
@@ -136,6 +134,10 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 			tags: tagsArray,
 			recentWork: recentWorkArray,
 		};
+
+		if (!formData.gender) {
+			delete processedData.gender;
+		}
 
 		if (MorP !== "model") {
 			delete processedData.height;
@@ -217,24 +219,17 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 			</label>
 
 			<label className="model-form__field">
-				<span className="model-form__label">
-					성별 <span className="model-form__required">*</span>
-				</span>
+				<span className="model-form__label">성별</span>
 				<select
 					className="model-form__input"
 					name="gender"
 					value={formData.gender}
 					onChange={handleChange}
-					required
-					aria-describedby="genderError"
 				>
 					<option value="">선택하세요</option>
 					<option value="male">남성</option>
 					<option value="female">여성</option>
 				</select>
-				<div id="genderError" className="model-form__error">
-					{errors.gender}
-				</div>
 			</label>
 
 			<label className="model-form__field">

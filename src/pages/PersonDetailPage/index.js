@@ -134,11 +134,13 @@ function PersonDetailPage() {
 						</p>
 						<p>
 							<strong>성별:</strong>{" "}
-							<FilterButton
-								onClick={() => navigate(`/models?gender=${person.gender}`)}
-							>
-								{person.gender}
-							</FilterButton>
+							{person.gender && (
+								<FilterButton
+									onClick={() => navigate(`/people?gender=${person.gender}`)}
+								>
+									{person.gender}
+								</FilterButton>
+							)}
 						</p>
 						<p>
 							<strong>에이전시:</strong>{" "}
