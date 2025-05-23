@@ -119,11 +119,13 @@ function ModelDetailPage() {
 						<p>{model.description}</p>
 						<p>
 							<strong>성별:</strong>{" "}
-							<FilterButton
-								onClick={() => navigate(`/models?gender=${model.gender}`)}
-							>
-								{model.gender}
-							</FilterButton>
+							{model.gender && (
+								<FilterButton
+									onClick={() => navigate(`/models?gender=${model.gender}`)}
+								>
+									{model.gender}
+								</FilterButton>
+							)}
 						</p>
 						<p>
 							<strong>에이전시:</strong>{" "}
