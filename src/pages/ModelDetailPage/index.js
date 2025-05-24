@@ -116,7 +116,6 @@ function ModelDetailPage() {
 
 					<div className="model-detail-info">
 						<h2>{model.name}</h2>
-						<p>{model.description}</p>
 						<p>
 							<strong>성별:</strong>{" "}
 							{model.gender && (
@@ -163,12 +162,17 @@ function ModelDetailPage() {
 							<p>
 								<strong>사이즈:</strong> {model.measurements.chest || "-"} /{" "}
 								{model.measurements.waist || "-"} /{" "}
-								{model.measurements.hips || "-"} inch
+								{model.measurements.hips || "-"}
 							</p>
 						)}
 						{model.shoeSize && (
 							<p>
 								<strong>신발 사이즈:</strong> {model.shoeSize}
+							</p>
+						)}
+						{model.description && (
+							<p>
+								<strong>+</strong> {model.description}
 							</p>
 						)}
 					</div>

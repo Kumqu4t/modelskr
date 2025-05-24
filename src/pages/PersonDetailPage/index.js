@@ -122,7 +122,6 @@ function PersonDetailPage() {
 
 					<div className="model-detail-info">
 						<h2>{person.name}</h2>
-						<p>{person.description}</p>
 						<p>
 							<strong>직업:</strong>{" "}
 							<span
@@ -166,6 +165,11 @@ function PersonDetailPage() {
 						{person.nationality && (
 							<p>
 								<strong>국적:</strong> {person.nationality}
+							</p>
+						)}
+						{person.description && (
+							<p>
+								<strong>+</strong> {person.description}
 							</p>
 						)}
 					</div>
