@@ -6,6 +6,7 @@ import "./PeopleForm.css";
 function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 	const [formData, setFormData] = useState({
 		name: "",
+		aliases: "",
 		role: "",
 		gender: "",
 		image: { url: "", public_id: "" },
@@ -54,6 +55,7 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 		if (mode === "edit" && item) {
 			setFormData({
 				...item,
+				aliases: item.aliases?.join(", ") || "",
 				gender: item.gender || "",
 				role: item.role || "",
 				agency: item.agency?._id || "",
@@ -128,11 +130,17 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 						.filter(Boolean)
 				: [];
 
+		const aliasesArray = formData.aliases
+			?.split(",")
+			.map((a) => a.trim())
+			.filter((a) => a);
+
 		let processedData = {
 			...formData,
 			agency: formData.agency || null,
 			tags: tagsArray,
 			recentWork: recentWorkArray,
+			aliases: aliasesArray,
 		};
 
 		if (!formData.gender) {
@@ -216,6 +224,17 @@ function PeopleForm({ mode, item, onSubmit, agencies, MorP }) {
 				<div id="nameError" className="model-form__error">
 					{errors.name}
 				</div>
+			</label>
+			<label className="model-form__field">
+				<span className="model-form__label">별칭 (쉼표로 구분)</span>
+				<input
+					className="model-form__input"
+					type="text"
+					name="aliases"
+					value={formData.aliases}
+					onChange={handleChange}
+					placeholder="예: 김연아, Yuna Kim"
+				/>
 			</label>
 
 			<label className="model-form__field">
