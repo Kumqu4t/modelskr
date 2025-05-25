@@ -17,12 +17,6 @@
 - Frontend (Vercel): https://modelskr.vercel.app/
 - Backend (Railway): https://modelskr-backend-production.up.railway.app/
 
-## 스크린샷
-
-![홈 화면](./public/screenshot-home.png)
-![모델 화면](./public/screenshot-modeldetailpage.png)
-![포토 화면](./public/screenshot-photodetailpage.png)
-
 ## 기술 스택
 
 ### Frontend
@@ -34,6 +28,12 @@
 
 - Node.js, Express, MongoDB, Mongoose, Cloudinary
 - Redis (캐싱), Railway 배포
+
+## 스크린샷
+
+![홈 화면](./public/screenshot-home.png)
+![모델 화면](./public/screenshot-modeldetailpage.png)
+![포토 화면](./public/screenshot-photodetailpage.png)
 
 ## 로컬 실행 방법
 
