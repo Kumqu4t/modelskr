@@ -1,9 +1,9 @@
 export const getCloudinaryThumbnail = (
-	url,
-	width = 300,
-	height = 400,
-	crop = "fill"
-) => {
+	url: string | undefined,
+	width: number = 300,
+	height: number = 400,
+	crop: string = "fill"
+): string => {
 	if (!url) return "";
 	return url.replace(
 		"/upload/",

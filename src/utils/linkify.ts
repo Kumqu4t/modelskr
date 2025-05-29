@@ -1,6 +1,13 @@
-const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRegExp = (string: string): string =>
+	string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-const linkifyDescription = (text, people) => {
+type Person = {
+	name: string;
+	_id: string;
+	type: "model" | "person";
+};
+
+const linkifyDescription = (text: string, people: Person[]): string => {
 	let result = text;
 
 	// 1. 인물 이름 링크 처리

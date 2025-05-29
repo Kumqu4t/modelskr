@@ -1,4 +1,4 @@
-export const handleAuthError = async (res) => {
+export const handleAuthError = async (res: Response): Promise<void> => {
 	if (res.status === 401) {
 		const data = await res.json();
 		const message = data.message;
