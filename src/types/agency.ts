@@ -1,5 +1,5 @@
 export interface Agency {
-	_id?: string;
+	_id: string;
 	name: string;
 	description: string;
 	logo: {
@@ -7,6 +7,9 @@ export interface Agency {
 		public_id: string;
 	};
 	homepage: string;
-	createdAt?: string;
-	updatedAt?: string;
+	createdAt: string;
+	updatedAt: string;
 }
+
+export type CreateAgencyInput = Omit<Agency, "_id" | "createdAt" | "updatedAt">;
+export type UpdateModelInput = Partial<CreateAgencyInput> & { _id: string };

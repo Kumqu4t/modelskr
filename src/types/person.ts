@@ -1,7 +1,7 @@
 import { Agency } from "./agency";
 
 export interface Person {
-	_id?: string;
+	_id: string;
 	name: string;
 	aliases?: string[];
 	gender?: "male" | "female";
@@ -21,6 +21,9 @@ export interface Person {
 		public_id: string;
 	};
 	description?: string;
-	createdAt?: string;
-	updatedAt?: string;
+	createdAt: string;
+	updatedAt: string;
 }
+
+export type CreatePersonInput = Omit<Person, "_id" | "createdAt" | "updatedAt">;
+export type UpdatePersonInput = Partial<CreatePersonInput> & { _id: string };

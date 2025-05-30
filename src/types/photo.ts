@@ -1,5 +1,5 @@
 export interface Photo {
-	_id?: string;
+	_id: string;
 	images: {
 		url: string;
 		public_id: string;
@@ -10,6 +10,9 @@ export interface Photo {
 	category?: "commercial" | "editorial" | "others";
 	description?: string;
 	tags?: string[];
-	createdAt?: string;
-	updatedAt?: string;
+	createdAt: string;
+	updatedAt: string;
 }
+
+export type CreatePhotoInput = Omit<Photo, "_id" | "createdAt" | "updatedAt">;
+export type UpdatePhotoInput = Partial<CreatePhotoInput> & { _id: string };
