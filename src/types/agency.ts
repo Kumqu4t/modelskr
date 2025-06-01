@@ -12,4 +12,4 @@ export interface Agency {
 }
 
 export type CreateAgencyInput = Omit<Agency, "_id" | "createdAt" | "updatedAt">;
-export type UpdateModelInput = Partial<CreateAgencyInput> & { _id: string };
+export type UpdateAgencyInput = Partial<CreateAgencyInput> & { _id: string };
